@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/welcome" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="132dp"
+            android:layout_marginTop="150dp"
+            android:layout_x="48dp"
+            android:layout_y="174dp"
+            android:rotation="90"
+            android:text="CrazePony"
+            android:textColor="#FFFFFF"
+            android:textSize="50dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="132dp"
+            android:layout_marginTop="150dp"
+            android:layout_x="-50dp"
+            android:layout_y="194dp"
+            android:rotation="90"
+            android:text="繁星若尘，带来娱乐性开发性最强四轴飞行器  --CrazePony团队"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp" />
+
+    </AbsoluteLayout>
