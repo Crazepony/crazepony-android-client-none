@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:id="@+id/ScrollView01"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:scrollbars="vertical" 
+         android:visibility="gone"
+        >
+        <TextView
+            android:id="@+id/in"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+             android:visibility="gone"
+            
+            />
+    </ScrollView>
+ <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/Button03"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onConnectButtonClicked"
+            android:text="连接" >
+        </Button>
+ 		<Button
+            android:id="@+id/armButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onSendArmButtonClicked"
+            android:text="解锁" >
+        </Button>
+        
+ 		<Button
+            android:id="@+id/lauchLandButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onlauchLandButtonClicked"
+            android:text="起飞" >
+        </Button>
+        <Button
+            android:id="@+id/headFreeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onheadFreeButtonClicked"
+            android:text="无头" >
+        </Button>
+        <Button
+            android:id="@+id/posHoldButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onposHoldButtonClicked"
+            android:text="定点" >
+        </Button>
+        <Button
+            android:id="@+id/altHoldButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onaltHoldButtonClicked"
+            android:text="定高" >
+        </Button>
+         <Button
+            android:id="@+id/accCaliButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onAccCaliButtonClicked"
+            android:text="校准" >
+        </Button>
+        <Button
+            android:id="@+id/land"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onSaveButtonClicked"
+            android:text="保存" 
+            android:visibility="gone">
+        </Button>
+
+        <Button
+            android:id="@+id/Button05"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClearButtonClicked"
+            android:text="清空" 
+            android:visibility="gone">
+        </Button>
+
+        <Button
+            android:id="@+id/Button06"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onQuitButtonClicked"
+            android:text="退出" 
+            android:visibility="gone">
+        </Button>
+    </LinearLayout>
+    
+  <LinearLayout android:layout_width="match_parent" 
+        android:layout_height="wrap_content" 
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_gravity="center">
+    <TextView 
+	    	android:id="@+id/wpText" 
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content"  
+            android:text="目的地：" />
+    <Spinner
+        android:id="@+id/wayPointSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        />
+    </LinearLayout>
+    
+ <LinearLayout android:layout_width="match_parent" 
+        android:layout_height="wrap_content" 
+        android:orientation="horizontal">
+
+        <TextView android:id="@+id/pitchAngText" 
+            android:layout_width="1dip" 
+            android:layout_height="wrap_content" 
+            android:layout_weight="1" 
+            android:text="PitchAng:" />
+
+        <TextView android:id="@+id/rollAngText" 
+            android:layout_width="1dip" 
+            android:layout_height="wrap_content" 
+            android:layout_weight="1" 
+            android:text="RollAng:" />
+
+        <TextView android:id="@+id/yawAngText" 
+            android:layout_width="1dip" 
+            android:layout_height="wrap_content" 
+            android:layout_weight="1" 
+            android:text="YawAng:" />
+
+        <TextView android:id="@+id/altText" 
+            android:layout_width="1dip" 
+            android:layout_height="wrap_content" 
+            android:layout_weight="1" 
+            android:text="Alttitude:" />
+    </LinearLayout>
+    
+     <LinearLayout android:layout_width="match_parent" 
+        android:layout_height="wrap_content" 
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_gravity="center">
+
+        <TextView android:id="@+id/GPSFixText" 
+            android:layout_width="1dip" 
+            android:layout_height="wrap_content" 
+            android:layout_weight="1" 
+            android:textColor="#FF0000"
+            android:text="GPS Not Fix" />
+
+        <TextView android:id="@+id/homeFixText" 
+            android:layout_width="1dip" 
+            android:layout_height="wrap_content" 
+            android:layout_weight="1" 
+            android:textColor="#FF0000"
+            android:text="Home Not Fix" />
+         <TextView android:id="@+id/distanceText" 
+            android:layout_width="1dip" 
+            android:layout_height="wrap_content" 
+            android:layout_weight="1" 
+            android:text="Distance:" />
+
+        <TextView android:id="@+id/voltageText" 
+            android:layout_width="1dip" 
+            android:layout_height="wrap_content" 
+            android:layout_weight="1" 
+            android:text="Voltage:" />
+
+        
+    </LinearLayout>
+    
+    <LinearLayout android:layout_width="match_parent" 
+        android:layout_height="wrap_content" 
+        android:orientation="horizontal"
+        >
+
+        <TextView android:id="@+id/yawText" 
+            android:layout_width="1dip" 
+            android:layout_height="wrap_content" 
+            android:layout_weight="1" 
+            android:text="Yaw:" />
+
+        <TextView android:id="@+id/throttleText" 
+            android:layout_width="1dip" 
+            android:layout_height="wrap_content" 
+            android:layout_weight="1" 
+            android:text="Throttle:" />
+
+        <TextView android:id="@+id/pitchText" 
+            android:layout_width="1dip" 
+            android:layout_height="wrap_content" 
+            android:layout_weight="1" 
+            android:text="Pitch:" />
+
+        <TextView android:id="@+id/rollText" 
+            android:layout_width="1dip" 
+            android:layout_height="wrap_content" 
+            android:layout_weight="1" 
+            android:text="Roll:" />
+    </LinearLayout>
+	
+    
+    
+    <com.test.BTClient.MySurfaceView
+        android:id="@+id/stickView"
+        android:layout_width="940px"
+        android:layout_height="400px"
+        android:layout_marginLeft="5dp"
+        android:layout_weight="0" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+         >
+
+        <EditText
+            android:id="@+id/Edit0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight="1" 
+            android:visibility="gone">
+        </EditText>
+
+        <Button
+            android:id="@+id/Button02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onSendButtonClicked"
+            android:text="send" 
+            android:visibility="gone">
+        </Button>
+
+       
+    </LinearLayout>
+
+    
+    
+   
+
+</LinearLayout>
