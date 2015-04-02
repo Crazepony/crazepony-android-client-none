@@ -1,4 +1,4 @@
-//·¢ËÍ²¿·ÖÐ´ÓÐÐ©Âé·³£¬Ö±½Ó¶¨ÒåÒ»¸ö·¢ËÍ»º³åByte±ä³¤Êý×é£¬Ð´writeInt8 writeInt16 £¬°ÑÊý¾Ýµ½ÀïÍ·£¬ÔÙÍ³Ò»·¢£¬·¢ÍêÇå¿ÕÇå³¤¡£
+//å‘é€éƒ¨åˆ†å†™æœ‰äº›éº»çƒ¦ï¼Œç›´æŽ¥å®šä¹‰ä¸€ä¸ªå‘é€ç¼“å†²Byteå˜é•¿æ•°ç»„ï¼Œå†™writeInt8 writeInt16 ï¼ŒæŠŠæ•°æ®åˆ°é‡Œå¤´ï¼Œå†ç»Ÿä¸€å‘ï¼Œå‘å®Œæ¸…ç©ºæ¸…é•¿ã€‚
 package com.test.BTClient;
 
 import java.util.LinkedList;
@@ -28,7 +28,7 @@ public class Protocol {
 	STOP_HEAD_FREE=13,
 	POS_HOLD=14,
 	STOP_POS_HOLD=15,
-	FLY_STATE=16,//pitch¡¢roll¡¢yaw¡¢Altitude¡¢GPS_FIX?¡¢Sat num¡¢Voltage
+	FLY_STATE=16,//pitchã€rollã€yawã€Altitudeã€GPS_FIX?ã€Sat numã€Voltage
 	MSP_SET_1WP=17,
 	SET_MOTOR=214,
 	MSP_ACC_CALIBRATION=205;
@@ -240,7 +240,7 @@ public class Protocol {
 			else if (c_state == HEADER_CMD && offset >= dataSize) {
 				frameEnd=true;
 		        // compare calculated and transferred checksum  
-		        if ((checksum&0xFF) == (c&0xFF)) {//Ð£Ñé¶Ô±È
+		        if ((checksum&0xFF) == (c&0xFF)) {//æ ¡éªŒå¯¹æ¯”
 		          if (err_rcvd) {
 		            //System.err.println("Copter did not understand request type "+c);
 		          } 
@@ -250,7 +250,7 @@ public class Protocol {
 		        	  System.out.println("cmd="+cmd); 
 		          }
 		        } 
-		        else //Ð£Ñé³ö´í
+		        else //æ ¡éªŒå‡ºé”™
 		        { 
 		          System.out.println("invalid checksum for command "+((int)(cmd&0xFF))+": "+(checksum&0xFF)+" expected, got "+(int)(c&0xFF));
 		          System.out.print("<"+(cmd&0xFF)+" "+(dataSize&0xFF)+"> {");

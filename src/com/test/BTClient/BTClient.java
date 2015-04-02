@@ -37,7 +37,7 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
-//import android.view.Menu;            //ÈçÊ¹ÓÃ²Ëµ¥¼ÓÈë´ËÈı°ü
+//import android.view.Menu;            //å¦‚ä½¿ç”¨èœå•åŠ å…¥æ­¤ä¸‰åŒ…
 //import android.view.MenuInflater;
 //import android.view.MenuItem;
 import android.view.View;
@@ -56,38 +56,38 @@ import com.test.BTClient.*;
 @SuppressLint("NewApi")
 public class BTClient extends Activity {
 
-	private final static int REQUEST_CONNECT_DEVICE = 1; // ºê¶¨Òå²éÑ¯Éè±¸¾ä±ú
+	private final static int REQUEST_CONNECT_DEVICE = 1; // å®å®šä¹‰æŸ¥è¯¢è®¾å¤‡å¥æŸ„
 
-	private final static String MY_UUID = "00001101-0000-1000-8000-00805F9B34FB"; // SPP·şÎñUUIDºÅ
+	private final static String MY_UUID = "00001101-0000-1000-8000-00805F9B34FB"; // SPPæœåŠ¡UUIDå·
 	//
 	private final static int UPDATE_MUV_STATE_PERIOD=200;
 	
 	
-	List<WayPoint> wpRoute;	//¹æ»®Â·Ïß
+	List<WayPoint> wpRoute;	//è§„åˆ’è·¯çº¿
 //	private WayPoint[] wpArr=new WayPoint[3]; 
 	
 	//
-	private InputStream is; // ÊäÈëÁ÷£¬ÓÃÀ´½ÓÊÕÀ¶ÑÀÊı¾İ
-	//private TextView text0; //ÌáÊ¾À¸½â¾ä±ú
-	private EditText edit0; // ·¢ËÍÊı¾İÊäÈë¾ä±ú
-	private TextView dis; // ½ÓÊÕÊı¾İÏÔÊ¾Çø
-	private ScrollView sv; // ·­Ò³¾ä±ú£¬¹ö¶¯Ìõ
-	private String smsg = ""; // ÏÔÊ¾ÓÃÊı¾İ»º´æ
-	private String fmsg = ""; // ±£´æÓÃÊı¾İ»º´æ
+	private InputStream is; // è¾“å…¥æµï¼Œç”¨æ¥æ¥æ”¶è“ç‰™æ•°æ®
+	//private TextView text0; //æç¤ºæ è§£å¥æŸ„
+	private EditText edit0; // å‘é€æ•°æ®è¾“å…¥å¥æŸ„
+	private TextView dis; // æ¥æ”¶æ•°æ®æ˜¾ç¤ºåŒº
+	private ScrollView sv; // ç¿»é¡µå¥æŸ„ï¼Œæ»šåŠ¨æ¡
+	private String smsg = ""; // æ˜¾ç¤ºç”¨æ•°æ®ç¼“å­˜
+	private String fmsg = ""; // ä¿å­˜ç”¨æ•°æ®ç¼“å­˜
 	 
 	private TextView throttleText,yawText,pitchText,rollText;
 	private TextView pitchAngText,rollAngText,yawAngText,altText,GPSFixText,homeFixText,distanceText,voltageText;
 	private Button armButton,lauchLandButton,headFreeButton,altHoldButton,posHoldButton,accCaliButton;
 	private Spinner wpSpinner;
 	private ArrayAdapter<String> adapter;
-//	private WayPoint wp1=new WayPoint("ÂÌµØ", 45443993,126373228); 
+//	private WayPoint wp1=new WayPoint("ç»¿åœ°", 45443993,126373228); 
  	private Navigation nav;
  	private boolean navFirstStart=false;
 	//private newButtonView newButton;
 
-	public String filename = ""; // ÓÃÀ´±£´æ´æ´¢µÄÎÄ¼şÃû
-	BluetoothDevice _device = null; // À¶ÑÀÉè±¸
-	BluetoothSocket _socket = null; // À¶ÑÀÍ¨ĞÅsocket
+	public String filename = ""; // ç”¨æ¥ä¿å­˜å­˜å‚¨çš„æ–‡ä»¶å
+	BluetoothDevice _device = null; // è“ç‰™è®¾å¤‡
+	BluetoothSocket _socket = null; // è“ç‰™é€šä¿¡socket
 	boolean _discoveryFinished = false;
 	boolean bRun = true;
 	boolean bThread = false;
@@ -95,15 +95,15 @@ public class BTClient extends Activity {
 	boolean lauchFlag=false;
 	long timeNew, timePre=0;
 	//
-	private BluetoothAdapter _bluetooth = BluetoothAdapter.getDefaultAdapter(); // »ñÈ¡±¾µØÀ¶ÑÀÊÊÅäÆ÷£¬¼´À¶ÑÀÉè±¸
+	private BluetoothAdapter _bluetooth = BluetoothAdapter.getDefaultAdapter(); // è·å–æœ¬åœ°è“ç‰™é€‚é…å™¨ï¼Œå³è“ç‰™è®¾å¤‡
 
 	private MySurfaceView stickView; 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main); // ÉèÖÃ»­ÃæÎªÖ÷»­Ãæ main.xml 
-		//ÏÔÊ¾ text
+		setContentView(R.layout.main); // è®¾ç½®ç”»é¢ä¸ºä¸»ç”»é¢ main.xml 
+		//æ˜¾ç¤º text
 		throttleText = (TextView)findViewById(R.id.throttleText); // 
 		yawText = (TextView)findViewById(R.id.yawText);
 		pitchText = (TextView)findViewById(R.id.pitchText);
@@ -118,38 +118,38 @@ public class BTClient extends Activity {
 		voltageText = (TextView)findViewById(R.id.voltageText);
 		distanceText= (TextView)findViewById(R.id.distanceText);
 		 
-		edit0 = (EditText) findViewById(R.id.Edit0); // µÃµ½ÊäÈë¿ò¾ä±ú
-		sv = (ScrollView) findViewById(R.id.ScrollView01); // µÃµ½·­Ò³¾ä±ú
-		dis = (TextView) findViewById(R.id.in); // µÃµ½Êı¾İÏÔÊ¾¾ä±ú
-		//Ò¡¸Ë
+		edit0 = (EditText) findViewById(R.id.Edit0); // å¾—åˆ°è¾“å…¥æ¡†å¥æŸ„
+		sv = (ScrollView) findViewById(R.id.ScrollView01); // å¾—åˆ°ç¿»é¡µå¥æŸ„
+		dis = (TextView) findViewById(R.id.in); // å¾—åˆ°æ•°æ®æ˜¾ç¤ºå¥æŸ„
+		//æ‘‡æ†
 		stickView=(MySurfaceView)findViewById(R.id.stickView);
-		//°´Å¥
+		//æŒ‰é’®
 		armButton=(Button)findViewById(R.id.armButton);
 		lauchLandButton=(Button)findViewById(R.id.lauchLandButton);
 		headFreeButton=(Button)findViewById(R.id.headFreeButton);
 		altHoldButton=(Button)findViewById(R.id.altHoldButton);
 		posHoldButton=(Button)findViewById(R.id.posHoldButton);
 		accCaliButton=(Button)findViewById(R.id.accCaliButton);
-		//GPS µ¼º½
+		//GPS å¯¼èˆª
 	 	nav=new Navigation(); 
-		//ÏÂÀ­ÁĞ±í
+		//ä¸‹æ‹‰åˆ—è¡¨
 		wpSpinner=(Spinner)findViewById(R.id.wayPointSpinner);
-		adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,nav.wpStr);//´´½¨Spinner¶ÔÓ¦µÄAdapter
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);//Adapter·ç¸ñ
-		wpSpinner.setAdapter(adapter);//¹ØÁª
+		adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,nav.wpStr);//åˆ›å»ºSpinnerå¯¹åº”çš„Adapter
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);//Adapteré£æ ¼
+		wpSpinner.setAdapter(adapter);//å…³è”
 		wpSpinner.setOnItemSelectedListener(new wpSpinnerSelectedListener());
 		
 	//	wp1.setWP("AA", 2, 3);
 		//ReadThread.start(); 
 		//Log.v("run",(stickView.touchReadyToSend?"TURE":"FALSE")); 
-		// Èç¹û´ò¿ª±¾µØÀ¶ÑÀÉè±¸²»³É¹¦£¬ÌáÊ¾ĞÅÏ¢£¬½áÊø³ÌĞò
+		// å¦‚æœæ‰“å¼€æœ¬åœ°è“ç‰™è®¾å¤‡ä¸æˆåŠŸï¼Œæç¤ºä¿¡æ¯ï¼Œç»“æŸç¨‹åº
 		if (_bluetooth == null) {
-			Toast.makeText(this, "ÎŞ·¨´ò¿ªÊÖ»úÀ¶ÑÀ£¬ÇëÈ·ÈÏÊÖ»úÊÇ·ñÓĞÀ¶ÑÀ¹¦ÄÜ£¡", Toast.LENGTH_LONG)
+			Toast.makeText(this, "æ— æ³•æ‰“å¼€æ‰‹æœºè“ç‰™ï¼Œè¯·ç¡®è®¤æ‰‹æœºæ˜¯å¦æœ‰è“ç‰™åŠŸèƒ½ï¼", Toast.LENGTH_LONG)
 					.show();
 			finish();
 			return;
 		} 
-		// ÉèÖÃÉè±¸¿ÉÒÔ±»ËÑË÷
+		// è®¾ç½®è®¾å¤‡å¯ä»¥è¢«æœç´¢
 		new Thread() {
 			public void run() {
 				if (_bluetooth.isEnabled() == false) {
@@ -170,16 +170,16 @@ public class BTClient extends Activity {
 		navFirstStart=false;
 		super.onStop(); 
 	}
-	// Spinner Listener   ×¢Òâ£ºApp¿ªÊ¼ÔËĞĞÊ±£¬Item»á±» Ñ¡¶¨£¬Òò´Ë»á³õ´Î½øÈëµ½´Ë·½·¨ 
+	// Spinner Listener   æ³¨æ„ï¼šAppå¼€å§‹è¿è¡Œæ—¶ï¼ŒItemä¼šè¢« é€‰å®šï¼Œå› æ­¤ä¼šåˆæ¬¡è¿›å…¥åˆ°æ­¤æ–¹æ³• 
 	class wpSpinnerSelectedListener implements OnItemSelectedListener{
 		public void onItemSelected(AdapterView<?> arg0,View arg1,int arg2,long arg3){
-	 	//	System.out.println(nav.findWayPoint("ÂÌµØ").getLat());
+	 	//	System.out.println(nav.findWayPoint("ç»¿åœ°").getLat());
 			String selectedPlace=arg0.getSelectedItem().toString();
 			WayPoint selectedWayPoint=nav.wpSave.get(arg2); 
-			System.out.println(selectedPlace + Integer.toString(arg2));	//ÈçÖ÷Â¥ 2
+			System.out.println(selectedPlace + Integer.toString(arg2));	//å¦‚ä¸»æ¥¼ 2
 		   System.out.println(selectedWayPoint.latitude + ","+ selectedWayPoint.longtitude);
 		   Protocol.nextWp=selectedWayPoint;
-		   if(navFirstStart==false)	//¹ıÂË³õÊ¼Æô¶¯µÄItemSeleted
+		   if(navFirstStart==false)	//è¿‡æ»¤åˆå§‹å¯åŠ¨çš„ItemSeleted
 			   navFirstStart=true;
 		   else
 			   btSendBytes(Protocol.getSendData(Protocol.MSP_SET_1WP, Protocol.getCommandData(Protocol.MSP_SET_1WP)));
@@ -192,27 +192,27 @@ public class BTClient extends Activity {
 			// TODO Auto-generated method stub 
 		} 
 	}
-	//µØµãÑ°ÕÒ 																							ÎÒÊÇ²»»áÄÇÃ´¶à»¨ÑÔÇÉÓïºÃ°É£¬ÒªÊÇ»á ÎÒÒ²²»ÊÇÏÖÔÚµÄÎÒ£¬Ò»Ö±ÒÔÀ´£¬¾ÍÖªµÀ±äÇ¿±äÇ¿£¬±äµÃ¸ü¼ÓÓÅĞã£¬³¬¹ıÖÜÎ§ËùÓĞµÄÈË£¬½á¹û£¬Ïë±£»¤µÄÈË·´¶øËûÂèµÄ×ßÉÏÕâÌõÂ·£¬É¶¶¼°ï²»µ½¡£¸ü»ìµ°µÄÊÇ£¬Ö®ËùÒÔÄÚ¾ÎËÆºõ¸ü¶àÊÇÒòÎª¶Ô×Ô¼ºÄÜÁ¦²»¹»¸Ğµ½²»Âú£¬¶ø²»ÊÇÍ¬Çé¡£
+	//åœ°ç‚¹å¯»æ‰¾ 																							æˆ‘æ˜¯ä¸ä¼šé‚£ä¹ˆå¤šèŠ±è¨€å·§è¯­å¥½å§ï¼Œè¦æ˜¯ä¼š æˆ‘ä¹Ÿä¸æ˜¯ç°åœ¨çš„æˆ‘ï¼Œä¸€ç›´ä»¥æ¥ï¼Œå°±çŸ¥é“å˜å¼ºå˜å¼ºï¼Œå˜å¾—æ›´åŠ ä¼˜ç§€ï¼Œè¶…è¿‡å‘¨å›´æ‰€æœ‰çš„äººï¼Œç»“æœï¼Œæƒ³ä¿æŠ¤çš„äººåè€Œä»–å¦ˆçš„èµ°ä¸Šè¿™æ¡è·¯ï¼Œå•¥éƒ½å¸®ä¸åˆ°ã€‚æ›´æ··è›‹çš„æ˜¯ï¼Œä¹‹æ‰€ä»¥å†…ç–šä¼¼ä¹æ›´å¤šæ˜¯å› ä¸ºå¯¹è‡ªå·±èƒ½åŠ›ä¸å¤Ÿæ„Ÿåˆ°ä¸æ»¡ï¼Œè€Œä¸æ˜¯åŒæƒ…ã€‚
 	
 	//**----------------------------Button:Send-------------------*//
-	// ·¢ËÍ°´¼üÏìÓ¦
+	// å‘é€æŒ‰é”®å“åº”
 	public void onSendButtonClicked(View v) {
 		int i = 0;
 		int n = 0;
 		Button btnConnect=(Button) findViewById(R.id.Button03);
-		if(btnConnect.getText()=="¶Ï¿ª")//µ±ÒÑ¾­Á¬½ÓÉÏÊ±²Å·¢ËÍ
+		if(btnConnect.getText()=="æ–­å¼€")//å½“å·²ç»è¿æ¥ä¸Šæ—¶æ‰å‘é€
 		{
 			try {
-				OutputStream os = _socket.getOutputStream(); // À¶ÑÀÁ¬½ÓÊä³öÁ÷
+				OutputStream os = _socket.getOutputStream(); // è“ç‰™è¿æ¥è¾“å‡ºæµ
 				byte[] bos = edit0.getText().toString().getBytes();
-				/**--------------»»ĞĞ·ûµÄ×ª»»----------*/
+				/**--------------æ¢è¡Œç¬¦çš„è½¬æ¢----------*/
 				for (i = 0; i < bos.length; i++) {
 					if (bos[i] == 0x0a)
 						n++;
 				}
 				byte[] bos_new = new byte[bos.length + n];
 				n = 0;
-				for (i = 0; i < bos.length; i++) { // ÊÖ»úÖĞ»»ĞĞÎª0a,½«Æä¸ÄÎª0d 0aºóÔÙ·¢ËÍ
+				for (i = 0; i < bos.length; i++) { // æ‰‹æœºä¸­æ¢è¡Œä¸º0a,å°†å…¶æ”¹ä¸º0d 0aåå†å‘é€
 					if (bos[i] == 0x0a) {
 						bos_new[n] = 0x0d;
 						n++;
@@ -225,14 +225,14 @@ public class BTClient extends Activity {
 				os.write(bos_new);
 			} 
 			catch (IOException e) {
-				Toast.makeText(this, "·¢ËÍÊ§¸Ä", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "å‘é€å¤±æ”¹", Toast.LENGTH_SHORT).show();
 			} 
 			catch (Exception e){
-				Toast.makeText(this, "·¢ËÍÊ§¸Ä", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "å‘é€å¤±æ”¹", Toast.LENGTH_SHORT).show();
 			}
 		}
 		else
-			Toast.makeText(this, "Î´Á¬½ÓÉè±¸£¬ÎŞ·¨·¢ËÍ", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "æœªè¿æ¥è®¾å¤‡ï¼Œæ— æ³•å‘é€", Toast.LENGTH_SHORT).show();
 	}
 	//----------------Button sendAb for test---------//
 	public void onSendArmButtonClicked(View v)
@@ -242,30 +242,30 @@ public class BTClient extends Activity {
 //		btSendBytes(Protocol.getSendData(Protocol.SET_THROTTLE, Protocol.getCommandData(Protocol.SET_THROTTLE)));
 		//btSendBytes(Protocol.getSendData(Protocol.ARM_IT, Protocol.getCommandData(Protocol.ARM_IT)));
 		Button btnConnect=(Button) findViewById(R.id.Button03);
-		if(btnConnect.getText()=="¶Ï¿ª")
+		if(btnConnect.getText()=="æ–­å¼€")
 		{
-			if(armButton.getText()!="ÉÏËø")
+			if(armButton.getText()!="ä¸Šé”")
 			{ 
 				btSendBytes(Protocol.getSendData(Protocol.ARM_IT, Protocol.getCommandData(Protocol.ARM_IT)));
-				armButton.setText("ÉÏËø");
+				armButton.setText("ä¸Šé”");
 			}
 			else
 			{
 				btSendBytes(Protocol.getSendData(Protocol.DISARM_IT, Protocol.getCommandData(Protocol.DISARM_IT)));
-				armButton.setText("½âËø");
+				armButton.setText("è§£é”");
 			}
 		}
 		else
-			Toast.makeText(this, "Î´Á¬½ÓÉè±¸", Toast.LENGTH_SHORT).show(); 
+			Toast.makeText(this, "æœªè¿æ¥è®¾å¤‡", Toast.LENGTH_SHORT).show(); 
 	} 
 	
 	//Take off , land down
 	public void onlauchLandButtonClicked(View v)
 	{
-		if(lauchLandButton.getText()!="½µÂä")
+		if(lauchLandButton.getText()!="é™è½")
 		{
 			btSendBytes(Protocol.getSendData(Protocol.LAUCH, Protocol.getCommandData(Protocol.LAUCH)));
-			lauchLandButton.setText("½µÂä"); 
+			lauchLandButton.setText("é™è½"); 
 			Protocol.throttle=Protocol.LAUCH_THROTTLE;
 			stickView.SmallRockerCircleY=stickView.rc2StickPosY(Protocol.throttle);
 		//	btSendBytes(Protocol.getSendData(Protocol.SET_THROTTLE, Protocol.getCommandData(Protocol.SET_THROTTLE)));
@@ -274,20 +274,20 @@ public class BTClient extends Activity {
 		else
 		{
 			btSendBytes(Protocol.getSendData(Protocol.LAND_DOWN, Protocol.getCommandData(Protocol.LAND_DOWN)));
-			lauchLandButton.setText("Æğ·É");
+			lauchLandButton.setText("èµ·é£");
 			Protocol.throttle=Protocol.LAND_THROTTLE;
 			stickView.SmallRockerCircleY=stickView.rc2StickPosY(Protocol.throttle);
 		//	btSendBytes(Protocol.getSendData(Protocol.SET_THROTTLE, Protocol.getCommandData(Protocol.SET_THROTTLE))); 
 			stickView.touchReadyToSend=true;
 		}
 	}
-	//ÎŞÍ·Ä£Ê½¼ü
+	//æ— å¤´æ¨¡å¼é”®
 	public void onheadFreeButtonClicked(View v)
 	{
 		//bool modeOn;
 		
 		Button btnConnect=(Button) findViewById(R.id.Button03);
-		if(btnConnect.getText()=="¶Ï¿ª")
+		if(btnConnect.getText()=="æ–­å¼€")
 		{ 
 			if(headFreeButton.getCurrentTextColor()!=Color.GREEN)
 			{	btSendBytes(Protocol.getSendData(Protocol.HEAD_FREE, Protocol.getCommandData(Protocol.HEAD_FREE)));
@@ -299,50 +299,50 @@ public class BTClient extends Activity {
 			else
 			{
 				btSendBytes(Protocol.getSendData(Protocol.STOP_HEAD_FREE, Protocol.getCommandData(Protocol.STOP_HEAD_FREE)));
-			//	headFreeButton.setText("ÎŞÍ·");
+			//	headFreeButton.setText("æ— å¤´");
 			//	headFreeButton.setBackgroundColor(Color.BLACK);
 				headFreeButton.setTextColor(Color.WHITE);
 			}
 		}
 		else
-			Toast.makeText(this, "Î´Á¬½ÓÉè±¸", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "æœªè¿æ¥è®¾å¤‡", Toast.LENGTH_SHORT).show();
 		
 	}
-	//¶¨µã
+	//å®šç‚¹
 	public void onposHoldButtonClicked(View v)
 	{
 		Button btnConnect=(Button) findViewById(R.id.Button03);
-		if(btnConnect.getText()=="¶Ï¿ª")
+		if(btnConnect.getText()=="æ–­å¼€")
 		{
 			if(posHoldButton.getCurrentTextColor()!=Color.GREEN )
-			{	// ¶¨µã ¿ª 
+			{	// å®šç‚¹ å¼€ 
 				btSendBytes(Protocol.getSendData(Protocol.POS_HOLD, Protocol.getCommandData(Protocol.POS_HOLD))); 
 				posHoldButton.setTextColor(Color.GREEN); 
 			} 
-			else	// È¡Ïû
+			else	// å–æ¶ˆ
 			{ 
 				btSendBytes(Protocol.getSendData(Protocol.STOP_POS_HOLD, Protocol.getCommandData(Protocol.STOP_POS_HOLD)));
 				posHoldButton.setTextColor(Color.WHITE);  
 			}
 		}
 		else
-			Toast.makeText(this, "Î´Á¬½ÓÉè±¸", Toast.LENGTH_SHORT).show(); 
+			Toast.makeText(this, "æœªè¿æ¥è®¾å¤‡", Toast.LENGTH_SHORT).show(); 
 	}
-	//¶¨¸ß¼ü
+	//å®šé«˜é”®
 	public void onaltHoldButtonClicked(View v)
 	{
 		Button btnConnect=(Button) findViewById(R.id.Button03);
-		if(btnConnect.getText()=="¶Ï¿ª")
+		if(btnConnect.getText()=="æ–­å¼€")
 		{
 			if( altHoldButton.getCurrentTextColor()!=Color.GREEN )
-			{	//¶¨¸ß¶¨µã¶¼¿ª
+			{	//å®šé«˜å®šç‚¹éƒ½å¼€
 				btSendBytes(Protocol.getSendData(Protocol.HOLD_ALT, Protocol.getCommandData(Protocol.HOLD_ALT))); 
-			//	altPosHoldButton.setText("²»¶¨¸ß");
+			//	altPosHoldButton.setText("ä¸å®šé«˜");
 				altHoldButton.setTextColor(Color.GREEN);
 			//	stickView.SmallRockerCircleY=150;		//tobe fixed!! use back middle function instead
 				stickView.altCtrlMode=1;	
 			} 
-			else	//¶¼È¡Ïû
+			else	//éƒ½å–æ¶ˆ
 			{ 
 				btSendBytes(Protocol.getSendData(Protocol.STOP_HOLD_ALT, Protocol.getCommandData(Protocol.STOP_HOLD_ALT)));
 				altHoldButton.setTextColor(Color.WHITE); 
@@ -351,90 +351,90 @@ public class BTClient extends Activity {
 			}
 		}
 		else
-			Toast.makeText(this, "Î´Á¬½ÓÉè±¸", Toast.LENGTH_SHORT).show(); 
+			Toast.makeText(this, "æœªè¿æ¥è®¾å¤‡", Toast.LENGTH_SHORT).show(); 
 	}
 	
-	//Ğ£×¼
+	//æ ¡å‡†
 	public void onAccCaliButtonClicked(View v)
 	{
 		Button btnConnect=(Button) findViewById(R.id.Button03);
-		if(btnConnect.getText()=="¶Ï¿ª")
+		if(btnConnect.getText()=="æ–­å¼€")
 		{
 			btSendBytes(Protocol.getSendData(Protocol.MSP_ACC_CALIBRATION, Protocol.getCommandData(Protocol.MSP_ACC_CALIBRATION)));
 		}
 		else
-			Toast.makeText(this, "Î´Á¬½ÓÉè±¸", Toast.LENGTH_SHORT).show(); 
+			Toast.makeText(this, "æœªè¿æ¥è®¾å¤‡", Toast.LENGTH_SHORT).show(); 
 	}
 	public void btSendBytes(byte[] data)
 	{
 		Button btnConnect=(Button) findViewById(R.id.Button03);
-		if(btnConnect.getText()=="¶Ï¿ª")//µ±ÒÑ¾­Á¬½ÓÉÏÊ±²Å·¢ËÍ
+		if(btnConnect.getText()=="æ–­å¼€")//å½“å·²ç»è¿æ¥ä¸Šæ—¶æ‰å‘é€
 		{
 			try {
-				OutputStream os = _socket.getOutputStream(); // À¶ÑÀÁ¬½ÓÊä³öÁ÷
+				OutputStream os = _socket.getOutputStream(); // è“ç‰™è¿æ¥è¾“å‡ºæµ
 				//byte[] bos = edit0.getText().toString().getBytes();
 				//byte[] bos={0x0a,0x0d};
 				os.write(data);
 			} 
 			catch (IOException e) {
-			//	Toast.makeText(this, "·¢ËÍÊ§¸Ä", Toast.LENGTH_SHORT).show();
+			//	Toast.makeText(this, "å‘é€å¤±æ”¹", Toast.LENGTH_SHORT).show();
 			} 
 			catch (Exception e){
-			//	Toast.makeText(this, "·¢ËÍÊ§¸Ä", Toast.LENGTH_SHORT).show();
+			//	Toast.makeText(this, "å‘é€å¤±æ”¹", Toast.LENGTH_SHORT).show();
 			}
 		}
 		 else
-			 Toast.makeText(this, "Î´Á¬½ÓÉè±¸£¬ÎŞ·¨·¢ËÍ", Toast.LENGTH_SHORT).show();
+			 Toast.makeText(this, "æœªè¿æ¥è®¾å¤‡ï¼Œæ— æ³•å‘é€", Toast.LENGTH_SHORT).show();
 	}
 	
-	// ½ÓÊÕ»î¶¯½á¹û£¬ÏìÓ¦startActivityForResult()
+	// æ¥æ”¶æ´»åŠ¨ç»“æœï¼Œå“åº”startActivityForResult()
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		
 		switch (requestCode) {
-		case REQUEST_CONNECT_DEVICE: // Á¬½Ó½á¹û£¬ÓÉDeviceListActivityÉèÖÃ·µ»Ø
+		case REQUEST_CONNECT_DEVICE: // è¿æ¥ç»“æœï¼Œç”±DeviceListActivityè®¾ç½®è¿”å›
 			Log.v("run","ActRes");
-			// ÏìÓ¦·µ»Ø½á¹û
+			// å“åº”è¿”å›ç»“æœ
 			if (resultCode == Activity.RESULT_OK) 
-			{ // Á¬½Ó³É¹¦£¬ÓÉDeviceListActivityÉèÖÃ·µ»Ø
-				// MACµØÖ·£¬ÓÉDeviceListActivityÉèÖÃ·µ»Ø
+			{ // è¿æ¥æˆåŠŸï¼Œç”±DeviceListActivityè®¾ç½®è¿”å›
+				// MACåœ°å€ï¼Œç”±DeviceListActivityè®¾ç½®è¿”å›
 				Log.v("run","ActRes2");
 				String address = data.getExtras().getString(
 						DeviceListActivity.EXTRA_DEVICE_ADDRESS);
-				// µÃµ½À¶ÑÀÉè±¸¾ä±ú
+				// å¾—åˆ°è“ç‰™è®¾å¤‡å¥æŸ„
 				_device = _bluetooth.getRemoteDevice(address);
 
-				// ÓÃ·şÎñºÅµÃµ½socket
+				// ç”¨æœåŠ¡å·å¾—åˆ°socket
 				try {
 					_socket = _device.createRfcommSocketToServiceRecord(UUID
 							.fromString(MY_UUID));
 				} catch (IOException e) {
-					Toast.makeText(this, "Á¬½ÓÊ§°Ü£¡", Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, "è¿æ¥å¤±è´¥ï¼", Toast.LENGTH_SHORT).show();
 				}
-				// Á¬½Ósocket
+				// è¿æ¥socket
 				Button btn = (Button) findViewById(R.id.Button03);
 				try {
 					/**---------------successfully Connected */
 					_socket.connect();
-					Toast.makeText(this, "Á¬½Ó" + _device.getName() + "³É¹¦£¡",
+					Toast.makeText(this, "è¿æ¥" + _device.getName() + "æˆåŠŸï¼",
 							Toast.LENGTH_SHORT).show();
-					btn.setText("¶Ï¿ª");
+					btn.setText("æ–­å¼€");
 				} catch (IOException e) {
 					try {
-						Toast.makeText(this, "Á¬½ÓÊ§°Ü£¡", Toast.LENGTH_SHORT).show();
+						Toast.makeText(this, "è¿æ¥å¤±è´¥ï¼", Toast.LENGTH_SHORT).show();
 						_socket.close();
 						_socket = null;
 					} catch (IOException ee) {
-						Toast.makeText(this, "Á¬½ÓÊ§°Ü£¡", Toast.LENGTH_SHORT)
+						Toast.makeText(this, "è¿æ¥å¤±è´¥ï¼", Toast.LENGTH_SHORT)
 								.show();
 					}
 
 					return;
 				} 
-				// ´ò¿ª½ÓÊÕÏß³Ì
+				// æ‰“å¼€æ¥æ”¶çº¿ç¨‹
 				try {
-					is = _socket.getInputStream(); // µÃµ½À¶ÑÀÊı¾İÊäÈëÁ÷
+					is = _socket.getInputStream(); // å¾—åˆ°è“ç‰™æ•°æ®è¾“å…¥æµ
 				} catch (IOException e) {
-					Toast.makeText(this, "½ÓÊÕÊı¾İÊ§°Ü£¡", Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, "æ¥æ”¶æ•°æ®å¤±è´¥ï¼", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				
@@ -453,7 +453,7 @@ public class BTClient extends Activity {
 		}
 	}
 	
-	// ½ÓÊÕÊı¾İÏß³Ì£¬£¨AndroidÀï£¬²»ÒªÖ±½ÓÔÚThreadÀï¸üĞÂUI£¬Òª¸üĞÂUI£¬Ó¦¸Ã½øÈëÏûÏ¢¶ÓÁĞ£©
+	// æ¥æ”¶æ•°æ®çº¿ç¨‹ï¼Œï¼ˆAndroidé‡Œï¼Œä¸è¦ç›´æ¥åœ¨Threadé‡Œæ›´æ–°UIï¼Œè¦æ›´æ–°UIï¼Œåº”è¯¥è¿›å…¥æ¶ˆæ¯é˜Ÿåˆ—ï¼‰
 	Thread ReadThread = new Thread() {
 		
 		public void run() { 
@@ -466,7 +466,7 @@ public class BTClient extends Activity {
 			int i = 0;
 			int n = 0;
 			bRun = true;
-			// ½ÓÊÕÏß³Ì
+			// æ¥æ”¶çº¿ç¨‹
 			while (true) {
 				try {
 					while (is.available() == 0) {//wait for BT rec Data
@@ -474,7 +474,7 @@ public class BTClient extends Activity {
 						//	Log.v("run","bRunFalse");
 						} 
 					//	Log.v("run","runing1");
-						//Ò£¿Ø·¢ËÍ·ÖÖ§Ïß³Ì
+						//é¥æ§å‘é€åˆ†æ”¯çº¿ç¨‹
 						if(stickView.touchReadyToSend==true)// process stick movement
 						{
 							
@@ -487,7 +487,7 @@ public class BTClient extends Activity {
 							stickView.touchReadyToSend=false;
 						} 
 						
-						timeNew=SystemClock.uptimeMillis();	//ÏµÍ³ÔËĞĞµ½´ËµÄÊ±¼ä
+						timeNew=SystemClock.uptimeMillis();	//ç³»ç»Ÿè¿è¡Œåˆ°æ­¤çš„æ—¶é—´
 						if(timeNew-timePre>UPDATE_MUV_STATE_PERIOD)
 						{
 							timePre=timeNew;
@@ -495,15 +495,15 @@ public class BTClient extends Activity {
 
 						}
 					}
-					//ÓĞÊı¾İ¹ıÀ´
+					//æœ‰æ•°æ®è¿‡æ¥
 					time1=time2=SystemClock.uptimeMillis();
 					boolean frameRec=false;
 					while (!frameRec) {
-						num = is.read(buffer); // ¶ÁÈëÊı¾İ£¨Á÷£©£¬bufferÓĞnum¸ö×Ö½Ú 
+						num = is.read(buffer); // è¯»å…¥æ•°æ®ï¼ˆæµï¼‰ï¼Œbufferæœ‰numä¸ªå­—èŠ‚ 
 					 	n = 0; 
 					 	
 					 	String s0 = new String(buffer, 0, num);
-						fmsg += s0; // ±£´æÊÕµ½Êı¾İ
+						fmsg += s0; // ä¿å­˜æ”¶åˆ°æ•°æ®
 						for (i = 0; i < num; i++) {
 							if ((buffer[i] == 0x0d) && (buffer[i + 1] == 0x0a)) {
 								buffer_new[n] = 0x0a;
@@ -514,7 +514,7 @@ public class BTClient extends Activity {
 							n++;
 						}
 						String s = new String(buffer_new, 0, n);
-						smsg += s; // Ğ´Èë½ÓÊÕ»º´æ 
+						smsg += s; // å†™å…¥æ¥æ”¶ç¼“å­˜ 
 						reCmd=Protocol.processDataIn( buffer,num);
 					/*	for(int j=0;j<num;j++)
 							totBuffer.add(buffer[j]);
@@ -522,12 +522,12 @@ public class BTClient extends Activity {
 						while(is.available()==0 && !frameRec)//wait for more data in 5ms
 						{ 
 							time1=SystemClock.uptimeMillis();
-							if(time1-time2>30)	//5ms¼ä¸ô ÄÚÈÏÎªÁ¬Ğø 
+							if(time1-time2>30)	//5msé—´éš” å†…è®¤ä¸ºè¿ç»­ 
 								frameRec=true;  
 						}
 						time2=time1;  */
 						   if (is.available() == 0)	 
-							   frameRec=true; // ¶ÌÊ±¼äÃ»ÓĞÊı¾İ²ÅÌø³ö½øĞĞÏÔÊ¾
+							   frameRec=true; // çŸ­æ—¶é—´æ²¡æœ‰æ•°æ®æ‰è·³å‡ºè¿›è¡Œæ˜¾ç¤º
 					} 
 
 					totNum=0;
@@ -537,7 +537,7 @@ public class BTClient extends Activity {
 						msg.arg1=reCmd;//
 						handler.sendMessage(msg); 
 					}
-					// ÏûÏ¢Ìí¼Óµ½handlerµÄÏûÏ¢¶ÓÁĞ£¬handler½Óµ½ºó£¬½øĞĞ²Ù×÷£ºÏÔÊ¾Ë¢ĞÂµÈ 
+					// æ¶ˆæ¯æ·»åŠ åˆ°handlerçš„æ¶ˆæ¯é˜Ÿåˆ—ï¼Œhandleræ¥åˆ°åï¼Œè¿›è¡Œæ“ä½œï¼šæ˜¾ç¤ºåˆ·æ–°ç­‰ 
 //					Message msg=handler.obtainMessage();
 //					msg.arg1=3;//
 //					handler.sendMessage(msg);
@@ -547,15 +547,15 @@ public class BTClient extends Activity {
 		}
 	};
 	//------------------Handler---------------------//
-	//´´½¨Ò»¸öÏûÏ¢´¦Àí¶ÓÁĞ£¬Ö÷ÒªÊÇÓÃÓÚÏß³ÌÍ¨Öªµ½´Ë£¬ÒÔ Ë¢ĞÂUI
+	//åˆ›å»ºä¸€ä¸ªæ¶ˆæ¯å¤„ç†é˜Ÿåˆ—ï¼Œä¸»è¦æ˜¯ç”¨äºçº¿ç¨‹é€šçŸ¥åˆ°æ­¤ï¼Œä»¥ åˆ·æ–°UI
 	Handler handler = new Handler() {
-		//ÏÔÊ¾½ÓÊÕµ½µÄÊı¾İ
+		//æ˜¾ç¤ºæ¥æ”¶åˆ°çš„æ•°æ®
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			if(msg.arg1==1)
 			{
 				dis.setText(smsg); 
-				sv.scrollTo(0, dis.getMeasuredHeight()); // ÌøÖÁÊı¾İ×îºóÒ»Ò³
+				sv.scrollTo(0, dis.getMeasuredHeight()); // è·³è‡³æ•°æ®æœ€åä¸€é¡µ
 			}
 			else if(msg.arg1==2)
 			{
@@ -564,7 +564,7 @@ public class BTClient extends Activity {
 				pitchText.setText("Pitch:"+Integer.toString(Protocol.pitch));
 				rollText.setText("Roll:"+Integer.toString(Protocol.roll));
 			}
-			else if(msg.arg1==3)//¸üĞÂ×´Ì¬
+			else if(msg.arg1==3)//æ›´æ–°çŠ¶æ€
 			{
 		//		 throttleText.setText(throttleText.getText()+"1");
 			//	byte temp[]={1,2};
@@ -603,26 +603,26 @@ public class BTClient extends Activity {
 		}
 	};
 
-	// ¹Ø±Õ³ÌĞòµôÓÃ´¦Àí²¿·Ö
+	// å…³é—­ç¨‹åºæ‰ç”¨å¤„ç†éƒ¨åˆ†
 	public void onDestroy() {
 		super.onDestroy();
-		if (_socket != null) // ¹Ø±ÕÁ¬½Ósocket
+		if (_socket != null) // å…³é—­è¿æ¥socket
 			try {
 				_socket.close();
 			} catch (IOException e) {
 			}
-		  _bluetooth.disable(); //¹Ø±ÕÀ¶ÑÀ·şÎñ
+		  _bluetooth.disable(); //å…³é—­è“ç‰™æœåŠ¡
 	}
 
-	// ²Ëµ¥´¦Àí²¿·Ö
+	// èœå•å¤„ç†éƒ¨åˆ†
 	/*
-	 * @Override public boolean onCreateOptionsMenu(Menu menu) {//½¨Á¢²Ëµ¥
+	 * @Override public boolean onCreateOptionsMenu(Menu menu) {//å»ºç«‹èœå•
 	 * MenuInflater inflater = getMenuInflater();
 	 * inflater.inflate(R.menu.option_menu, menu); return true; }
 	 */
 
 	/*
-	 * @Override public boolean onOptionsItemSelected(MenuItem item) { //²Ëµ¥ÏìÓ¦º¯Êı
+	 * @Override public boolean onOptionsItemSelected(MenuItem item) { //èœå•å“åº”å‡½æ•°
 	 * switch (item.getItemId()) { case R.id.scan:
 	 * if(_bluetooth.isEnabled()==false){ Toast.makeText(this, "Open BT......",
 	 * Toast.LENGTH_LONG).show(); return true; } // Launch the
@@ -634,25 +634,25 @@ public class BTClient extends Activity {
 	 * return false; }
 	 */ 
 	//------------------------------------Button:Connect----------------------------//
-	// Á¬½Ó°´¼üÏìÓ¦º¯Êı
+	// è¿æ¥æŒ‰é”®å“åº”å‡½æ•°
 	public void onConnectButtonClicked(View v) {
-		if (_bluetooth.isEnabled() == false) { // Èç¹ûÀ¶ÑÀ·şÎñ²»¿ÉÓÃÔòÌáÊ¾
-			Toast.makeText(this, " ´ò¿ªÀ¶ÑÀÖĞ...", Toast.LENGTH_LONG).show();
+		if (_bluetooth.isEnabled() == false) { // å¦‚æœè“ç‰™æœåŠ¡ä¸å¯ç”¨åˆ™æç¤º
+			Toast.makeText(this, " æ‰“å¼€è“ç‰™ä¸­...", Toast.LENGTH_LONG).show();
 			return;
 		}
-		// ÈçÎ´Á¬½ÓÉè±¸Ôò´ò¿ªDeviceListActivity½øĞĞÉè±¸ËÑË÷
+		// å¦‚æœªè¿æ¥è®¾å¤‡åˆ™æ‰“å¼€DeviceListActivityè¿›è¡Œè®¾å¤‡æœç´¢
 		Button btn = (Button) findViewById(R.id.Button03);
 		if (_socket == null) {
-			Intent serverIntent = new Intent(this, DeviceListActivity.class); // Ìø×ª³ÌĞòÉèÖÃ
-			startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE); // ÉèÖÃ·µ»Øºê¶¨Òå
-		} else {	//ÒÑÁ¬½ÓÉÏ£¬¶Ï¿ª
-			// ¹Ø±ÕÁ¬½Ósocket
+			Intent serverIntent = new Intent(this, DeviceListActivity.class); // è·³è½¬ç¨‹åºè®¾ç½®
+			startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE); // è®¾ç½®è¿”å›å®å®šä¹‰
+		} else {	//å·²è¿æ¥ä¸Šï¼Œæ–­å¼€
+			// å…³é—­è¿æ¥socket
 			try {
 				is.close();
 				_socket.close();
 				_socket = null;
 				bRun = false;
-				btn.setText("Á¬½Ó");
+				btn.setText("è¿æ¥");
 				
 				//ReadThread.stop();//------added
 			} catch (IOException e) {
@@ -661,12 +661,12 @@ public class BTClient extends Activity {
 		return;
 	}
 
-	// ±£´æ°´¼üÏìÓ¦º¯Êı
+	// ä¿å­˜æŒ‰é”®å“åº”å‡½æ•°
 	public void onSaveButtonClicked(View v) {
 		Save();
 	}
 
-	// Çå³ı°´¼üÏìÓ¦º¯Êı
+	// æ¸…é™¤æŒ‰é”®å“åº”å‡½æ•°
 	public void onClearButtonClicked(View v) {
 		smsg = "";
 		fmsg = "";
@@ -674,47 +674,47 @@ public class BTClient extends Activity {
 		return;
 	}
 
-	// ÍË³ö°´¼üÏìÓ¦º¯Êı
+	// é€€å‡ºæŒ‰é”®å“åº”å‡½æ•°
 	public void onQuitButtonClicked(View v) {
 		finish();
 	}
 
-	// ±£´æ¹¦ÄÜÊµÏÖ
+	// ä¿å­˜åŠŸèƒ½å®ç°
 	private void Save() {
-		// ÏÔÊ¾¶Ô»°¿òÊäÈëÎÄ¼şÃû
-		LayoutInflater factory = LayoutInflater.from(BTClient.this); // Í¼²ãÄ£°åÉú³ÉÆ÷¾ä±ú
-		final View DialogView = factory.inflate(R.layout.sname, null); // ÓÃsname.xmlÄ£°åÉú³ÉÊÓÍ¼Ä£°å
-		new AlertDialog.Builder(BTClient.this).setTitle("ÎÄ¼şÃû")
-				.setView(DialogView) // ÉèÖÃÊÓÍ¼Ä£°å
-				.setPositiveButton("È·¶¨", new DialogInterface.OnClickListener() // È·¶¨°´¼üÏìÓ¦º¯Êı
+		// æ˜¾ç¤ºå¯¹è¯æ¡†è¾“å…¥æ–‡ä»¶å
+		LayoutInflater factory = LayoutInflater.from(BTClient.this); // å›¾å±‚æ¨¡æ¿ç”Ÿæˆå™¨å¥æŸ„
+		final View DialogView = factory.inflate(R.layout.sname, null); // ç”¨sname.xmlæ¨¡æ¿ç”Ÿæˆè§†å›¾æ¨¡æ¿
+		new AlertDialog.Builder(BTClient.this).setTitle("æ–‡ä»¶å")
+				.setView(DialogView) // è®¾ç½®è§†å›¾æ¨¡æ¿
+				.setPositiveButton("ç¡®å®š", new DialogInterface.OnClickListener() // ç¡®å®šæŒ‰é”®å“åº”å‡½æ•°
 						{
 							public void onClick(DialogInterface dialog,
 									int whichButton) {
 								EditText text1 = (EditText) DialogView
-										.findViewById(R.id.sname); // µÃµ½ÎÄ¼şÃûÊäÈë¿ò¾ä±ú
-								filename = text1.getText().toString(); // µÃµ½ÎÄ¼şÃû
+										.findViewById(R.id.sname); // å¾—åˆ°æ–‡ä»¶åè¾“å…¥æ¡†å¥æŸ„
+								filename = text1.getText().toString(); // å¾—åˆ°æ–‡ä»¶å
 
 								try {
 									if (Environment.getExternalStorageState()
-											.equals(Environment.MEDIA_MOUNTED)) { // Èç¹ûSD¿¨ÒÑ×¼±¸ºÃ
+											.equals(Environment.MEDIA_MOUNTED)) { // å¦‚æœSDå¡å·²å‡†å¤‡å¥½
 
-										filename = filename + ".txt"; // ÔÚÎÄ¼şÃûÄ©Î²¼ÓÉÏ.txt
+										filename = filename + ".txt"; // åœ¨æ–‡ä»¶åæœ«å°¾åŠ ä¸Š.txt
 										File sdCardDir = Environment
-												.getExternalStorageDirectory(); // µÃµ½SD¿¨¸ùÄ¿Â¼
+												.getExternalStorageDirectory(); // å¾—åˆ°SDå¡æ ¹ç›®å½•
 										File BuildDir = new File(sdCardDir,
-												"/data"); // ´ò¿ªdataÄ¿Â¼£¬Èç²»´æÔÚÔòÉú³É
+												"/data"); // æ‰“å¼€dataç›®å½•ï¼Œå¦‚ä¸å­˜åœ¨åˆ™ç”Ÿæˆ
 										if (BuildDir.exists() == false)
 											BuildDir.mkdirs();
 										File saveFile = new File(BuildDir,
-												filename); // ĞÂ½¨ÎÄ¼ş¾ä±ú£¬ÈçÒÑ´æÔÚÈÔĞÂ½¨ÎÄµµ
+												filename); // æ–°å»ºæ–‡ä»¶å¥æŸ„ï¼Œå¦‚å·²å­˜åœ¨ä»æ–°å»ºæ–‡æ¡£
 										FileOutputStream stream = new FileOutputStream(
-												saveFile); // ´ò¿ªÎÄ¼şÊäÈëÁ÷
+												saveFile); // æ‰“å¼€æ–‡ä»¶è¾“å…¥æµ
 										stream.write(fmsg.getBytes());
 										stream.close();
-										Toast.makeText(BTClient.this, "´æ´¢³É¹¦£¡",
+										Toast.makeText(BTClient.this, "å­˜å‚¨æˆåŠŸï¼",
 												Toast.LENGTH_SHORT).show();
 									} else {
-										Toast.makeText(BTClient.this, "Ã»ÓĞ´æ´¢¿¨£¡",
+										Toast.makeText(BTClient.this, "æ²¡æœ‰å­˜å‚¨å¡ï¼",
 												Toast.LENGTH_LONG).show();
 									}
 
@@ -723,12 +723,12 @@ public class BTClient extends Activity {
 								}
 
 							}
-						}).setNegativeButton("È¡Ïû", // È¡Ïû°´¼üÏìÓ¦º¯Êı,Ö±½ÓÍË³ö¶Ô»°¿ò²»×öÈÎºÎ´¦Àí
+						}).setNegativeButton("å–æ¶ˆ", // å–æ¶ˆæŒ‰é”®å“åº”å‡½æ•°,ç›´æ¥é€€å‡ºå¯¹è¯æ¡†ä¸åšä»»ä½•å¤„ç†
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int which) {
 							}
-						}).show(); // ÏÔÊ¾¶Ô»°¿ò
+						}).show(); // æ˜¾ç¤ºå¯¹è¯æ¡†
 	}
 	
 	

@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.test.BTClient.Protocol;
 
 //import com.test.BTClient.BTClient;
-//Runnable½Ó¿Ú·½·¨´´½¨Ïß³Ì£¬ÄäÃûÀà
+//Runnableæ¥å£æ–¹æ³•åˆ›å»ºçº¿ç¨‹ï¼ŒåŒ¿åç±»
 @SuppressLint("NewApi")
 public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 
@@ -41,30 +41,30 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 	private float RIGHT_CENTERY=150;
 	
 	private float BACK_RECT_SIZE=140;//
-	//¹Ì¶¨Ò¡¸Ë±³¾°Ô²ĞÎµÄX,Y×ø±êÒÔ¼°°ë¾¶
+	//å›ºå®šæ‘‡æ†èƒŒæ™¯åœ†å½¢çš„X,Yåæ ‡ä»¥åŠåŠå¾„
 	private float RockerCircleX = LEFT_CENTERX;
 	private float RockerCircleY= LEFT_CENTERY;
 	private float RockerCircleR;
-	//¹Ì¶¨Ò£
+	//å›ºå®šé¥
 	private float BackRectLeft=LEFT_CENTERX-BACK_RECT_SIZE;
 	private float BackRectTop=LEFT_CENTERY-BACK_RECT_SIZE;
 	private float BackRectRight=LEFT_CENTERX+BACK_RECT_SIZE;
 	private float BackRectButtom=LEFT_CENTERY+BACK_RECT_SIZE;
-	//Ò¡¸ËµÄX,Y×ø±êÒÔ¼°Ò¡¸ËµÄ°ë¾¶
+	//æ‘‡æ†çš„X,Yåæ ‡ä»¥åŠæ‘‡æ†çš„åŠå¾„
 	public float SmallRockerCircleX = LEFT_CENTERX;
 	public float SmallRockerCircleY = LEFT_CENTERY;
 	private float SmallRockerCircleR = 20;
 	
-	//¹Ì¶¨Ò¡¸Ë±³¾°Ô²ĞÎµÄX,Y×ø±êÒÔ¼°°ë¾¶
+	//å›ºå®šæ‘‡æ†èƒŒæ™¯åœ†å½¢çš„X,Yåæ ‡ä»¥åŠåŠå¾„
 	private float RockerCircleX2 = RIGHT_CENTERX;
 	private float RockerCircleY2 = RIGHT_CENTERY;
 	private float RockerCircleR2;
-	//¹Ì¶¨Ò£
+	//å›ºå®šé¥
 	private float BackRectLeft2=RIGHT_CENTERX-BACK_RECT_SIZE;
 	private float BackRectTop2=RIGHT_CENTERY-BACK_RECT_SIZE;
 	private float BackRectRight2=RIGHT_CENTERX+BACK_RECT_SIZE;
 	private float BackRectButtom2=RIGHT_CENTERY+BACK_RECT_SIZE;
-	//Ò¡¸ËµÄX,Y×ø±êÒÔ¼°Ò¡¸ËµÄ°ë¾¶
+	//æ‘‡æ†çš„X,Yåæ ‡ä»¥åŠæ‘‡æ†çš„åŠå¾„
 	public float SmallRockerCircleX2 = RIGHT_CENTERX;
 	public float SmallRockerCircleY2 = RIGHT_CENTERY;
 	private float SmallRockerCircleR2 = 20;
@@ -72,7 +72,7 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 	public int altCtrlMode=0;
 	//
 	public float leftTouchStartX=LEFT_CENTERX,leftTouchStartY=LEFT_CENTERY,rightTouchStartX=RIGHT_CENTERX,rightTouchStartY=RIGHT_CENTERY;
-	//Ëø¶¨yaw
+	//é”å®šyaw
 	static final int YAW_STOP_CONTROL=0;
 	
 	
@@ -95,7 +95,7 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 			
 			try{
 				
-				//¾ö¶¨ÁËÒ¡¸ËµÄ´óĞ¡£¬the layout_height(px) determine the size of stick,
+				//å†³å®šäº†æ‘‡æ†çš„å¤§å°ï¼Œthe layout_height(px) determine the size of stick,
 				String heightS = attrs.getAttributeValue("http://schemas.android.com/apk/res/android","layout_height");//"http://schemas.android.com/apk/res/android", 
 				String widthS=attrs.getAttributeValue("http://schemas.android.com/apk/res/android","layout_width"); 
 				heightS=heightS.substring(0, heightS.indexOf("p")-2);//150px
@@ -131,7 +131,7 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 		 RockerCircleX  = LEFT_CENTERX;
 		 RockerCircleY  = LEFT_CENTERY; 
 		 RockerCircleR=(float) ((BackRectRight-BackRectLeft)/2 * 1.41421);
-			//¹Ì¶¨Ò¡¸Ë±³¾°Ô²ĞÎµÄX,Y×ø±êÒÔ¼°°ë¾¶
+			//å›ºå®šæ‘‡æ†èƒŒæ™¯åœ†å½¢çš„X,Yåæ ‡ä»¥åŠåŠå¾„
 		 RockerCircleX2 = RIGHT_CENTERX;
 		 RockerCircleY2 = RIGHT_CENTERX; 
 		 RockerCircleR2= RockerCircleR;
@@ -140,42 +140,42 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 		 BackRectTop =LEFT_CENTERY-BACK_RECT_SIZE;
 		 BackRectRight =LEFT_CENTERX+BACK_RECT_SIZE;
 		  BackRectButtom =LEFT_CENTERY+BACK_RECT_SIZE;
-			//Ò¡¸ËµÄX,Y×ø±êÒÔ¼°Ò¡¸ËµÄ°ë¾¶
+			//æ‘‡æ†çš„X,Yåæ ‡ä»¥åŠæ‘‡æ†çš„åŠå¾„
 		  SmallRockerCircleX = LEFT_CENTERX;
 		  SmallRockerCircleY = BackRectButtom;
 		  SmallRockerCircleR = 100; 
-			//¹Ì¶¨Ò£
+			//å›ºå®šé¥
 			 BackRectLeft2=RIGHT_CENTERX-BACK_RECT_SIZE;
 			  BackRectTop2=RIGHT_CENTERY-BACK_RECT_SIZE;
 			 BackRectRight2=RIGHT_CENTERX+BACK_RECT_SIZE;
 			 BackRectButtom2=RIGHT_CENTERY+BACK_RECT_SIZE;
-			//Ò¡¸ËµÄX,Y×ø±êÒÔ¼°Ò¡¸ËµÄ°ë¾¶
+			//æ‘‡æ†çš„X,Yåæ ‡ä»¥åŠæ‘‡æ†çš„åŠå¾„
 			 SmallRockerCircleX2 = RIGHT_CENTERX;
 			 SmallRockerCircleY2 = RIGHT_CENTERY;
 			SmallRockerCircleR2 = 100;
 			
 	}
 	/***
-	 * µÃµ½Á½µãÖ®ÏßÓëxÖáµÄ»¡¶È
+	 * å¾—åˆ°ä¸¤ç‚¹ä¹‹çº¿ä¸xè½´çš„å¼§åº¦
 	 */
 	public double getRad(float px1, float py1, float px2, float py2) {
-		//µÃµ½Á½µãXµÄ¾àÀë
+		//å¾—åˆ°ä¸¤ç‚¹Xçš„è·ç¦»
 		float x = px2 - px1;
-		//µÃµ½Á½µãYµÄ¾àÀë
+		//å¾—åˆ°ä¸¤ç‚¹Yçš„è·ç¦»
 		float y = py1 - py2;
-		//Ëã³öĞ±±ß³¤
+		//ç®—å‡ºæ–œè¾¹é•¿
 		float xie = (float) Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-		//µÃµ½Õâ¸ö½Ç¶ÈµÄÓàÏÒÖµ£¨Í¨¹ıÈı½Çº¯ÊıÖĞµÄ¶¨Àí £ºÁÚ±ß/Ğ±±ß=½Ç¶ÈÓàÏÒÖµ£©
+		//å¾—åˆ°è¿™ä¸ªè§’åº¦çš„ä½™å¼¦å€¼ï¼ˆé€šè¿‡ä¸‰è§’å‡½æ•°ä¸­çš„å®šç† ï¼šé‚»è¾¹/æ–œè¾¹=è§’åº¦ä½™å¼¦å€¼ï¼‰
 		float cosAngle = x / xie;
-		//Í¨¹ı·´ÓàÏÒ¶¨Àí»ñÈ¡µ½Æä½Ç¶ÈµÄ»¡¶È
+		//é€šè¿‡åä½™å¼¦å®šç†è·å–åˆ°å…¶è§’åº¦çš„å¼§åº¦
 		float rad = (float) Math.acos(cosAngle);
-		//×¢Òâ£ºµ±´¥ÆÁµÄÎ»ÖÃY×ø±ê<Ò¡¸ËµÄY×ø±êÎÒÃÇÒªÈ¡·´Öµ-0~-180
+		//æ³¨æ„ï¼šå½“è§¦å±çš„ä½ç½®Yåæ ‡<æ‘‡æ†çš„Yåæ ‡æˆ‘ä»¬è¦å–åå€¼-0~-180
 		if (py2 < py1) {
 			rad = -rad;
 		}
 		return rad;
 	}
-	//²ÉÓÃ¼ò»¯µÄ·½°¸À´ÊµÏÖË«Ò¡¸Ë¿ØÖÆ
+	//é‡‡ç”¨ç®€åŒ–çš„æ–¹æ¡ˆæ¥å®ç°åŒæ‘‡æ†æ§åˆ¶
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 	try{
@@ -196,11 +196,11 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 			Log.v("TouchPos","PointNum:"+Integer.toString(event.getPointerCount()) + ",actionIndex:"+Integer.toString(event.getActionIndex()) );
 			Log.v("TouchPos","X:"+Float.toString(event.getX()) + ";Y:"+Float.toString(event.getY())    );
 			leftTouching=false;rightTouching=false; 
-			//·ÅÊÖ¹éÎ»
-			SmallRockerCircleX = LEFT_CENTERX;//SmallRockerCircleY = LEFT_CENTERY;//ÓÍÃÅ²»»ØÖĞ
+			//æ”¾æ‰‹å½’ä½
+			SmallRockerCircleX = LEFT_CENTERX;//SmallRockerCircleY = LEFT_CENTERY;//æ²¹é—¨ä¸å›ä¸­
 //			if(stickHomeY1>=0)
-//				SmallRockerCircleY=stickHomeY1; 	//ÓÍÃÅ»ØÖĞÓÉÄ£Ê½¾ö¶¨
-			if(altCtrlMode==1)	//¶¨¸ßÅÀÉı
+//				SmallRockerCircleY=stickHomeY1; 	//æ²¹é—¨å›ä¸­ç”±æ¨¡å¼å†³å®š
+			if(altCtrlMode==1)	//å®šé«˜çˆ¬å‡
 				SmallRockerCircleY= LEFT_CENTERY;
 			
 			SmallRockerCircleX2 = RIGHT_CENTERX; 
@@ -219,12 +219,12 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 			{
 				leftTouching=false;
 				SmallRockerCircleX = LEFT_CENTERX;
-			//	SmallRockerCircleY = LEFT_CENTERY; //ÓÍÃÅ²»»ØÖĞ
-				if(altCtrlMode==1)	//¶¨¸ßÅÀÉı
+			//	SmallRockerCircleY = LEFT_CENTERY; //æ²¹é—¨ä¸å›ä¸­
+				if(altCtrlMode==1)	//å®šé«˜çˆ¬å‡
 					SmallRockerCircleY= LEFT_CENTERY;
 				
 				//	if(stickHomeY1>=0)
-				//		SmallRockerCircleY=stickHomeY1; 	//ÓÍÃÅ»ØÖĞÓÉÄ£Ê½¾ö¶¨
+				//		SmallRockerCircleY=stickHomeY1; 	//æ²¹é—¨å›ä¸­ç”±æ¨¡å¼å†³å®š
 				
 				leftTouchStartX=LEFT_CENTERX;
 				leftTouchStartY=LEFT_CENTERY;
@@ -240,12 +240,12 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 				rightTouchStartY= RIGHT_CENTERY;
 			}
 			
-			/*Á½Ö¸°´ÏÂºó£¬³õÖ¸ÊÍ·ÅÔÙ°´ÏÂ³ö´íÎÊÌâÎ´½â¾ö
+			/*ä¸¤æŒ‡æŒ‰ä¸‹åï¼ŒåˆæŒ‡é‡Šæ”¾å†æŒ‰ä¸‹å‡ºé”™é—®é¢˜æœªè§£å†³
 			if(event.getActionIndex()==leftTouchIndex)	//first release  
 			{
 				leftTouching=false;
 				SmallRockerCircleX = LEFT_CENTERX;
-				//SmallRockerCircleY = LEFT_CENTERY; //ÓÍÃÅ²»»ØÖĞ
+				//SmallRockerCircleY = LEFT_CENTERY; //æ²¹é—¨ä¸å›ä¸­
 				rightTouchIndex=0;
 			}
 			else
@@ -270,7 +270,7 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 		/*get touch*/
 		if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE  || (event.getAction() & MotionEvent.ACTION_MASK)==MotionEvent.ACTION_POINTER_DOWN) 
 			{
-			/* //	Á½Ö¸°´ÏÂºó£¬³õÖ¸ÊÍ·ÅÔÙ°´ÏÂ³ö´íÎÊÌâÎ´½â¾ö
+			/* //	ä¸¤æŒ‡æŒ‰ä¸‹åï¼ŒåˆæŒ‡é‡Šæ”¾å†æŒ‰ä¸‹å‡ºé”™é—®é¢˜æœªè§£å†³
 				if((event.getAction() & MotionEvent.ACTION_MASK)==MotionEvent.ACTION_DOWN)//first down
 				{
 					x1=event.getX(event.getActionIndex());y1=event.getY(event.getActionIndex());
@@ -306,7 +306,7 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 					}
 					Log.v("TouchPos","ACTION_POINTER_DOWN,"+Integer.toString(event.getActionIndex())+",X: "+Float.toString(x2)+ "Y:"+Float.toString(y2));
 				} */
-				/*	//Judge left or right BUG:µ±Á½Ö¸´¥×¡ºó£¬ÔÙ·Å¿ªµÚÒ»¸öÊÖÖ¸£¨µÚ¶şÊÖÖ¸±£³Ö°´×¡,index->0£©£¬ÔÙ°´ÏÂÒ»µÚÒ»¸öÊÖÖ¸£¬index»á·´×ª»Ø¸´(index·´×ª)£¬Òò´ËÏÔÊ¾³ö´í¡£
+				/*	//Judge left or right BUG:å½“ä¸¤æŒ‡è§¦ä½åï¼Œå†æ”¾å¼€ç¬¬ä¸€ä¸ªæ‰‹æŒ‡ï¼ˆç¬¬äºŒæ‰‹æŒ‡ä¿æŒæŒ‰ä½,index->0ï¼‰ï¼Œå†æŒ‰ä¸‹ä¸€ç¬¬ä¸€ä¸ªæ‰‹æŒ‡ï¼Œindexä¼šåè½¬å›å¤(indexåè½¬)ï¼Œå› æ­¤æ˜¾ç¤ºå‡ºé”™ã€‚
 					x1=event.getX();y1=event.getY();
 					if(pointNum==1)//first finger touches
 					{
@@ -439,7 +439,7 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 							SmallRockerCircleY = leftY;
 				//		}
 				//		else
-						{//ÏŞ¶¨ÔÚ¾ØĞÎÄÚ
+						{//é™å®šåœ¨çŸ©å½¢å†…
 					/*		if(leftX>BackRectRight)
 								SmallRockerCircleX=BackRectRight;
 							else if( leftX<BackRectLeft )
@@ -470,7 +470,7 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 							SmallRockerCircleY2 = rightY;
 				//		}
 				//		else
-						{//ÏŞ¶¨ÔÚ¾ØĞÎÄÚ
+						{//é™å®šåœ¨çŸ©å½¢å†…
 						/*	if(rightX>BackRectRight2)
 								SmallRockerCircleX2=BackRectRight2;
 							else if( rightX<BackRectLeft2 )
@@ -495,7 +495,7 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 				+ Integer.toString((int)rightTouchStartX) + " "+Integer.toString((int)rightTouchStartY));
 		
 		if(YAW_STOP_CONTROL==1)
-			SmallRockerCircleX=LEFT_CENTERX;	//Ôİ²»¿ØÖÆyaw£¬±ÜÃâ¿ØÓÍÃÅÊ±ÎóµãÂÒ×ª
+			SmallRockerCircleX=LEFT_CENTERX;	//æš‚ä¸æ§åˆ¶yawï¼Œé¿å…æ§æ²¹é—¨æ—¶è¯¯ç‚¹ä¹±è½¬
 	//	Protocol.throttle=(int)(1000+1000*(BackRectButtom-SmallRockerCircleY)/(BackRectButtom-BackRectTop));
 	//	Protocol.yaw=(int)(1000+1000*(SmallRockerCircleX-BackRectLeft)/(BackRectRight-BackRectLeft));
 	//	Protocol.pitch=(int)(1000+1000*(BackRectButtom2-SmallRockerCircleY2)/(BackRectButtom2-BackRectTop2));
@@ -504,7 +504,7 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 	//	Protocol.yaw=(int)(1500+1000*(SmallRockerCircleX-LEFT_CENTERX)/(BackRectRight-BackRectLeft));
 	//	Protocol.pitch=(int)(1500+1000*(RIGHT_CENTERY-SmallRockerCircleY2)/(BackRectButtom2-BackRectTop2));
 	//	Protocol.roll=(int)(1500+1000*(SmallRockerCircleX2-RIGHT_CENTERX)/(BackRectRight2-BackRectLeft2));
-		//ÂäÊÖÎªÆğµã,ÓÍÃÅ³ıÍâ
+		//è½æ‰‹ä¸ºèµ·ç‚¹,æ²¹é—¨é™¤å¤–
 		if(altCtrlMode==0)
 			Protocol.throttle=(int)(1000+1000*(BackRectButtom-SmallRockerCircleY)/(BackRectButtom-BackRectTop));
 		else
@@ -552,18 +552,18 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 	/**
 	 * 
 	 * @param R
-	 *            Ô²ÖÜÔË¶¯µÄĞı×ªµã
+	 *            åœ†å‘¨è¿åŠ¨çš„æ—‹è½¬ç‚¹
 	 * @param centerX
-	 *            Ğı×ªµãX
+	 *            æ—‹è½¬ç‚¹X
 	 * @param centerY
-	 *            Ğı×ªµãY
+	 *            æ—‹è½¬ç‚¹Y
 	 * @param rad
-	 *            Ğı×ªµÄ»¡¶È
+	 *            æ—‹è½¬çš„å¼§åº¦
 	 */
 	public void getXY(float centerX, float centerY, float R, double rad) {
-		//»ñÈ¡Ô²ÖÜÔË¶¯µÄX×ø±ê 
+		//è·å–åœ†å‘¨è¿åŠ¨çš„Xåæ ‡ 
 		SmallRockerCircleX = (float) (R * Math.cos(rad)) + centerX;
-		//»ñÈ¡Ô²ÖÜÔË¶¯µÄY×ø±ê
+		//è·å–åœ†å‘¨è¿åŠ¨çš„Yåæ ‡
 		SmallRockerCircleY = (float) (R * Math.sin(rad)) + centerY;
 	}
 	
@@ -573,13 +573,13 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 		try {
 			canvas = sfh.lockCanvas();
 			canvas.drawColor(Color.BLACK);
-			//ÉèÖÃÑÕÉ«
-			//»æÖÆÒ¡¸Ë±³¾°
+			//è®¾ç½®é¢œè‰²
+			//ç»˜åˆ¶æ‘‡æ†èƒŒæ™¯
 		 	///paint.setColor(Color.YELLOW); 
 		 	///canvas.drawCircle(RockerCircleX, RockerCircleY, RockerCircleR, paint);
 			paint.setColor(Color.WHITE); 
 			canvas.drawRect(BackRectLeft,BackRectTop,BackRectRight,BackRectButtom,paint);///
-			//»æÖÆÒ¡¸Ë
+			//ç»˜åˆ¶æ‘‡æ†
 			paint.setColor(0x4F94CD00); 
 			canvas.drawCircle(SmallRockerCircleX, SmallRockerCircleY, SmallRockerCircleR, paint);
 			//Draw another Right one
@@ -601,14 +601,14 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 			}
 		}
 	}
-//-----¸´Ğ´ Ïß³ÌµÄrun²Ù×÷£¬µ±surface±»´´½¨ºó£¬Ïß³Ì¿ªÆô
+//-----å¤å†™ çº¿ç¨‹çš„runæ“ä½œï¼Œå½“surfaceè¢«åˆ›å»ºåï¼Œçº¿ç¨‹å¼€å¯
 	public void run() {
 		// TODO Auto-generated method stub
 		//
 		while (flag) {	
 			draw();
 			try {
-				Thread.sleep(50);	//Ïß³ÌĞİÃß50ms
+				Thread.sleep(50);	//çº¿ç¨‹ä¼‘çœ 50ms
 			} catch (Exception ex) {
 			}
 		}

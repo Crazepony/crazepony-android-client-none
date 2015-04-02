@@ -5,14 +5,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Navigation {
-	//private WayPoint wp1=new WayPoint("ÂÌµØ", 45443993,126373228); 
-	public List<WayPoint> wpSave=new LinkedList<WayPoint>();		//ÒÑÔÚµØµã
+	//private WayPoint wp1=new WayPoint("ç»¿åœ°", 45443993,126373228); 
+	public List<WayPoint> wpSave=new LinkedList<WayPoint>();		//å·²åœ¨åœ°ç‚¹
 	public static List<WayPoint> route=new LinkedList<WayPoint>();	
-	final String[] wpStr={"Home","Ö÷Â¥","ÕýÃÅ","¹úÆì","ÂÌµØ","µç»úÂ¥","ÐÇ±ê","¸ßÂ¥A"};
+	final String[] wpStr={"Home","ä¸»æ¥¼","æ­£é—¨","å›½æ——","ç»¿åœ°","ç”µæœºæ¥¼","æ˜Ÿæ ‡","é«˜æ¥¼A"};
 	final int[][] pos={{1,1},{2,2},{3,3},{4,4},{5,5},{6,6},{7,7},{8,8},}; 
 	public Navigation()	//initilize the kown wp
 	{
-		//´æÏÂÒ»Ð©¹Ì¶¨µØµã
+		//å­˜ä¸‹ä¸€äº›å›ºå®šåœ°ç‚¹
 		 	int len ;
 		for(len=0;len<wpStr.length;len++)
 		{
@@ -22,13 +22,13 @@ public class Navigation {
 	//	wpStr.length
 		/*
 		wpSave.add(new WayPoint("Home",1,2));
-		wpSave.add(new WayPoint("Ö÷Â¥",45443993,126373228));
-		wpSave.add(new WayPoint("ÕýÃÅ",3,4));
-		wpSave.add(new WayPoint("¹úÆì",3,4));
-		wpSave.add(new WayPoint("ÂÌµØ",1,2));
-		wpSave.add(new WayPoint("µç»úÂ¥",1,2));
-		wpSave.add(new WayPoint("ÐÇ±ê",1,2));
-		wpSave.add(new WayPoint("¸ßÂ¥A",1,2));*/
+		wpSave.add(new WayPoint("ä¸»æ¥¼",45443993,126373228));
+		wpSave.add(new WayPoint("æ­£é—¨",3,4));
+		wpSave.add(new WayPoint("å›½æ——",3,4));
+		wpSave.add(new WayPoint("ç»¿åœ°",1,2));
+		wpSave.add(new WayPoint("ç”µæœºæ¥¼",1,2));
+		wpSave.add(new WayPoint("æ˜Ÿæ ‡",1,2));
+		wpSave.add(new WayPoint("é«˜æ¥¼A",1,2));*/
 	}
 	public int findWayPointIndex(String wpName)
 	{

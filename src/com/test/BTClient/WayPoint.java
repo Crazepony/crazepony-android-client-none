@@ -2,7 +2,7 @@ package com.test.BTClient;
 
 public class WayPoint {
 	String wpName;
-	int latitude,longtitude;//Î³¶È¡¢¾­¶ÈP
+	int latitude,longtitude;//çº¬åº¦ã€ç»åº¦P
 	 
 	public WayPoint(String wp)
 	{

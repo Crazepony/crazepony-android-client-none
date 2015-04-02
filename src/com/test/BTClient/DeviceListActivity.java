@@ -38,14 +38,14 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class DeviceListActivity extends Activity {
 	
-    // µ÷ÊÔÓÃ
+    // è°ƒè¯•ç”¨
     private static final String TAG = "DeviceListActivity";
     private static final boolean D = true;
 
-    // ·µ»ØÊ±Êı¾İ±êÇ©
-    public static String EXTRA_DEVICE_ADDRESS = "Éè±¸µØÖ·";
+    // è¿”å›æ—¶æ•°æ®æ ‡ç­¾
+    public static String EXTRA_DEVICE_ADDRESS = "è®¾å¤‡åœ°å€";
 
-    // ³ÉÔ±Óò
+    // æˆå‘˜åŸŸ
     private BluetoothAdapter mBtAdapter;
     private ArrayAdapter<String> mPairedDevicesArrayAdapter;
     private ArrayAdapter<String> mNewDevicesArrayAdapter;
@@ -54,14 +54,14 @@ public class DeviceListActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // ´´½¨²¢ÏÔÊ¾´°¿Ú
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);  //ÉèÖÃ´°¿ÚÏÔÊ¾Ä£Ê½Îª´°¿Ú·½Ê½
+        // åˆ›å»ºå¹¶æ˜¾ç¤ºçª—å£
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);  //è®¾ç½®çª—å£æ˜¾ç¤ºæ¨¡å¼ä¸ºçª—å£æ–¹å¼
         setContentView(R.layout.device_list);
 
-        // Éè¶¨Ä¬ÈÏ·µ»ØÖµÎªÈ¡Ïû
+        // è®¾å®šé»˜è®¤è¿”å›å€¼ä¸ºå–æ¶ˆ
         setResult(Activity.RESULT_CANCELED);
 
-        // Éè¶¨É¨Ãè°´¼üÏìÓ¦
+        // è®¾å®šæ‰«ææŒ‰é”®å“åº”
         Button scanButton = (Button) findViewById(R.id.button_scan);
         scanButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -70,36 +70,36 @@ public class DeviceListActivity extends Activity {
             }
         });
 
-        // ³õÊ¹»¯Éè±¸´æ´¢Êı×é
+        // åˆä½¿åŒ–è®¾å¤‡å­˜å‚¨æ•°ç»„
         mPairedDevicesArrayAdapter = new ArrayAdapter<String>(this, R.layout.device_name);
         mNewDevicesArrayAdapter = new ArrayAdapter<String>(this, R.layout.device_name);
 
-        // ÉèÖÃÒÑÅä¶ÓÉè±¸ÁĞ±í
+        // è®¾ç½®å·²é…é˜Ÿè®¾å¤‡åˆ—è¡¨
         
         ListView pairedListView = (ListView) findViewById(R.id.paired_devices);
         pairedListView.setAdapter(mPairedDevicesArrayAdapter);
         pairedListView.setOnItemClickListener(mDeviceClickListener);
 
-        // ÉèÖÃĞÂ²éÕÒÉè±¸ÁĞ±í
+        // è®¾ç½®æ–°æŸ¥æ‰¾è®¾å¤‡åˆ—è¡¨
         ListView newDevicesListView = (ListView) findViewById(R.id.new_devices);
         newDevicesListView.setAdapter(mNewDevicesArrayAdapter);
         newDevicesListView.setOnItemClickListener(mDeviceClickListener);
 
-        // ×¢²á½ÓÊÕ²éÕÒµ½Éè±¸action½ÓÊÕÆ÷
+        // æ³¨å†Œæ¥æ”¶æŸ¥æ‰¾åˆ°è®¾å¤‡actionæ¥æ”¶å™¨
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         this.registerReceiver(mReceiver, filter);
 
-        // ×¢²á²éÕÒ½áÊøaction½ÓÊÕÆ÷
+        // æ³¨å†ŒæŸ¥æ‰¾ç»“æŸactionæ¥æ”¶å™¨
         filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         this.registerReceiver(mReceiver, filter);
 
-        // µÃµ½±¾µØÀ¶ÑÀ¾ä±ú
+        // å¾—åˆ°æœ¬åœ°è“ç‰™å¥æŸ„
         mBtAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        // µÃµ½ÒÑÅä¶ÔÀ¶ÑÀÉè±¸ÁĞ±í
+        // å¾—åˆ°å·²é…å¯¹è“ç‰™è®¾å¤‡åˆ—è¡¨
         //Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();
 
-        // Ìí¼ÓÒÑÅä¶ÔÉè±¸µ½ÁĞ±í²¢ÏÔÊ¾ 
+        // æ·»åŠ å·²é…å¯¹è®¾å¤‡åˆ°åˆ—è¡¨å¹¶æ˜¾ç¤º 
        // if (pairedDevices.size() > 0) {
            // findViewById(R.id.title_paired_devices).setVisibility(View.VISIBLE);
         //    for (BluetoothDevice device : pairedDevices) {
@@ -115,12 +115,12 @@ public class DeviceListActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
 
-        // ¹Ø±Õ·şÎñ²éÕÒ
+        // å…³é—­æœåŠ¡æŸ¥æ‰¾
         if (mBtAdapter != null) {
             mBtAdapter.cancelDiscovery();
         }
 
-        // ×¢Ïúaction½ÓÊÕÆ÷
+        // æ³¨é”€actionæ¥æ”¶å™¨
         this.unregisterReceiver(mReceiver);
     }
     
@@ -128,68 +128,68 @@ public class DeviceListActivity extends Activity {
     	finish();
     }
     /**
-     * ¿ªÊ¼·şÎñºÍÉè±¸²éÕÒ
+     * å¼€å§‹æœåŠ¡å’Œè®¾å¤‡æŸ¥æ‰¾
      */
     private void doDiscovery() {
         if (D) Log.d(TAG, "doDiscovery()");
 
-        // ÔÚ´°¿ÚÏÔÊ¾²éÕÒÖĞĞÅÏ¢
+        // åœ¨çª—å£æ˜¾ç¤ºæŸ¥æ‰¾ä¸­ä¿¡æ¯
         setProgressBarIndeterminateVisibility(true);
-        setTitle("²éÕÒÉè±¸ÖĞ...");
+        setTitle("æŸ¥æ‰¾è®¾å¤‡ä¸­...");
 
-        // ÏÔÊ¾ÆäËüÉè±¸£¨Î´Åä¶ÔÉè±¸£©ÁĞ±í
+        // æ˜¾ç¤ºå…¶å®ƒè®¾å¤‡ï¼ˆæœªé…å¯¹è®¾å¤‡ï¼‰åˆ—è¡¨
         findViewById(R.id.title_new_devices).setVisibility(View.VISIBLE);
 
-        // ¹Ø±ÕÔÙ½øĞĞµÄ·şÎñ²éÕÒ
+        // å…³é—­å†è¿›è¡Œçš„æœåŠ¡æŸ¥æ‰¾
         if (mBtAdapter.isDiscovering()) {
             mBtAdapter.cancelDiscovery();
         }
-        //²¢ÖØĞÂ¿ªÊ¼
+        //å¹¶é‡æ–°å¼€å§‹
         mBtAdapter.startDiscovery();
     }
 
-    // Ñ¡ÔñÉè±¸ÏìÓ¦º¯Êı 
+    // é€‰æ‹©è®¾å¤‡å“åº”å‡½æ•° 
     private OnItemClickListener mDeviceClickListener = new OnItemClickListener() {
         public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
-            // ×¼±¸Á¬½ÓÉè±¸£¬¹Ø±Õ·şÎñ²éÕÒ
+            // å‡†å¤‡è¿æ¥è®¾å¤‡ï¼Œå…³é—­æœåŠ¡æŸ¥æ‰¾
             mBtAdapter.cancelDiscovery();
 
-            // µÃµ½macµØÖ·
+            // å¾—åˆ°macåœ°å€
             String info = ((TextView) v).getText().toString();
             String address = info.substring(info.length() - 17);
-            //±êÖ¾
+            //æ ‡å¿—
             
-            // ÉèÖÃ·µ»ØÊı¾İ
+            // è®¾ç½®è¿”å›æ•°æ®
             Intent intent = new Intent();
             intent.putExtra(EXTRA_DEVICE_ADDRESS, address);
 
-            // ÉèÖÃ·µ»ØÖµ²¢½áÊø³ÌĞò
+            // è®¾ç½®è¿”å›å€¼å¹¶ç»“æŸç¨‹åº
             setResult(Activity.RESULT_OK, intent);
             finish();
         }
     };
-    // ²éÕÒµ½Éè±¸ºÍËÑË÷Íê³Éaction¼àÌıÆ÷
+    // æŸ¥æ‰¾åˆ°è®¾å¤‡å’Œæœç´¢å®Œæˆactionç›‘å¬å™¨
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-            // ²éÕÒµ½Éè±¸action
+            // æŸ¥æ‰¾åˆ°è®¾å¤‡action
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                // µÃµ½À¶ÑÀÉè±¸
+                // å¾—åˆ°è“ç‰™è®¾å¤‡
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                // Èç¹ûÊÇÒÑÅä¶ÔµÄÔòÂÔ¹ı£¬ÒÑµÃµ½ÏÔÊ¾£¬ÆäÓàµÄÔÚÌí¼Óµ½ÁĞ±íÖĞ½øĞĞÏÔÊ¾
+                // å¦‚æœæ˜¯å·²é…å¯¹çš„åˆ™ç•¥è¿‡ï¼Œå·²å¾—åˆ°æ˜¾ç¤ºï¼Œå…¶ä½™çš„åœ¨æ·»åŠ åˆ°åˆ—è¡¨ä¸­è¿›è¡Œæ˜¾ç¤º
                 if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
                     mNewDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
-                }else{  //Ìí¼Óµ½ÒÑÅä¶ÔÉè±¸ÁĞ±í
+                }else{  //æ·»åŠ åˆ°å·²é…å¯¹è®¾å¤‡åˆ—è¡¨
                 	mPairedDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
                 }
-            // ËÑË÷Íê³Éaction
+            // æœç´¢å®Œæˆaction
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 setProgressBarIndeterminateVisibility(false);
-                setTitle("Ñ¡ÔñÒªÁ¬½ÓµÄÉè±¸");
+                setTitle("é€‰æ‹©è¦è¿æ¥çš„è®¾å¤‡");
                 if (mNewDevicesArrayAdapter.getCount() == 0) {
-                    String noDevices = "Ã»ÓĞÕÒµ½ĞÂÉè±¸";
+                    String noDevices = "æ²¡æœ‰æ‰¾åˆ°æ–°è®¾å¤‡";
                     mNewDevicesArrayAdapter.add(noDevices);
                 }
              //   if(mPairedDevicesArrayAdapter.getCount() > 0)
