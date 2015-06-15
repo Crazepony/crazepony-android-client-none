@@ -1,4 +1,7 @@
 //发送部分写有些麻烦，直接定义一个发送缓冲Byte变长数组，写writeInt8 writeInt16 ，把数据到里头，再统一发，发完清空清长。
+//Crazepony APP和飞控之间通信协议使用了MWC飞控协议（MSP，Multiwii Serial Protocol），
+//MSP协议格式详见http://www.multiwii.com/wiki/index.php?title=Multiwii_Serial_Protocol
+
 package com.test.BTClient;
 
 import java.util.LinkedList;
@@ -47,11 +50,6 @@ public class Protocol {
 		switch(cmd)
 		{
 		case SET_THROTTLE:
-			//throttle=1000;
-			//outputData=new byte[6];
-			//outputData[0]=(byte) 0xab;outputData[1]=0x1;outputData[5]=0;
-			//outputData[2]=17;outputData[3]=(byte)((throttle>>8)&0xff);outputData[4]=(byte) ((throttle )&0xff);
-			//System.out.println(outputData[3] + " " + outputData[4]);
 			cmdData.add((byte)((throttle )&0xff));
 			cmdData.add((byte)((throttle>>8)&0xff));  
 			break;
@@ -192,12 +190,10 @@ public class Protocol {
 	// process to extract the data from initial data frame
 	static int processDataIn(byte[] inData,int len)
 	{
-		//List<Byte> cmdData=new LinkedList<Byte>();
 		 int i=0;
 		int c;
 	 	System.out.println("dataInLen:"+len+" "+inData[0]);
-	//	Log.v("dataInLen",Integer.toString(inData.length));
-		//int len=inData.length;
+
 		for(i=0;i<len;i++)
 		{ 
 			c = inData[i];
@@ -288,60 +284,10 @@ public class Protocol {
 		        alt = read32()/100.0f;		//cm
 		        voltage=read16()/100.0f;
 		        speedZ=read16()/1000.0f;
-/*		        GPSFix=read8();
-		        staNum=read8();
-		        GPSFixHome=read8();
-		        distanceToHome=read16();
-*/		        
+
 		        System.out.println("pitch:"+pitchAng);
 		       break;
 		  }
 	} 
 	
 }
-
-
-
-
-/*
- * private static final String MSP_HEADER = "$M<";
- 
- sendRequestMSP(requestMSP(MSP_SET_MOTOR,payload.toArray( new Character[payload.size()]) ));
- 
- //send msp with payload
-private List<Byte> requestMSP (int msp, Character[] payload) {
-  if(msp < 0) {
-   return null;
-  }
-  List<Byte> bf = new LinkedList<Byte>();
-  for (byte c : MSP_HEADER.getBytes()) {
-    bf.add( c );
-  }
-  
-  byte checksum=0;
-  byte pl_size = (byte)((payload != null ? PApplet.parseInt(payload.length) : 0)&0xFF);
-  bf.add(pl_size);
-  checksum ^= (pl_size&0xFF);
-  
-  bf.add((byte)(msp & 0xFF));
-  checksum ^= (msp&0xFF);
-  
-  if (payload != null) {
-    for (char c :payload){
-      bf.add((byte)(c&0xFF));
-      checksum ^= (c&0xFF);
-    }
-  }
-  bf.add(checksum);
-  return (bf);
-}
-
-public void sendRequestMSP(List<Byte> msp) {
-  byte[] arr = new byte[msp.size()];
-  int i = 0;
-  for (byte b: msp) {
-    arr[i++] = b;
-  }
-  g_serial.write(arr); // send the complete byte sequence in one go
-}
- * */
