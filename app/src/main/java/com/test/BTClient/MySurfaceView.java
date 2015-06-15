@@ -239,119 +239,15 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 				rightTouchStartX=RIGHT_CENTERX;
 				rightTouchStartY= RIGHT_CENTERY;
 			}
-			
-			/*两指按下后，初指释放再按下出错问题未解决
-			if(event.getActionIndex()==leftTouchIndex)	//first release  
-			{
-				leftTouching=false;
-				SmallRockerCircleX = LEFT_CENTERX;
-				//SmallRockerCircleY = LEFT_CENTERY; //油门不回中
-				rightTouchIndex=0;
-			}
-			else
-			{
-				rightTouching=false;
-				SmallRockerCircleX2 = RIGHT_CENTERX;
-				SmallRockerCircleY2 = RIGHT_CENTERY;
-				leftTouchIndex=0;
-			}*/
+
 			Log.v("TouchPos","ACTION_POINTER_UP");
 			Log.v("TouchPos","PointNum:"+Integer.toString(event.getPointerCount()) + ",actionIndex:"+Integer.toString(event.getActionIndex()) );
 			break;
-	/*	case MotionEvent.ACTION_DOWN:
-			Log.v("TouchPos","ACTION_DOWN");
-			break;
-		case MotionEvent.ACTION_POINTER_DOWN:
-			Log.v("TouchPos","ACTION_POINTER_DOWN");
-			break;
-			  */
 		} 
 		
 		/*get touch*/
 		if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE  || (event.getAction() & MotionEvent.ACTION_MASK)==MotionEvent.ACTION_POINTER_DOWN) 
 			{
-			/* //	两指按下后，初指释放再按下出错问题未解决
-				if((event.getAction() & MotionEvent.ACTION_MASK)==MotionEvent.ACTION_DOWN)//first down
-				{
-					x1=event.getX(event.getActionIndex());y1=event.getY(event.getActionIndex());
-					if(leftTouching==false && rightTouching==false)
-					{
-						if(x1<DIVIDE_X)
-						{
-						 	leftTouchIndex=event.getActionIndex();
-							leftTouching=true; 
-						}
-						else
-						{
-						 rightTouchIndex=event.getActionIndex();
-							rightTouching=true; 
-						}
-						 
-					}
-					Log.v("TouchPos","ACTION_DOWN,"+Integer.toString(event.getActionIndex())+",X: "+Float.toString(x1)+ "Y:"+Float.toString(y1));
-				}
-				if((event.getAction() & MotionEvent.ACTION_MASK)==MotionEvent.ACTION_POINTER_DOWN)
-				{
-					
-					x2=event.getX(event.getActionIndex());y2=event.getY(event.getActionIndex());
-					if(leftTouching==false && x2<DIVIDE_X)
-					{ 
-						 	leftTouchIndex=event.getActionIndex();
-							leftTouching=true; 	 
-					}
-					if(rightTouching==false && x2>=DIVIDE_X)
-					{ 
-						 	rightTouchIndex=event.getActionIndex();
-							rightTouching=true;  
-					}
-					Log.v("TouchPos","ACTION_POINTER_DOWN,"+Integer.toString(event.getActionIndex())+",X: "+Float.toString(x2)+ "Y:"+Float.toString(y2));
-				} */
-				/*	//Judge left or right BUG:当两指触住后，再放开第一个手指（第二手指保持按住,index->0），再按下一第一个手指，index会反转回复(index反转)，因此显示出错。
-					x1=event.getX();y1=event.getY();
-					if(pointNum==1)//first finger touches
-					{
-						if(leftTouching==false && rightTouching==false)
-						{
-							if(x1<DIVIDE_X)
-							{
-								leftTouchIndex=0;
-								leftTouching=true;
-							}
-							else
-							{
-								rightTouchIndex=0;
-								rightTouching=true;
-							}
-						}
-					}
-					if(pointNum>1)//second finger touches
-					{
-						x2=event.getX(1);y2=event.getY(1);
-						if(leftTouching==false && x2<DIVIDE_X)
-						{ 
-								leftTouchIndex=1;
-								leftTouching=true; 	
-						}
-						if(rightTouching==false && x2>=DIVIDE_X)
-						{ 
-								rightTouchIndex=1;
-								rightTouching=true; 
-						}
-					}
-						if(leftTouching==true)
-					{
-						leftX=event.getX(leftTouchIndex);
-						leftY=event.getY(leftTouchIndex);
-					
-						
-					}
-					if(rightTouching==true)
-					{	
-						rightX=event.getX(rightTouchIndex);
-						rightY=event.getY(rightTouchIndex);
-					
-					}	
-					*/
 					if(pointNum==1)
 					{
 						x1=event.getX();y1=event.getY();
@@ -433,60 +329,21 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 					if(leftTouching==true )//Left Stick is touched
 					{
  						Log.v("TouchPos", "leftX: "+Float.toString(leftX)+ "  leftY: "+Float.toString(leftY));
-				//		if(leftX>=BackRectLeft && leftX<=BackRectRight && leftY>=BackRectTop && leftY<=BackRectButtom)
-				//		{
 							SmallRockerCircleX = leftX;
 							SmallRockerCircleY = leftY;
-				//		}
-				//		else
-						{//限定在矩形内
-					/*		if(leftX>BackRectRight)
-								SmallRockerCircleX=BackRectRight;
-							else if( leftX<BackRectLeft )
-								SmallRockerCircleX=BackRectLeft;
-							else
-								SmallRockerCircleX=leftX;
-							if(leftY>BackRectButtom )
-								SmallRockerCircleY=BackRectButtom;
-							else if(leftY<BackRectTop)
-								SmallRockerCircleY=BackRectTop;
-							else
-								SmallRockerCircleY=leftY;*/
-						} 
+
 						Log.v("RightStickY",Float.toString(SmallRockerCircleY) + " " + Float.toString(BackRectButtom));
-						
-						//Protocol.throttle=(int)SmallRockerCircleY;
-						
-						
-						//Protocol.yaw=(int);
+
 					} 
 					//Right Stick is touched
 					if(rightTouching==true )
 					{
  						Log.v("TouchPos", "rightX: "+Float.toString(rightX)+ "  rightY: "+Float.toString(rightY));
-				//		if(rightX>=BackRectLeft2 && rightX<=BackRectRight2 && rightY>=BackRectTop2 && rightY<=BackRectButtom2)
-				//		{
-							SmallRockerCircleX2 = rightX;
-							SmallRockerCircleY2 = rightY;
-				//		}
-				//		else
-						{//限定在矩形内
-						/*	if(rightX>BackRectRight2)
-								SmallRockerCircleX2=BackRectRight2;
-							else if( rightX<BackRectLeft2 )
-								SmallRockerCircleX2=BackRectLeft2;
-							else
-								SmallRockerCircleX2=rightX;
-							if(rightY>BackRectButtom2 )
-								SmallRockerCircleY2=BackRectButtom2;
-							else if(rightY<BackRectTop2)
-								SmallRockerCircleY2=BackRectTop2;
-							else
-								SmallRockerCircleY2=rightY;*/
-						} 
+
+						SmallRockerCircleX2 = rightX;
+						SmallRockerCircleY2 = rightY;
+
 						Log.v("RightStickY",Float.toString(SmallRockerCircleY2) + " " + Float.toString(BackRectButtom2));
-					//	byte[] ad={0xa,0xd};
-					//	btApp.btSendBytes(ad);
 					}
 					
 					
@@ -496,14 +353,7 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 		
 		if(YAW_STOP_CONTROL==1)
 			SmallRockerCircleX=LEFT_CENTERX;	//暂不控制yaw，避免控油门时误点乱转
-	//	Protocol.throttle=(int)(1000+1000*(BackRectButtom-SmallRockerCircleY)/(BackRectButtom-BackRectTop));
-	//	Protocol.yaw=(int)(1000+1000*(SmallRockerCircleX-BackRectLeft)/(BackRectRight-BackRectLeft));
-	//	Protocol.pitch=(int)(1000+1000*(BackRectButtom2-SmallRockerCircleY2)/(BackRectButtom2-BackRectTop2));
-	//	Protocol.roll=(int)(1000+1000*(SmallRockerCircleX2-BackRectLeft2)/(BackRectRight2-BackRectLeft2));
-		
-	//	Protocol.yaw=(int)(1500+1000*(SmallRockerCircleX-LEFT_CENTERX)/(BackRectRight-BackRectLeft));
-	//	Protocol.pitch=(int)(1500+1000*(RIGHT_CENTERY-SmallRockerCircleY2)/(BackRectButtom2-BackRectTop2));
-	//	Protocol.roll=(int)(1500+1000*(SmallRockerCircleX2-RIGHT_CENTERX)/(BackRectRight2-BackRectLeft2));
+
 		//落手为起点,油门除外
 		if(altCtrlMode==0)
 			Protocol.throttle=(int)(1000+1000*(BackRectButtom-SmallRockerCircleY)/(BackRectButtom-BackRectTop));

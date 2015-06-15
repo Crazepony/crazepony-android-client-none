@@ -615,25 +615,6 @@ public class BTClient extends Activity {
 	}
 
 	// 菜单处理部分
-	/*
-	 * @Override public boolean onCreateOptionsMenu(Menu menu) {//建立菜单
-	 * MenuInflater inflater = getMenuInflater();
-	 * inflater.inflate(R.menu.option_menu, menu); return true; }
-	 */
-
-	/*
-	 * @Override public boolean onOptionsItemSelected(MenuItem item) { //菜单响应函数
-	 * switch (item.getItemId()) { case R.id.scan:
-	 * if(_bluetooth.isEnabled()==false){ Toast.makeText(this, "Open BT......",
-	 * Toast.LENGTH_LONG).show(); return true; } // Launch the
-	 * DeviceListActivity to see devices and do scan Intent serverIntent = new
-	 * Intent(this, DeviceListActivity.class);
-	 * startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE); return
-	 * true; case R.id.quit: finish(); return true; case R.id.clear: smsg="";
-	 * ls.setText(smsg); return true; case R.id.save: Save(); return true; }
-	 * return false; }
-	 */ 
-	//------------------------------------Button:Connect----------------------------//
 	// 连接按键响应函数
 	public void onConnectButtonClicked(View v) {
 		if (_bluetooth.isEnabled() == false) { // 如果蓝牙服务不可用则提示
