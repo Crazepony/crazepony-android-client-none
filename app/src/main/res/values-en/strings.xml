@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="Cancel">Cancel</string>
-    <string name="app_name">CopterRoller</string>
+    <string name="app_name">Crazepony</string>
     <string name="yaw">Yaw:</string>
     <string name="throttle">Throttle:</string>
     <string name="pitch">Pitch:</string>
