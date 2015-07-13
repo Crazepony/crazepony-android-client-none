@@ -163,118 +163,77 @@ public class BTClient extends Activity {
 		super.onStop(); 
 	}
 
-	//**----------------------------Button:Send-------------------*//
-	// 发送按键响应
-	public void onSendButtonClicked(View v) {
-		int i = 0;
-		int n = 0;
-		Button btnConnect=(Button) findViewById(R.id.Button03);
-		if(btnConnect.getText()=="断开")//当已经连接上时才发送
-		{
-			try {
-				OutputStream os = _socket.getOutputStream(); // 蓝牙连接输出流
-				byte[] bos = edit0.getText().toString().getBytes();
-				/**--------------换行符的转换----------*/
-				for (i = 0; i < bos.length; i++) {
-					if (bos[i] == 0x0a)
-						n++;
-				}
-				byte[] bos_new = new byte[bos.length + n];
-				n = 0;
-				for (i = 0; i < bos.length; i++) { // 手机中换行为0a,将其改为0d 0a后再发送
-					if (bos[i] == 0x0a) {
-						bos_new[n] = 0x0d;
-						n++;
-						bos_new[n] = 0x0a;
-					} else {
-						bos_new[n] = bos[i];
-					}
-					n++;
-				} 
-				os.write(bos_new);
-			} 
-			catch (IOException e) {
-				Toast.makeText(this, "发送失改", Toast.LENGTH_SHORT).show();
-			} 
-			catch (Exception e){
-				Toast.makeText(this, "发送失改", Toast.LENGTH_SHORT).show();
-			}
-		}
-		else
-			Toast.makeText(this, "未连接设备，无法发送", Toast.LENGTH_SHORT).show();
-	}
-	//----------------Button sendAb for test---------//
 	public void onSendArmButtonClicked(View v)
 	{
-		 
-//		Protocol.throttle=1000;
-//		btSendBytes(Protocol.getSendData(Protocol.SET_THROTTLE, Protocol.getCommandData(Protocol.SET_THROTTLE)));
-		//btSendBytes(Protocol.getSendData(Protocol.ARM_IT, Protocol.getCommandData(Protocol.ARM_IT)));
 		Button btnConnect=(Button) findViewById(R.id.Button03);
-		if(btnConnect.getText()=="断开")
-		{
-			if(armButton.getText()!="上锁")
-			{ 
+        String disconnect = getResources().getString(R.string.Disconnect);
+        String arm = getResources().getString(R.string.Arm);
+        String unarm = getResources().getString(R.string.Unarm);
+        String disconnectToast = getResources().getString(R.string.DisconnectToast);
+
+		if(btnConnect.getText() == disconnect){
+			if(armButton.getText() != arm)	{
 				btSendBytes(Protocol.getSendData(Protocol.ARM_IT, Protocol.getCommandData(Protocol.ARM_IT)));
-				armButton.setText("上锁");
-			}
-			else
-			{
+				armButton.setText(arm);
+			}else{
 				btSendBytes(Protocol.getSendData(Protocol.DISARM_IT, Protocol.getCommandData(Protocol.DISARM_IT)));
-				armButton.setText("解锁");
+				armButton.setText(unarm);
 			}
-		}
-		else
-			Toast.makeText(this, "未连接设备", Toast.LENGTH_SHORT).show(); 
+		}else {
+            Toast.makeText(this, disconnectToast, Toast.LENGTH_SHORT).show();
+        }
 	} 
 	
 	//Take off , land down
 	public void onlauchLandButtonClicked(View v)
 	{
-		if(lauchLandButton.getText()!="降落")
-		{
-			btSendBytes(Protocol.getSendData(Protocol.LAUCH, Protocol.getCommandData(Protocol.LAUCH)));
-			lauchLandButton.setText("降落"); 
-			Protocol.throttle=Protocol.LAUCH_THROTTLE;
-			stickView.SmallRockerCircleY=stickView.rc2StickPosY(Protocol.throttle);
-		//	btSendBytes(Protocol.getSendData(Protocol.SET_THROTTLE, Protocol.getCommandData(Protocol.SET_THROTTLE)));
-			stickView.touchReadyToSend=true;
-		}
-		else
-		{
-			btSendBytes(Protocol.getSendData(Protocol.LAND_DOWN, Protocol.getCommandData(Protocol.LAND_DOWN)));
-			lauchLandButton.setText("起飞");
-			Protocol.throttle=Protocol.LAND_THROTTLE;
-			stickView.SmallRockerCircleY=stickView.rc2StickPosY(Protocol.throttle);
-		//	btSendBytes(Protocol.getSendData(Protocol.SET_THROTTLE, Protocol.getCommandData(Protocol.SET_THROTTLE))); 
-			stickView.touchReadyToSend=true;
-		}
+        Button btnConnect=(Button) findViewById(R.id.Button03);
+        String disconnect = getResources().getString(R.string.Disconnect);
+        String launch  = getResources().getString(R.string.Launch);
+        String land = getResources().getString(R.string.Land);
+        String disconnectToast = getResources().getString(R.string.DisconnectToast);
+
+        if(btnConnect.getText() == disconnect){
+            if(lauchLandButton.getText() != land){
+                btSendBytes(Protocol.getSendData(Protocol.LAUCH, Protocol.getCommandData(Protocol.LAUCH)));
+                lauchLandButton.setText(land);
+                Protocol.throttle=Protocol.LAUCH_THROTTLE;
+                stickView.SmallRockerCircleY=stickView.rc2StickPosY(Protocol.throttle);
+                stickView.touchReadyToSend=true;
+            }else{
+                btSendBytes(Protocol.getSendData(Protocol.LAND_DOWN, Protocol.getCommandData(Protocol.LAND_DOWN)));
+                lauchLandButton.setText(launch);
+                Protocol.throttle=Protocol.LAND_THROTTLE;
+                stickView.SmallRockerCircleY=stickView.rc2StickPosY(Protocol.throttle);
+                stickView.touchReadyToSend=true;
+            }
+        }else {
+            Toast.makeText(this, disconnectToast, Toast.LENGTH_SHORT).show();
+        }
 	}
+
 	//无头模式键
 	public void onheadFreeButtonClicked(View v)
 	{
-		//bool modeOn;
-		
 		Button btnConnect=(Button) findViewById(R.id.Button03);
-		if(btnConnect.getText()=="断开")
-		{ 
+        String disconnect = getResources().getString(R.string.Disconnect);
+        String headfree = getResources().getString(R.string.Headfree);
+        String headstrict = getResources().getString(R.string.Headstrict);
+        String disconnectToast = getResources().getString(R.string.DisconnectToast);
+
+		if(btnConnect.getText() == disconnect){
 			if(headFreeButton.getCurrentTextColor()!=Color.GREEN)
 			{	btSendBytes(Protocol.getSendData(Protocol.HEAD_FREE, Protocol.getCommandData(Protocol.HEAD_FREE)));
-			//	headFreeButton.setText("HeadStrict");
-				//headFreeButton.setHighlightColor(Color.GREEN); 
-				//headFreeButton.setBackgroundColor(Color.GREEN);
+                headFreeButton.setText(headstrict);
 				headFreeButton.setTextColor(Color.GREEN);
-			}
-			else
-			{
+			}else{
 				btSendBytes(Protocol.getSendData(Protocol.STOP_HEAD_FREE, Protocol.getCommandData(Protocol.STOP_HEAD_FREE)));
-			//	headFreeButton.setText("无头");
-			//	headFreeButton.setBackgroundColor(Color.BLACK);
+			    headFreeButton.setText(headfree);
 				headFreeButton.setTextColor(Color.WHITE);
 			}
-		}
-		else
-			Toast.makeText(this, "未连接设备", Toast.LENGTH_SHORT).show();
+		}else {
+            Toast.makeText(this, disconnectToast, Toast.LENGTH_SHORT).show();
+        }
 		
 	}
 
@@ -282,47 +241,49 @@ public class BTClient extends Activity {
 	public void onaltHoldButtonClicked(View v)
 	{
 		Button btnConnect=(Button) findViewById(R.id.Button03);
-		if(btnConnect.getText()=="断开")
-		{
+        String disconnect = getResources().getString(R.string.Disconnect);
+        String disconnectToast = getResources().getString(R.string.DisconnectToast);
+
+		if(btnConnect.getText() == disconnect){
 			if( altHoldButton.getCurrentTextColor()!=Color.GREEN )
 			{	//定高定点都开
 				btSendBytes(Protocol.getSendData(Protocol.HOLD_ALT, Protocol.getCommandData(Protocol.HOLD_ALT))); 
 				altHoldButton.setTextColor(Color.GREEN);
-			//	stickView.SmallRockerCircleY=150;		//tobe fixed!! use back middle function instead
-				stickView.altCtrlMode=1;	
-			} 
-			else	//都取消
-			{ 
+				stickView.altCtrlMode=1;
+			}else{
 				btSendBytes(Protocol.getSendData(Protocol.STOP_HOLD_ALT, Protocol.getCommandData(Protocol.STOP_HOLD_ALT)));
 				altHoldButton.setTextColor(Color.WHITE); 
-			//	stickView.stickHomeY1=-1;
 				stickView.altCtrlMode=0;
 			}
-		}
-		else
-			Toast.makeText(this, "未连接设备", Toast.LENGTH_SHORT).show(); 
+		}else {
+            Toast.makeText(this, disconnectToast, Toast.LENGTH_SHORT).show();
+        }
 	}
 	
 	//校准
 	public void onAccCaliButtonClicked(View v)
 	{
 		Button btnConnect=(Button) findViewById(R.id.Button03);
-		if(btnConnect.getText()=="断开")
-		{
+        String disconnect = getResources().getString(R.string.Disconnect);
+        String disconnectToast = getResources().getString(R.string.DisconnectToast);
+
+		if(btnConnect.getText() == disconnect){
 			btSendBytes(Protocol.getSendData(Protocol.MSP_ACC_CALIBRATION, Protocol.getCommandData(Protocol.MSP_ACC_CALIBRATION)));
-		}
-		else
-			Toast.makeText(this, "未连接设备", Toast.LENGTH_SHORT).show(); 
+		}else {
+            Toast.makeText(this, disconnectToast, Toast.LENGTH_SHORT).show();
+        }
 	}
+
 	public void btSendBytes(byte[] data)
 	{
 		Button btnConnect=(Button) findViewById(R.id.Button03);
-		if(btnConnect.getText()=="断开")//当已经连接上时才发送
+        String disconnect = getResources().getString(R.string.Disconnect);
+        String disconnectToast = getResources().getString(R.string.DisconnectToast);
+
+		if(btnConnect.getText() == disconnect)//当已经连接上时才发送
 		{
 			try {
 				OutputStream os = _socket.getOutputStream(); // 蓝牙连接输出流
-				//byte[] bos = edit0.getText().toString().getBytes();
-				//byte[] bos={0x0a,0x0d};
 				os.write(data);
 			} 
 			catch (IOException e) {
@@ -331,9 +292,9 @@ public class BTClient extends Activity {
 			catch (Exception e){
 			//	Toast.makeText(this, "发送失改", Toast.LENGTH_SHORT).show();
 			}
-		}
-		 else
-			 Toast.makeText(this, "未连接设备，无法发送", Toast.LENGTH_SHORT).show();
+		}else {
+            Toast.makeText(this, disconnectToast, Toast.LENGTH_SHORT).show();
+        }
 	}
 	
 	// 接收活动结果，响应startActivityForResult()

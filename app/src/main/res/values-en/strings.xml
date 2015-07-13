@@ -7,11 +7,17 @@
     <string name="pitch">Pitch:</string>
     <string name="roll">Roll:</string>
     <string name="Connect">Connect</string>
+    <string name="Disconnect">Disconnect</string>
     <string name="Unarm">Unarm</string>
+    <string name="Arm">Arm</string>
     <string name="Launch">Launch</string>
+    <string name="Land">Land</string>
     <string name="Headfree">Headfree</string>
+    <string name="Headstrict">Headstri</string>
     <string name="Altihold">Altihold</string>
     <string name="IMUCali">IMUCali</string>
+
+    <string name="DisconnectToast">BT NOT Connected</string>
 
     <string name="SelectBTDevice">Select BT Device</string>
     <string name="ScanBTDevice">Scan Bluetooth</string>
