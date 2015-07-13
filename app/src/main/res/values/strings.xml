@@ -6,6 +6,7 @@
     <string name="throttle">Throttle:</string>
     <string name="pitch">Pitch:</string>
     <string name="roll">Roll:</string>
+    <string name="Connect">连接</string>
        
 </resources>
 

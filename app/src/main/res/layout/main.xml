@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onConnectButtonClicked"
-            android:text="连接" >
+            android:text="@string/Connect" >
         </Button>
  		<Button
             android:id="@+id/armButton"
