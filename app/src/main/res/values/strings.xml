@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, BTClient!</string>
+    <string name="Cancel">取消</string>
     <string name="app_name">CopterRoller</string>
     <string name="yaw">Yaw:</string>
     <string name="throttle">Throttle:</string>
     <string name="pitch">Pitch:</string>
     <string name="roll">Roll:</string>
     <string name="Connect">连接</string>
+    <string name="Unarm">解锁</string>
+    <string name="Launch">起飞</string>
+    <string name="Headfree">无头</string>
+    <string name="Altihold">定高</string>
+    <string name="IMUCali">校准</string>
+
+
+    <string name="SelectBTDevice">选取蓝牙设备</string>
+    <string name="ScanBTDevice">扫描蓝牙</string>
+    <string name="UnpairBT">未配对设备</string>
+    <string name="ScanningBT">查找设备中...</string>
        
 </resources>
 

@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, BTClient!</string>
+    <string name="Cancel">Cancel</string>
     <string name="app_name">CopterRoller</string>
     <string name="yaw">Yaw:</string>
     <string name="throttle">Throttle:</string>
     <string name="pitch">Pitch:</string>
     <string name="roll">Roll:</string>
     <string name="Connect">Connect</string>
+    <string name="Unarm">Unarm</string>
+    <string name="Launch">Launch</string>
+    <string name="Headfree">Headfree</string>
+    <string name="Altihold">Altihold</string>
+    <string name="IMUCali">IMUCali</string>
+
+    <string name="SelectBTDevice">Select BT Device</string>
+    <string name="ScanBTDevice">Scan Bluetooth</string>
+    <string name="UnpairBT">Unpaired BT</string>
+    <string name="ScanningBT">Scanning BT...</string>
        
 </resources>
 

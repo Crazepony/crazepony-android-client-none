@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onSendArmButtonClicked"
-            android:text="解锁" >
+            android:text="@string/Unarm" >
         </Button>
         
  		<Button
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onlauchLandButtonClicked"
-            android:text="起飞" >
+            android:text="@string/Launch" >
         </Button>
         <Button
             android:id="@+id/headFreeButton"
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onheadFreeButtonClicked"
-            android:text="无头" >
+            android:text="@string/Headfree" >
         </Button>
 
         <Button
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onaltHoldButtonClicked"
-            android:text="定高" >
+            android:text="@string/Altihold" >
         </Button>
          <Button
             android:id="@+id/accCaliButton"
@@ -73,36 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onAccCaliButtonClicked"
-            android:text="校准" >
-        </Button>
-        <Button
-            android:id="@+id/land"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onSaveButtonClicked"
-            android:text="保存" 
-            android:visibility="gone">
-        </Button>
-
-        <Button
-            android:id="@+id/Button05"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClearButtonClicked"
-            android:text="清空" 
-            android:visibility="gone">
-        </Button>
-
-        <Button
-            android:id="@+id/Button06"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onQuitButtonClicked"
-            android:text="退出" 
-            android:visibility="gone">
+            android:text="@string/IMUCali" >
         </Button>
     </LinearLayout>
     

@@ -27,7 +27,7 @@
     <TextView android:id="@+id/title_new_devices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="未配对设备"
+        android:text="@string/UnpairBT"
         android:visibility="gone"
         android:background="#666"
         android:textColor="#fff"
@@ -42,12 +42,12 @@
     <Button android:id="@+id/button_scan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="查找设备"
+        android:text="@string/ScanBTDevice"
     />
     <Button android:id="@+id/button_cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="取消"
+        android:text="@string/Cancel"
         android:onClick="OnCancel"
     />
 </LinearLayout>

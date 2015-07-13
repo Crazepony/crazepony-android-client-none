@@ -31,7 +31,7 @@
         <activity
             android:name=".DeviceListActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:label="选取连接设备"
+            android:label="@string/SelectBTDevice"
             android:theme="@android:style/Theme.Dialog" />
     </application>
 

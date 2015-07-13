@@ -135,7 +135,7 @@ public class DeviceListActivity extends Activity {
 
         // 在窗口显示查找中信息
         setProgressBarIndeterminateVisibility(true);
-        setTitle("查找设备中...");
+        setTitle("@string/ScanningBT");
 
         // 显示其它设备（未配对设备）列表
         findViewById(R.id.title_new_devices).setVisibility(View.VISIBLE);
