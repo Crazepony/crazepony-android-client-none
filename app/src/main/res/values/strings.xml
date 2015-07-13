@@ -18,7 +18,9 @@
     <string name="IMUCali">校准</string>
 
     <string name="DisconnectToast">未连接设备</string>
-
+    <string name="ConnectFailToast">连接失败！</string>
+    <string name="ConnectSuccessToast">连接蓝牙成功！</string>
+    <string name="OpenBT">打开蓝牙中...</string>
 
     <string name="SelectBTDevice">选取蓝牙设备</string>
     <string name="ScanBTDevice">扫描蓝牙</string>

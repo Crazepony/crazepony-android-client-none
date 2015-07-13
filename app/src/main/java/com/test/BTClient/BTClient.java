@@ -217,18 +217,14 @@ public class BTClient extends Activity {
 	{
 		Button btnConnect=(Button) findViewById(R.id.Button03);
         String disconnect = getResources().getString(R.string.Disconnect);
-        String headfree = getResources().getString(R.string.Headfree);
-        String headstrict = getResources().getString(R.string.Headstrict);
         String disconnectToast = getResources().getString(R.string.DisconnectToast);
 
 		if(btnConnect.getText() == disconnect){
 			if(headFreeButton.getCurrentTextColor()!=Color.GREEN)
 			{	btSendBytes(Protocol.getSendData(Protocol.HEAD_FREE, Protocol.getCommandData(Protocol.HEAD_FREE)));
-                headFreeButton.setText(headstrict);
 				headFreeButton.setTextColor(Color.GREEN);
 			}else{
 				btSendBytes(Protocol.getSendData(Protocol.STOP_HEAD_FREE, Protocol.getCommandData(Protocol.STOP_HEAD_FREE)));
-			    headFreeButton.setText(headfree);
 				headFreeButton.setTextColor(Color.WHITE);
 			}
 		}else {
@@ -293,21 +289,25 @@ public class BTClient extends Activity {
 			//	Toast.makeText(this, "发送失改", Toast.LENGTH_SHORT).show();
 			}
 		}else {
-            Toast.makeText(this, disconnectToast, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,disconnectToast, Toast.LENGTH_SHORT).show();
         }
 	}
 	
 	// 接收活动结果，响应startActivityForResult()
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		
+
+        String connectFailToast = getResources().getString(R.string.ConnectFailToast);
+        String connectSuccessToast = getResources().getString(R.string.ConnectSuccessToast);
+        String disconnect = getResources().getString(R.string.Disconnect);
+
 		switch (requestCode) {
-		case REQUEST_CONNECT_DEVICE: // 连接结果，由DeviceListActivity设置返回
-			Log.v("run","ActRes");
+		case REQUEST_CONNECT_DEVICE:
+		    // 连接结果，由DeviceListActivity设置返回
 			// 响应返回结果
-			if (resultCode == Activity.RESULT_OK) 
-			{ // 连接成功，由DeviceListActivity设置返回
+
+			if (resultCode == Activity.RESULT_OK){
+			    // 连接成功，由DeviceListActivity设置返回
 				// MAC地址，由DeviceListActivity设置返回
-				Log.v("run","ActRes2");
 				String address = data.getExtras().getString(
 						DeviceListActivity.EXTRA_DEVICE_ADDRESS);
 				// 得到蓝牙设备句柄
@@ -315,27 +315,24 @@ public class BTClient extends Activity {
 
 				// 用服务号得到socket
 				try {
-					_socket = _device.createRfcommSocketToServiceRecord(UUID
-							.fromString(MY_UUID));
+					_socket = _device.createRfcommSocketToServiceRecord(UUID.fromString(MY_UUID));
 				} catch (IOException e) {
-					Toast.makeText(this, "连接失败！", Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, connectFailToast, Toast.LENGTH_SHORT).show();
 				}
 				// 连接socket
 				Button btn = (Button) findViewById(R.id.Button03);
 				try {
-					/**---------------successfully Connected */
+					//successfully Connected
 					_socket.connect();
-					Toast.makeText(this, "连接" + _device.getName() + "成功！",
-							Toast.LENGTH_SHORT).show();
-					btn.setText("断开");
+					Toast.makeText(this,connectSuccessToast,Toast.LENGTH_SHORT).show();
+					btn.setText(disconnect);
 				} catch (IOException e) {
 					try {
-						Toast.makeText(this, "连接失败！", Toast.LENGTH_SHORT).show();
+						Toast.makeText(this,connectFailToast, Toast.LENGTH_SHORT).show();
 						_socket.close();
 						_socket = null;
 					} catch (IOException ee) {
-						Toast.makeText(this, "连接失败！", Toast.LENGTH_SHORT)
-								.show();
+						Toast.makeText(this,connectFailToast, Toast.LENGTH_SHORT)	.show();
 					}
 
 					return;
@@ -524,13 +521,18 @@ public class BTClient extends Activity {
 		  _bluetooth.disable(); //关闭蓝牙服务
 	}
 
-	// 菜单处理部分
 	// 连接按键响应函数
 	public void onConnectButtonClicked(View v) {
+
+        String openBT = getResources().getString(R.string.OpenBT);
+        String disconnectToast = getResources().getString(R.string.DisconnectToast);
+        String connect = getResources().getString(R.string.Connect);
+
 		if (_bluetooth.isEnabled() == false) { // 如果蓝牙服务不可用则提示
-			Toast.makeText(this, " 打开蓝牙中...", Toast.LENGTH_LONG).show();
+			Toast.makeText(this,openBT, Toast.LENGTH_LONG).show();
 			return;
 		}
+
 		// 如未连接设备则打开DeviceListActivity进行设备搜索
 		Button btn = (Button) findViewById(R.id.Button03);
 		if (_socket == null) {
@@ -543,9 +545,7 @@ public class BTClient extends Activity {
 				_socket.close();
 				_socket = null;
 				bRun = false;
-				btn.setText("连接");
-				
-				//ReadThread.stop();//------added
+				btn.setText(connect);
 			} catch (IOException e) {
 			}
 		}
