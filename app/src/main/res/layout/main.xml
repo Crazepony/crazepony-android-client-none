@@ -58,14 +58,7 @@
             android:onClick="onheadFreeButtonClicked"
             android:text="无头" >
         </Button>
-        <Button
-            android:id="@+id/posHoldButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onposHoldButtonClicked"
-            android:text="定点" >
-        </Button>
+
         <Button
             android:id="@+id/altHoldButton"
             android:layout_width="match_parent"
@@ -111,23 +104,6 @@
             android:text="退出" 
             android:visibility="gone">
         </Button>
-    </LinearLayout>
-    
-  <LinearLayout android:layout_width="match_parent" 
-        android:layout_height="wrap_content" 
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_gravity="center">
-    <TextView 
-	    	android:id="@+id/wpText" 
-            android:layout_width="wrap_content" 
-            android:layout_height="wrap_content"  
-            android:text="目的地：" />
-    <Spinner
-        android:id="@+id/wayPointSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        />
     </LinearLayout>
     
  <LinearLayout android:layout_width="match_parent" 

@@ -77,8 +77,7 @@ public class BTClient extends Activity {
 	 
 	private TextView throttleText,yawText,pitchText,rollText;
 	private TextView pitchAngText,rollAngText,yawAngText,altText,GPSFixText,homeFixText,distanceText,voltageText;
-	private Button armButton,lauchLandButton,headFreeButton,altHoldButton,posHoldButton,accCaliButton;
-	private Spinner wpSpinner;
+	private Button armButton,lauchLandButton,headFreeButton,altHoldButton,accCaliButton;
 	private ArrayAdapter<String> adapter;
 //	private WayPoint wp1=new WayPoint("绿地", 45443993,126373228); 
  	private Navigation nav;
@@ -128,16 +127,9 @@ public class BTClient extends Activity {
 		lauchLandButton=(Button)findViewById(R.id.lauchLandButton);
 		headFreeButton=(Button)findViewById(R.id.headFreeButton);
 		altHoldButton=(Button)findViewById(R.id.altHoldButton);
-		posHoldButton=(Button)findViewById(R.id.posHoldButton);
 		accCaliButton=(Button)findViewById(R.id.accCaliButton);
 		//GPS 导航
-	 	nav=new Navigation(); 
-		//下拉列表
-		wpSpinner=(Spinner)findViewById(R.id.wayPointSpinner);
-		adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,nav.wpStr);//创建Spinner对应的Adapter
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);//Adapter风格
-		wpSpinner.setAdapter(adapter);//关联
-		wpSpinner.setOnItemSelectedListener(new wpSpinnerSelectedListener());
+	 	nav=new Navigation();
 		
 	//	wp1.setWP("AA", 2, 3);
 		//ReadThread.start(); 
@@ -170,30 +162,7 @@ public class BTClient extends Activity {
 		navFirstStart=false;
 		super.onStop(); 
 	}
-	// Spinner Listener   注意：App开始运行时，Item会被 选定，因此会初次进入到此方法 
-	class wpSpinnerSelectedListener implements OnItemSelectedListener{
-		public void onItemSelected(AdapterView<?> arg0,View arg1,int arg2,long arg3){
-	 	//	System.out.println(nav.findWayPoint("绿地").getLat());
-			String selectedPlace=arg0.getSelectedItem().toString();
-			WayPoint selectedWayPoint=nav.wpSave.get(arg2); 
-			System.out.println(selectedPlace + Integer.toString(arg2));	//如主楼 2
-		   System.out.println(selectedWayPoint.latitude + ","+ selectedWayPoint.longtitude);
-		   Protocol.nextWp=selectedWayPoint;
-		   if(navFirstStart==false)	//过滤初始启动的ItemSeleted
-			   navFirstStart=true;
-		   else
-			   btSendBytes(Protocol.getSendData(Protocol.MSP_SET_1WP, Protocol.getCommandData(Protocol.MSP_SET_1WP)));
-			//System.out.println(Integer.toString(nav.findWayPoint(selectedPlace).getLat()));
-			//	Log.d("TAG",arg0.getSelectedItem().toString()+ Integer.toString(arg2));
-		//	Log.d("TAG",Integer.toString(nav.findWayPoint(selectedPlace).getLat()));
-			}
-		@Override
-		public void onNothingSelected(AdapterView<?> arg0) {
-			// TODO Auto-generated method stub 
-		} 
-	}
-	//地点寻找 																							我是不会那么多花言巧语好吧，要是会 我也不是现在的我，一直以来，就知道变强变强，变得更加优秀，超过周围所有的人，结果，想保护的人反而他妈的走上这条路，啥都帮不到。更混蛋的是，之所以内疚似乎更多是因为对自己能力不够感到不满，而不是同情。
-	
+
 	//**----------------------------Button:Send-------------------*//
 	// 发送按键响应
 	public void onSendButtonClicked(View v) {
@@ -308,26 +277,7 @@ public class BTClient extends Activity {
 			Toast.makeText(this, "未连接设备", Toast.LENGTH_SHORT).show();
 		
 	}
-	//定点
-	public void onposHoldButtonClicked(View v)
-	{
-		Button btnConnect=(Button) findViewById(R.id.Button03);
-		if(btnConnect.getText()=="断开")
-		{
-			if(posHoldButton.getCurrentTextColor()!=Color.GREEN )
-			{	// 定点 开 
-				btSendBytes(Protocol.getSendData(Protocol.POS_HOLD, Protocol.getCommandData(Protocol.POS_HOLD))); 
-				posHoldButton.setTextColor(Color.GREEN); 
-			} 
-			else	// 取消
-			{ 
-				btSendBytes(Protocol.getSendData(Protocol.STOP_POS_HOLD, Protocol.getCommandData(Protocol.STOP_POS_HOLD)));
-				posHoldButton.setTextColor(Color.WHITE);  
-			}
-		}
-		else
-			Toast.makeText(this, "未连接设备", Toast.LENGTH_SHORT).show(); 
-	}
+
 	//定高键
 	public void onaltHoldButtonClicked(View v)
 	{
@@ -337,7 +287,6 @@ public class BTClient extends Activity {
 			if( altHoldButton.getCurrentTextColor()!=Color.GREEN )
 			{	//定高定点都开
 				btSendBytes(Protocol.getSendData(Protocol.HOLD_ALT, Protocol.getCommandData(Protocol.HOLD_ALT))); 
-			//	altPosHoldButton.setText("不定高");
 				altHoldButton.setTextColor(Color.GREEN);
 			//	stickView.SmallRockerCircleY=150;		//tobe fixed!! use back middle function instead
 				stickView.altCtrlMode=1;	
