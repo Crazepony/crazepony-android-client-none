@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, BTClient!</string>
+    <string name="app_name">CopterRoller</string>
+    <string name="yaw">Yaw:</string>
+    <string name="throttle">Throttle:</string>
+    <string name="pitch">Pitch:</string>
+    <string name="roll">Roll:</string>
+    <string name="Connect">Connect</string>
+       
+</resources>
+
