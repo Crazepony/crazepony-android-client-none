@@ -68,10 +68,6 @@ public class BTClient extends Activity {
 	
 	//
 	private InputStream is; // 输入流，用来接收蓝牙数据
-	//private TextView text0; //提示栏解句柄
-	private EditText edit0; // 发送数据输入句柄
-	private TextView dis; // 接收数据显示区
-	private ScrollView sv; // 翻页句柄，滚动条
 	private String smsg = ""; // 显示用数据缓存
 	private String fmsg = ""; // 保存用数据缓存
 	 
@@ -117,9 +113,6 @@ public class BTClient extends Activity {
 		voltageText = (TextView)findViewById(R.id.voltageText);
 		distanceText= (TextView)findViewById(R.id.distanceText);
 		 
-		edit0 = (EditText) findViewById(R.id.Edit0); // 得到输入框句柄
-		sv = (ScrollView) findViewById(R.id.ScrollView01); // 得到翻页句柄
-		dis = (TextView) findViewById(R.id.in); // 得到数据显示句柄
 		//摇杆
 		stickView=(MySurfaceView)findViewById(R.id.stickView);
 		//按钮
@@ -459,12 +452,7 @@ public class BTClient extends Activity {
 		//显示接收到的数据
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			if(msg.arg1==1)
-			{
-				dis.setText(smsg); 
-				sv.scrollTo(0, dis.getMeasuredHeight()); // 跳至数据最后一页
-			}
-			else if(msg.arg1==2)
+            if(msg.arg1==2)
 			{
 				throttleText.setText("Throttle:"+Integer.toString(Protocol.throttle));
 				yawText.setText("Yaw:"+Integer.toString(Protocol.yaw));

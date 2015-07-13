@@ -112,39 +112,41 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 	//Stick Size init
 	private void stickSizeInit(int screenWidth,int screenHeight)
 	{
-		 LEFT_CENTERX=screenHeight/2;
-		 LEFT_CENTERY=screenHeight/2;
-		 RIGHT_CENTERX=screenWidth-LEFT_CENTERX;
-		 RIGHT_CENTERY=screenHeight/2;
-		 BACK_RECT_SIZE=screenHeight/2-20;
-		 
-		 RockerCircleX  = LEFT_CENTERX;
-		 RockerCircleY  = LEFT_CENTERY; 
-		 RockerCircleR=(float) ((BackRectRight-BackRectLeft)/2 * 1.41421);
-			//固定摇杆背景圆形的X,Y坐标以及半径
-		 RockerCircleX2 = RIGHT_CENTERX;
-		 RockerCircleY2 = RIGHT_CENTERX; 
-		 RockerCircleR2= RockerCircleR;
-		 
-		 BackRectLeft =LEFT_CENTERX-BACK_RECT_SIZE;
-		 BackRectTop =LEFT_CENTERY-BACK_RECT_SIZE;
-		 BackRectRight =LEFT_CENTERX+BACK_RECT_SIZE;
-		  BackRectButtom =LEFT_CENTERY+BACK_RECT_SIZE;
-			//摇杆的X,Y坐标以及摇杆的半径
-		  SmallRockerCircleX = LEFT_CENTERX;
-		  SmallRockerCircleY = BackRectButtom;
-		  SmallRockerCircleR = 100; 
-			//固定遥
-			 BackRectLeft2=RIGHT_CENTERX-BACK_RECT_SIZE;
-			  BackRectTop2=RIGHT_CENTERY-BACK_RECT_SIZE;
-			 BackRectRight2=RIGHT_CENTERX+BACK_RECT_SIZE;
-			 BackRectButtom2=RIGHT_CENTERY+BACK_RECT_SIZE;
-			//摇杆的X,Y坐标以及摇杆的半径
-			 SmallRockerCircleX2 = RIGHT_CENTERX;
-			 SmallRockerCircleY2 = RIGHT_CENTERY;
-			SmallRockerCircleR2 = 100;
-			
-	}
+        LEFT_CENTERX = screenHeight / 2;
+        LEFT_CENTERY = screenHeight / 2;
+        RIGHT_CENTERX = screenWidth - LEFT_CENTERX;
+        RIGHT_CENTERY = screenHeight / 2;
+        BACK_RECT_SIZE = screenHeight / 2 - 20;
+
+        RockerCircleX = LEFT_CENTERX;
+        RockerCircleY = LEFT_CENTERY;
+        RockerCircleR = (float) ((BackRectRight - BackRectLeft) / 2 * 1.41421);
+
+        //固定摇杆背景圆形的X,Y坐标以及半径
+        RockerCircleX2 = RIGHT_CENTERX;
+        RockerCircleY2 = RIGHT_CENTERX;
+        RockerCircleR2 = RockerCircleR;
+
+        BackRectLeft = LEFT_CENTERX - BACK_RECT_SIZE;
+        BackRectTop = LEFT_CENTERY - BACK_RECT_SIZE;
+        BackRectRight = LEFT_CENTERX + BACK_RECT_SIZE;
+        BackRectButtom = LEFT_CENTERY + BACK_RECT_SIZE;
+        //摇杆的X,Y坐标以及摇杆的半径
+        SmallRockerCircleX = LEFT_CENTERX;
+        SmallRockerCircleY = LEFT_CENTERY;
+        SmallRockerCircleR = 100;
+
+        //固定遥
+        BackRectLeft2 = RIGHT_CENTERX - BACK_RECT_SIZE;
+        BackRectTop2 = RIGHT_CENTERY - BACK_RECT_SIZE;
+        BackRectRight2 = RIGHT_CENTERX + BACK_RECT_SIZE;
+        BackRectButtom2 = RIGHT_CENTERY + BACK_RECT_SIZE;
+
+        //摇杆的X,Y坐标以及摇杆的半径
+        SmallRockerCircleX2 = RIGHT_CENTERX;
+        SmallRockerCircleY2 = RIGHT_CENTERY;
+        SmallRockerCircleR2 = 100;
+    }
 	/***
 	 * 得到两点之线与x轴的弧度
 	 */
@@ -185,11 +187,14 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 			Log.v("TouchPos","ACTION_UP");
 			Log.v("TouchPos","PointNum:"+Integer.toString(event.getPointerCount()) + ",actionIndex:"+Integer.toString(event.getActionIndex()) );
 			Log.v("TouchPos","X:"+Float.toString(event.getX()) + ";Y:"+Float.toString(event.getY())    );
-			leftTouching=false;rightTouching=false; 
+
+			leftTouching=false;
+            rightTouching=false;
+
 			//放手归位
-			SmallRockerCircleX = LEFT_CENTERX;//SmallRockerCircleY = LEFT_CENTERY;//油门不回中
-//			if(stickHomeY1>=0)
-//				SmallRockerCircleY=stickHomeY1; 	//油门回中由模式决定
+			SmallRockerCircleX = LEFT_CENTERX;
+            SmallRockerCircleY = LEFT_CENTERY;
+
 			if(altCtrlMode==1)	//定高爬升
 				SmallRockerCircleY= LEFT_CENTERY;
 			
@@ -456,6 +461,14 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 		Log.v("Himi", "surfaceChanged");
+
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        int WMwidth = wm.getDefaultDisplay().getWidth();
+        int WMheight = wm.getDefaultDisplay().getHeight();
+
+        Log.v("viewSize","height:"+ WMheight + "  Width:"+WMwidth);
+
+        stickSizeInit(WMwidth,400);	//Obain the height of this view
 	}
 
 	public void surfaceDestroyed(SurfaceHolder holder) {

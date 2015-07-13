@@ -4,23 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ScrollView
-        android:id="@+id/ScrollView01"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:scrollbars="vertical" 
-         android:visibility="gone"
-        >
-        <TextView
-            android:id="@+id/in"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-             android:visibility="gone"
-            
-            />
-    </ScrollView>
- <LinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
@@ -77,7 +61,7 @@
         </Button>
     </LinearLayout>
     
- <LinearLayout android:layout_width="match_parent" 
+    <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content" 
         android:orientation="horizontal">
 
@@ -136,8 +120,6 @@
             android:layout_height="wrap_content" 
             android:layout_weight="1" 
             android:text="Voltage:" />
-
-        
     </LinearLayout>
     
     <LinearLayout android:layout_width="match_parent" 
@@ -175,40 +157,7 @@
     <com.test.BTClient.MySurfaceView
         android:id="@+id/stickView"
         android:layout_width="fill_parent"
-        android:layout_height="400px"
-        android:layout_marginLeft="5dp"
+        android:layout_height="fill_parent"
         android:layout_weight="0" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
-         >
-
-        <EditText
-            android:id="@+id/Edit0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_weight="1" 
-            android:visibility="gone">
-        </EditText>
-
-        <Button
-            android:id="@+id/Button02"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onSendButtonClicked"
-            android:text="send" 
-            android:visibility="gone">
-        </Button>
-
-       
-    </LinearLayout>
-
-    
-    
-   
 
 </LinearLayout>
