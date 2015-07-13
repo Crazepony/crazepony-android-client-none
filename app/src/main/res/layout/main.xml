@@ -227,7 +227,7 @@
     
     <com.test.BTClient.MySurfaceView
         android:id="@+id/stickView"
-        android:layout_width="940px"
+        android:layout_width="fill_parent"
         android:layout_height="400px"
         android:layout_marginLeft="5dp"
         android:layout_weight="0" />

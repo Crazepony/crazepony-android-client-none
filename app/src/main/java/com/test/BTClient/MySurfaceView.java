@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.WindowManager;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -82,35 +83,24 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 	public boolean touchReadyToSend=false;
 	
 	public MySurfaceView(Context context, AttributeSet attrs) {
-		  	super(context, attrs);
-		  	Log.v("Himi", "MySurfaceView");
-			//this.setKeepScreenOn(true);
-			sfh = this.getHolder();
-		 	sfh.addCallback(this);
-			paint = new Paint();
-			paint.setAntiAlias(true);
-			setFocusable(true);
-			setFocusableInTouchMode(true);  
-			
-			
-			try{
-				
-				//决定了摇杆的大小，the layout_height(px) determine the size of stick,
-				String heightS = attrs.getAttributeValue("http://schemas.android.com/apk/res/android","layout_height");//"http://schemas.android.com/apk/res/android", 
-				String widthS=attrs.getAttributeValue("http://schemas.android.com/apk/res/android","layout_width"); 
-				heightS=heightS.substring(0, heightS.indexOf("p")-2);//150px
-				widthS=widthS.substring(0, widthS.indexOf("p")-2); 
-				int height= Integer.parseInt(heightS);
-				int width= Integer.parseInt(widthS);
-			//	 attrs.getA
-				Log.v("viewSize","height:"+ heightS + "  Width:"+widthS);
-				//Log.v("viewSize","height:"+ Integer.toString(height) + "  Width:"+Integer.toString(width));
-				stickSizeInit(width,height);	//Obain the height of this view
-			}
-			catch(Exception e){ 
-				Log.e("err","No px" + e.getMessage()); 
-			}
-		  // TODO Auto-generated constructor stub
+        super(context, attrs);
+        Log.v("Himi", "MySurfaceView");
+        sfh = this.getHolder();
+        sfh.addCallback(this);
+        paint = new Paint();
+        paint.setAntiAlias(true);
+        setFocusable(true);
+        setFocusableInTouchMode(true);
+
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        int WMwidth = wm.getDefaultDisplay().getWidth();
+        int WMheight = wm.getDefaultDisplay().getHeight();
+
+        Log.v("viewSize","height:"+ WMheight + "  Width:"+WMwidth);
+
+        stickSizeInit(WMwidth,400);	//Obain the height of this view
+
+		 // TODO Auto-generated constructor stub
 		 }  
 
 	public void surfaceCreated(SurfaceHolder holder) { 
