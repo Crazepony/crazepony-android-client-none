@@ -72,7 +72,7 @@ public class BTClient extends Activity {
 	private String fmsg = ""; // 保存用数据缓存
 	 
 	private TextView throttleText,yawText,pitchText,rollText;
-	private TextView pitchAngText,rollAngText,yawAngText,altText,GPSFixText,homeFixText,distanceText,voltageText;
+	private TextView pitchAngText,rollAngText,yawAngText,altText,distanceText,voltageText;
 	private Button armButton,lauchLandButton,headFreeButton,altHoldButton,accCaliButton;
 	private ArrayAdapter<String> adapter;
 //	private WayPoint wp1=new WayPoint("绿地", 45443993,126373228); 
@@ -103,13 +103,11 @@ public class BTClient extends Activity {
 		yawText = (TextView)findViewById(R.id.yawText);
 		pitchText = (TextView)findViewById(R.id.pitchText);
 		rollText = (TextView)findViewById(R.id.rollText);
-		//pitchAngText,rollAngText,yawAngText,altText,GPSFixText,homeFixText,voltageText
+		//pitchAngText,rollAngText,yawAngText,altText,voltageText
 		pitchAngText = (TextView)findViewById(R.id.pitchAngText);
 		rollAngText = (TextView)findViewById(R.id.rollAngText);
 		yawAngText = (TextView)findViewById(R.id.yawAngText);
 		altText = (TextView)findViewById(R.id.altText);
-		GPSFixText = (TextView)findViewById(R.id.GPSFixText);
-		homeFixText = (TextView)findViewById(R.id.homeFixText);
 		voltageText = (TextView)findViewById(R.id.voltageText);
 		distanceText= (TextView)findViewById(R.id.distanceText);
 		 
@@ -472,26 +470,7 @@ public class BTClient extends Activity {
 			 	rollAngText.setText("Roll Ang: "+Protocol.rollAng);
 			 	yawAngText.setText("Yaw Ang: "+Protocol.yawAng);
 			 	altText.setText("Alt:"+Protocol.alt + "m");
-			 	if(Protocol.GPSFix!=0) 
-			 	{
-			 		GPSFixText.setTextColor(Color.GREEN); 
-			 		GPSFixText.setText("GPS Fixed:"+Protocol.staNum);
-			 	}
-			 	else  
-			 	{
-			 		GPSFixText.setTextColor(Color.RED);
-			 		GPSFixText.setText("GPS Not Fix:"+Protocol.staNum);
-			 	}
-			 	if(Protocol.GPSFixHome!=0)
-			 	{
-			 		homeFixText.setTextColor(Color.GREEN); 
-			 		homeFixText.setText("Home Not Fix");
-			 	}
-			 	else
-			 	{
-			 		homeFixText.setTextColor(Color.RED); 
-			 		homeFixText.setText("Home Fixed");
-			 	}
+
 			 	voltageText.setText("Voltage:"+Protocol.voltage + " V");
 			 	distanceText.setText("speedZ:"+Protocol.speedZ + "m/s");
 			}
