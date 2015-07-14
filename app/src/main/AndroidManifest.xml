@@ -33,6 +33,11 @@
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/SelectBTDevice"
             android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name=".DeviceScanActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/BLE_list"
+            android:theme="@android:style/Theme.Dialog" />
     </application>
 
 </manifest>

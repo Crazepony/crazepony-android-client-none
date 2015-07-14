@@ -500,11 +500,17 @@ public class BTClient extends Activity {
 			return;
 		}
 
-		// 如未连接设备则打开DeviceListActivity进行设备搜索
+		// 如未连接设备则打开DevicScanActivity进行设备搜索
 		Button btn = (Button) findViewById(R.id.Button03);
 		if (_socket == null) {
-			Intent serverIntent = new Intent(this, DeviceListActivity.class); // 跳转程序设置
+
+			Intent serverIntent = new Intent(this, DeviceScanActivity.class); // 跳转程序设置
 			startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE); // 设置返回宏定义
+
+
+//            Intent serverIntent = new Intent(this, DeviceListActivity.class); // 跳转程序设置
+//            startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE); // 设置返回宏定义
+
 		} else {	//已连接上，断开
 			// 关闭连接socket
 			try {

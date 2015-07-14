@@ -70,6 +70,8 @@ public class DeviceListActivity extends Activity {
             }
         });
 
+
+
         // 初使化设备存储数组
         mPairedDevicesArrayAdapter = new ArrayAdapter<String>(this, R.layout.device_name);
         mNewDevicesArrayAdapter = new ArrayAdapter<String>(this, R.layout.device_name);

@@ -26,6 +26,15 @@
     <string name="ScanBTDevice">扫描蓝牙</string>
     <string name="UnpairBT">未配对设备</string>
     <string name="ScanningBT">查找设备中...</string>
+    <string name="ble_not_supported">BLE不支持！</string>
+    <string name="unknown_device">未知设备</string>
+
+    <string name="menu_scan">扫描</string>
+    <string name="menu_stop">停止</string>
+
+
+    <string name="BLE_list">BLE列表</string>
+
        
 </resources>
 
