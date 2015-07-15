@@ -137,20 +137,24 @@ public class DeviceScanActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        //连接选中的BLE Crazepony飞行器
 
-        /*
+        //选中BLE Crazepony飞行器，返回主界面
         final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
         if (device == null) return;
-        final Intent intent = new Intent(this, DeviceControlActivity.class);
-        intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());
-        intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());
+
+        //获得返回到主界面的数据
+        final Intent intent = new Intent();
+        intent.putExtra(BTClient.EXTRAS_DEVICE_NAME, device.getName());
+        intent.putExtra(BTClient.EXTRAS_DEVICE_ADDRESS, device.getAddress());
         if (mScanning) {
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
             mScanning = false;
         }
-        startActivity(intent);
-        */
+
+        // 设置返回值并结束程序
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+
     }
 
     private void scanLeDevice(final boolean enable) {

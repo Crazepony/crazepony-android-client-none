@@ -56,6 +56,15 @@ import com.test.BTClient.*;
 @SuppressLint("NewApi")
 public class BTClient extends Activity {
 
+    private final static String TAG = BTClient.class.getSimpleName();
+
+    public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
+    public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
+
+
+    private String mDeviceName;
+    private String mDeviceAddress;
+
 	private final static int REQUEST_CONNECT_DEVICE = 1; // 宏定义查询设备句柄
 
 	private final static String MY_UUID = "00001101-0000-1000-8000-00805F9B34FB"; // SPP服务UUID号
@@ -284,67 +293,16 @@ public class BTClient extends Activity {
         }
 	}
 	
-	// 接收活动结果，响应startActivityForResult()
+	// 接收扫描结果，响应startActivityForResult()
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        String connectFailToast = getResources().getString(R.string.ConnectFailToast);
-        String connectSuccessToast = getResources().getString(R.string.ConnectSuccessToast);
-        String disconnect = getResources().getString(R.string.Disconnect);
-
 		switch (requestCode) {
 		case REQUEST_CONNECT_DEVICE:
-		    // 连接结果，由DeviceListActivity设置返回
-			// 响应返回结果
-
 			if (resultCode == Activity.RESULT_OK){
-			    // 连接成功，由DeviceListActivity设置返回
-				// MAC地址，由DeviceListActivity设置返回
-				String address = data.getExtras().getString(
-						DeviceListActivity.EXTRA_DEVICE_ADDRESS);
-				// 得到蓝牙设备句柄
-				_device = _bluetooth.getRemoteDevice(address);
+                mDeviceName = data.getExtras().getString(EXTRAS_DEVICE_NAME);
+                mDeviceAddress = data.getExtras().getString(EXTRAS_DEVICE_ADDRESS);
 
-				// 用服务号得到socket
-				try {
-					_socket = _device.createRfcommSocketToServiceRecord(UUID.fromString(MY_UUID));
-				} catch (IOException e) {
-					Toast.makeText(this, connectFailToast, Toast.LENGTH_SHORT).show();
-				}
-				// 连接socket
-				Button btn = (Button) findViewById(R.id.Button03);
-				try {
-					//successfully Connected
-					_socket.connect();
-					Toast.makeText(this,connectSuccessToast,Toast.LENGTH_SHORT).show();
-					btn.setText(disconnect);
-				} catch (IOException e) {
-					try {
-						Toast.makeText(this,connectFailToast, Toast.LENGTH_SHORT).show();
-						_socket.close();
-						_socket = null;
-					} catch (IOException ee) {
-						Toast.makeText(this,connectFailToast, Toast.LENGTH_SHORT)	.show();
-					}
-
-					return;
-				} 
-				// 打开接收线程
-				try {
-					is = _socket.getInputStream(); // 得到蓝牙数据输入流
-				} catch (IOException e) {
-					Toast.makeText(this, "接收数据失败！", Toast.LENGTH_SHORT).show();
-					return;
-				}
-				
-				if (bThread == false) {
-					Log.v("run","ThreadStart");
-					ReadThread.start();
-					bThread = true;
-					
-				} else {
-					bRun = true;
-				}
-			}
+                Log.i(TAG, "mDeviceName:"+mDeviceName+",mDeviceAddress:"+mDeviceAddress);
+            }
 			break;
 		default:
 			break;
