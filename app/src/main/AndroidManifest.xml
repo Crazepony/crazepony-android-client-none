@@ -38,6 +38,7 @@
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/BLE_list"
             android:theme="@android:style/Theme.Dialog" />
+        <service android:name=".BluetoothLeService" android:enabled="true"/>
     </application>
 
 </manifest>

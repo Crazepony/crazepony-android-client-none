@@ -27,12 +27,18 @@ import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
@@ -64,6 +70,8 @@ public class BTClient extends Activity {
 
     private String mDeviceName;
     private String mDeviceAddress;
+    private BluetoothLeService mBluetoothLeService; //BLE收发服务
+    private boolean mConnected = false;
 
 	private final static int REQUEST_CONNECT_DEVICE = 1; // 宏定义查询设备句柄
 
@@ -101,7 +109,76 @@ public class BTClient extends Activity {
 	//
 	private BluetoothAdapter _bluetooth = BluetoothAdapter.getDefaultAdapter(); // 获取本地蓝牙适配器，即蓝牙设备
 
-	private MySurfaceView stickView; 
+	private MySurfaceView stickView;
+
+
+    // Code to manage Service lifecycle.
+    // 管理BLE数据收发服务整个生命周期
+    private final ServiceConnection mServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder service) {
+            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
+            if (!mBluetoothLeService.initialize()) {
+                Log.e(TAG, "Unable to initialize Bluetooth");
+                finish();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mBluetoothLeService = null;
+        }
+    };
+
+
+    // Handles various events fired by the Service.
+    // ACTION_GATT_CONNECTED: connected to a GATT server.
+    // ACTION_GATT_DISCONNECTED: disconnected from a GATT server.
+    // ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.
+    // ACTION_DATA_AVAILABLE: received data from the device.  This can be a result of read
+    //                        or notification operations.
+    // 定义处理BLE收发服务的各类事件接收机mGattUpdateReceiver，主要包括下面几种：
+    // ACTION_GATT_CONNECTED: 连接到GATT
+    // ACTION_GATT_DISCONNECTED: 断开GATT
+    // ACTION_GATT_SERVICES_DISCOVERED: 发现GATT下的服务
+    // ACTION_DATA_AVAILABLE: BLE收到数据
+    private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
+                mConnected = true;
+                updateConnectionState(R.string.Disconnect);
+                invalidateOptionsMenu();
+            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
+                mConnected = false;
+                updateConnectionState(R.string.Connect);
+            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+                // Show all the supported services and characteristics on the user interface.
+                //displayGattServices(mBluetoothLeService.getSupportedGattServices());
+                Log.i(TAG, "ACTION_GATT_SERVICES_DISCOVERED");
+            } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+                //displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                Log.i(TAG, "ACTION_DATA_AVAILABLE");
+            }
+        }
+    };
+
+
+    //跟新Connect按钮
+    private void updateConnectionState(final int resourceId) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Button btnConnect = (Button) findViewById(R.id.Button03);
+                btnConnect.setText(resourceId);
+            }
+        });
+    }
+
+
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -128,33 +205,31 @@ public class BTClient extends Activity {
 		headFreeButton=(Button)findViewById(R.id.headFreeButton);
 		altHoldButton=(Button)findViewById(R.id.altHoldButton);
 		accCaliButton=(Button)findViewById(R.id.accCaliButton);
-		//GPS 导航
-	 	nav=new Navigation();
-		
-	//	wp1.setWP("AA", 2, 3);
-		//ReadThread.start(); 
-		//Log.v("run",(stickView.touchReadyToSend?"TURE":"FALSE")); 
-		// 如果打开本地蓝牙设备不成功，提示信息，结束程序
-		if (_bluetooth == null) {
-			Toast.makeText(this, "无法打开手机蓝牙，请确认手机是否有蓝牙功能！", Toast.LENGTH_LONG)
-					.show();
-			finish();
-			return;
-		} 
-		// 设置设备可以被搜索
-		new Thread() {
-			public void run() {
-				if (_bluetooth.isEnabled() == false) {
-					_bluetooth.enable();
-				}
-			}
-		}.start();
+
+        //绑定BLE收发服务mServiceConnection
+        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 	}
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //注册BLE收发服务接收机mGattUpdateReceiver
+        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+        if (mBluetoothLeService != null) {
+            Log.d(TAG, "mBluetoothLeService NOT null");
+        }
+
+    }
+
 	@Override
 	public void onPause()
 	{
 		navFirstStart=false;
-		super.onPause(); 
+		super.onPause();
+        //注销BLE收发服务接收机mGattUpdateReceiver
+        unregisterReceiver(mGattUpdateReceiver);
 	}
 	@Override
 	public void onStop()
@@ -162,6 +237,15 @@ public class BTClient extends Activity {
 		navFirstStart=false;
 		super.onStop(); 
 	}
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        //解绑BLE收发服务mServiceConnection
+        unbindService(mServiceConnection);
+        mBluetoothLeService = null;
+    }
 
 	public void onSendArmButtonClicked(View v)
 	{
@@ -302,6 +386,12 @@ public class BTClient extends Activity {
                 mDeviceAddress = data.getExtras().getString(EXTRAS_DEVICE_ADDRESS);
 
                 Log.i(TAG, "mDeviceName:"+mDeviceName+",mDeviceAddress:"+mDeviceAddress);
+
+                //连接该BLE Crazepony模块
+                if (mBluetoothLeService != null) {
+                    final boolean result = mBluetoothLeService.connect(mDeviceAddress);
+                    Log.d(TAG, "Connect request result=" + result);
+                }
             }
 			break;
 		default:
@@ -435,51 +525,28 @@ public class BTClient extends Activity {
 		}
 	};
 
-	// 关闭程序掉用处理部分
-	public void onDestroy() {
-		super.onDestroy();
-		if (_socket != null) // 关闭连接socket
-			try {
-				_socket.close();
-			} catch (IOException e) {
-			}
-		  _bluetooth.disable(); //关闭蓝牙服务
-	}
+
 
 	// 连接按键响应函数
 	public void onConnectButtonClicked(View v) {
-
-        String openBT = getResources().getString(R.string.OpenBT);
-        String disconnectToast = getResources().getString(R.string.DisconnectToast);
-        String connect = getResources().getString(R.string.Connect);
-
-		if (_bluetooth.isEnabled() == false) { // 如果蓝牙服务不可用则提示
-			Toast.makeText(this,openBT, Toast.LENGTH_LONG).show();
-			return;
-		}
-
-		// 如未连接设备则打开DevicScanActivity进行设备搜索
-		Button btn = (Button) findViewById(R.id.Button03);
-		if (_socket == null) {
-
+		if (!mConnected) {
+            //进入扫描页面
 			Intent serverIntent = new Intent(this, DeviceScanActivity.class); // 跳转程序设置
 			startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE); // 设置返回宏定义
 
-
-//            Intent serverIntent = new Intent(this, DeviceListActivity.class); // 跳转程序设置
-//            startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE); // 设置返回宏定义
-
-		} else {	//已连接上，断开
-			// 关闭连接socket
-			try {
-				is.close();
-				_socket.close();
-				_socket = null;
-				bRun = false;
-				btn.setText(connect);
-			} catch (IOException e) {
-			}
+		} else {
+            //断开连接
+            mBluetoothLeService.disconnect();
 		}
-		return;
 	}
+
+
+    private static IntentFilter makeGattUpdateIntentFilter() {
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
+        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
+        return intentFilter;
+    }
 }
