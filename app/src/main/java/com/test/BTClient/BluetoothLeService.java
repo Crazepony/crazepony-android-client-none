@@ -32,6 +32,8 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -324,6 +326,32 @@ public class BluetoothLeService extends Service {
     public List<BluetoothGattService> getSupportedGattServices() {
         if (mBluetoothGatt == null) return null;
 
-        return mBluetoothGatt.getServices();
+        String uuid = null;
+
+        //将所有的GATT服务都打印出来
+        List<BluetoothGattService> gattServices = mBluetoothGatt.getServices();
+
+        // Loops through available GATT Services.
+        for (BluetoothGattService gattService : gattServices) {
+            uuid = gattService.getUuid().toString();
+
+            Log.i(TAG,"gattService:"+uuid);
+            List<BluetoothGattCharacteristic> gattCharacteristics =
+                    gattService.getCharacteristics();
+
+            // Loops through available Characteristics.
+            for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
+                uuid = gattCharacteristic.getUuid().toString();
+                Log.i(TAG,"gattCharacteristic:"+uuid);
+
+                if(uuid == "0000ffe1-0000-1000-8000-00805f9b34fb"){
+                    mBluetoothGatt.readCharacteristic(gattCharacteristic);
+                }
+            }
+
+        }
+
+        return gattServices;
+
     }
 }

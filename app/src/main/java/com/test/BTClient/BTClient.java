@@ -150,17 +150,19 @@ public class BTClient extends Activity {
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
                 updateConnectionState(R.string.Disconnect);
-                invalidateOptionsMenu();
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
                 updateConnectionState(R.string.Connect);
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+
                 // Show all the supported services and characteristics on the user interface.
-                //displayGattServices(mBluetoothLeService.getSupportedGattServices());
-                Log.i(TAG, "ACTION_GATT_SERVICES_DISCOVERED");
+                // 获得所有的GATT服务，对于Crazepony的BLE透传模块，包括GAP（General Access Profile），
+                // GATT（General Attribute Profile），还有Unknown（用于数据读取）
+                mBluetoothLeService.getSupportedGattServices();
+
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-                //displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
-                Log.i(TAG, "ACTION_DATA_AVAILABLE");
+
+                Log.i(TAG, intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
             }
         }
     };
