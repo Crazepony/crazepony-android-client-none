@@ -8,8 +8,7 @@
 
 package com.test.BTClient;
 
-import java.io.File;
-import java.io.FileOutputStream;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -17,41 +16,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-import com.test.BTClient.DeviceListActivity; 
-import com.test.BTClient.MySurfaceView;
-
-import android.R.bool;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
-import android.view.LayoutInflater;
-//import android.view.Menu;            //如使用菜单加入此三包
-//import android.view.MenuInflater;
-//import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ArrayAdapter;
  
-import com.test.BTClient.*;
 
 @SuppressLint("NewApi")
 public class BTClient extends Activity {
@@ -61,11 +43,7 @@ public class BTClient extends Activity {
 	private final static String MY_UUID = "00001101-0000-1000-8000-00805F9B34FB"; // SPP服务UUID号
 	//
 	private final static int UPDATE_MUV_STATE_PERIOD=200;
-	
-	
-	List<WayPoint> wpRoute;	//规划路线
-//	private WayPoint[] wpArr=new WayPoint[3]; 
-	
+
 	//
 	private InputStream is; // 输入流，用来接收蓝牙数据
 	private String smsg = ""; // 显示用数据缓存
@@ -75,8 +53,6 @@ public class BTClient extends Activity {
 	private TextView pitchAngText,rollAngText,yawAngText,altText,distanceText,voltageText;
 	private Button armButton,lauchLandButton,headFreeButton,altHoldButton,accCaliButton;
 	private ArrayAdapter<String> adapter;
-//	private WayPoint wp1=new WayPoint("绿地", 45443993,126373228); 
- 	private Navigation nav;
  	private boolean navFirstStart=false;
 	//private newButtonView newButton;
 
@@ -119,12 +95,7 @@ public class BTClient extends Activity {
 		headFreeButton=(Button)findViewById(R.id.headFreeButton);
 		altHoldButton=(Button)findViewById(R.id.altHoldButton);
 		accCaliButton=(Button)findViewById(R.id.accCaliButton);
-		//GPS 导航
-	 	nav=new Navigation();
-		
-	//	wp1.setWP("AA", 2, 3);
-		//ReadThread.start(); 
-		//Log.v("run",(stickView.touchReadyToSend?"TURE":"FALSE")); 
+
 		// 如果打开本地蓝牙设备不成功，提示信息，结束程序
 		if (_bluetooth == null) {
 			Toast.makeText(this, "无法打开手机蓝牙，请确认手机是否有蓝牙功能！", Toast.LENGTH_LONG)
@@ -370,15 +341,13 @@ public class BTClient extends Activity {
 					while (is.available() == 0) {//wait for BT rec Data
 						while (bRun == false) { 
 						//	Log.v("run","bRunFalse");
-						} 
-					//	Log.v("run","runing1");
+						}
 						//遥控发送分支线程
 						if(stickView.touchReadyToSend==true)// process stick movement
 						{
-							
+							//发送摇杆数据，即油门，航向角，俯仰，横滚4个通道数据
 							btSendBytes(Protocol.getSendData(Protocol.SET_4CON, Protocol.getCommandData(Protocol.SET_4CON))); 
-//								System.out.println("Thro: " + a+"," +Protocol.outputData[0]+ ","+ Protocol.outputData[3] +","+ Protocol.outputData[4]);
-					
+
 							Message msg=handler.obtainMessage();
 							msg.arg1=2;
 							handler.sendMessage(msg);
@@ -393,7 +362,8 @@ public class BTClient extends Activity {
 
 						}
 					}
-					//有数据过来
+
+					//接收数据，Receive data
 					time1=time2=SystemClock.uptimeMillis();
 					boolean frameRec=false;
 					while (!frameRec) {
@@ -414,18 +384,8 @@ public class BTClient extends Activity {
 						String s = new String(buffer_new, 0, n);
 						smsg += s; // 写入接收缓存 
 						reCmd=Protocol.processDataIn( buffer,num);
-					/*	for(int j=0;j<num;j++)
-							totBuffer.add(buffer[j]);
-					 	totNum+=num; 
-						while(is.available()==0 && !frameRec)//wait for more data in 5ms
-						{ 
-							time1=SystemClock.uptimeMillis();
-							if(time1-time2>30)	//5ms间隔 内认为连续 
-								frameRec=true;  
-						}
-						time2=time1;  */
-						   if (is.available() == 0)	 
-							   frameRec=true; // 短时间没有数据才跳出进行显示
+                        if (is.available() == 0)
+                            frameRec=true; // 短时间没有数据才跳出进行显示
 					} 
 
 					totNum=0;
@@ -435,17 +395,14 @@ public class BTClient extends Activity {
 						msg.arg1=reCmd;//
 						handler.sendMessage(msg); 
 					}
-					// 消息添加到handler的消息队列，handler接到后，进行操作：显示刷新等 
-//					Message msg=handler.obtainMessage();
-//					msg.arg1=3;//
-//					handler.sendMessage(msg);
 				} catch (IOException e) {
 				}
 			}
 		}
 	};
-	//------------------Handler---------------------//
-	//创建一个消息处理队列，主要是用于线程通知到此，以 刷新UI
+
+
+	//创建一个消息处理队列，主要是用于线程通知到此，以刷新UI
 	Handler handler = new Handler() {
 		//显示接收到的数据
 		public void handleMessage(Message msg) {
@@ -457,15 +414,8 @@ public class BTClient extends Activity {
 				pitchText.setText("Pitch:"+Integer.toString(Protocol.pitch));
 				rollText.setText("Roll:"+Integer.toString(Protocol.roll));
 			}
-			else if(msg.arg1==3)//更新状态
-			{
-		//		 throttleText.setText(throttleText.getText()+"1");
-			//	byte temp[]={1,2};
-	
-			}
 			else if(msg.arg1==Protocol.FLY_STATE)
 			{
-			//	throttleText.setText(throttleText.getText()+"1");
 			 	pitchAngText.setText("Pitch Ang: "+Protocol.pitchAng);
 			 	rollAngText.setText("Roll Ang: "+Protocol.rollAng);
 			 	yawAngText.setText("Yaw Ang: "+Protocol.yawAng);
