@@ -357,6 +357,7 @@ public class BTClient extends Activity {
 						timeNew=SystemClock.uptimeMillis();	//系统运行到此的时间
 						if(timeNew-timePre>UPDATE_MUV_STATE_PERIOD)
 						{
+                            //请求飞控上传飞控数据信息，有roll，pitch，yaw，油门，高度，电池电量等
 							timePre=timeNew;
 						 	btSendBytes(Protocol.getSendData(Protocol.FLY_STATE, Protocol.getCommandData(Protocol.FLY_STATE))); 
 
