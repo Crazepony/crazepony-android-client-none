@@ -364,16 +364,8 @@ public class BTClient extends Activity {
 
 		if(btnConnect.getText() == disconnect)//当已经连接上时才发送
 		{
-			try {
-				OutputStream os = _socket.getOutputStream(); // 蓝牙连接输出流
-				os.write(data);
-			} 
-			catch (IOException e) {
-			//	Toast.makeText(this, "发送失改", Toast.LENGTH_SHORT).show();
-			} 
-			catch (Exception e){
-			//	Toast.makeText(this, "发送失改", Toast.LENGTH_SHORT).show();
-			}
+            mBluetoothLeService.writeCharacteristic(data);
+
 		}else {
             Toast.makeText(this,disconnectToast, Toast.LENGTH_SHORT).show();
         }

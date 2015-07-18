@@ -65,8 +65,14 @@ public class BluetoothLeService extends Service {
     public final static String EXTRA_DATA =
             "com.example.bluetooth.le.EXTRA_DATA";
 
-//    public final static UUID UUID_HEART_RATE_MEASUREMENT =
-//            UUID.fromString(SampleGattAttributes.HEART_RATE_MEASUREMENT);
+    //用于数据接收、发送的service和character对应的UUID，由改ble透传模块决定
+    public final static UUID UUID_NOTIFY =
+            UUID.fromString("0000ffe1-0000-1000-8000-00805f9b34fb");
+    public final static UUID UUID_SERVICE =
+            UUID.fromString("0000ffe0-0000-1000-8000-00805f9b34fb");
+
+    //用于数据接收、发送的character，由改ble透传模块决定
+    public BluetoothGattCharacteristic mNotifyCharacteristic;
 
     // Implements callback methods for GATT events that the app cares about.  For example,
     // connection change and services discovered.
@@ -282,6 +288,12 @@ public class BluetoothLeService extends Service {
         mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
     }
 
+    //将字符串写入ble发送出去
+    public void writeCharacteristic(byte[] data)
+    {
+        mNotifyCharacteristic.setValue(data);
+        mBluetoothGatt.writeCharacteristic(mNotifyCharacteristic);
+    }
 
     /**
      * Retrieves a list of supported GATT services on the connected device. This should be
@@ -310,7 +322,8 @@ public class BluetoothLeService extends Service {
                 uuid = gattCharacteristic.getUuid().toString();
                 Log.i(TAG,"gattCharacteristic:"+uuid);
 
-                if(uuid.equals("0000ffe1-0000-1000-8000-00805f9b34fb")){
+                if(uuid.equalsIgnoreCase(UUID_NOTIFY.toString())){
+                    mNotifyCharacteristic = gattCharacteristic;
                     mBluetoothGatt.setCharacteristicNotification(gattCharacteristic,true);
                 }
             }
