@@ -41,8 +41,10 @@ public class BTClient extends Activity {
 
 	private final static int REQUEST_CONNECT_DEVICE = 1; // 宏定义查询设备句柄
 
-	//update IMU data period，跟新IMU数据周期
-	private final static int UPDATE_MUV_STATE_PERIOD=500;
+	//向BLE发送数据的周期，现在是两类数据，一是摇杆的4通道值，二是请求IMU数据跟新命令
+    //BLE模块本身传输速率有限，尽量减少数据发送量
+	private final static int WRITE_DATA_PERIOD=40;
+    private static int IMU_CNT = 0; //update IMU period，跟新IMU数据周期，40*10ms
     Handler timeHandler = new Handler();    //定时器周期，用于跟新IMU数据等
 	 
 	private TextView throttleText,yawText,pitchText,rollText;
@@ -126,17 +128,24 @@ public class BTClient extends Activity {
         @Override
         public void run() {
             try {
-                timeHandler.postDelayed(this, UPDATE_MUV_STATE_PERIOD);
+                timeHandler.postDelayed(this, WRITE_DATA_PERIOD);
 
-                //request for IMU data update，请求IMU跟新
-                btSendBytes(Protocol.getSendData(Protocol.FLY_STATE, Protocol.getCommandData(Protocol.FLY_STATE)));
+                if(IMU_CNT >= 10){
+                    IMU_CNT = 0;
+                    //request for IMU data update，请求IMU跟新
+                    btSendBytes(Protocol.getSendData(Protocol.FLY_STATE,
+                            Protocol.getCommandData(Protocol.FLY_STATE)));
+                }
+                IMU_CNT++;
+
 
                 // process stick movement，处理摇杆数据
                 if(stickView.touchReadyToSend==true){
-                    btSendBytes(Protocol.getSendData(Protocol.SET_4CON, Protocol.getCommandData(Protocol.SET_4CON)));
+                    btSendBytes(Protocol.getSendData(Protocol.SET_4CON,
+                            Protocol.getCommandData(Protocol.SET_4CON)));
 
-                    Log.i(TAG,"Thro: " +Protocol.throttle +",yaw: " +Protocol.yaw+ ",roll: "+ Protocol.roll
-                            +",pitch: "+ Protocol.pitch);
+                    Log.i(TAG,"Thro: " +Protocol.throttle +",yaw: " +Protocol.yaw+ ",roll: "
+                            + Protocol.roll +",pitch: "+ Protocol.pitch);
 
                     stickView.touchReadyToSend=false;
                 }
@@ -192,7 +201,7 @@ public class BTClient extends Activity {
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
         //开启IMU数据跟新定时器
-        timeHandler.postDelayed(runnable, UPDATE_MUV_STATE_PERIOD); //每隔1s执行
+        timeHandler.postDelayed(runnable, WRITE_DATA_PERIOD); //每隔1s执行
 	}
 
     @Override
