@@ -8,13 +8,8 @@
 
 package com.test.BTClient;
 
-import java.io.InputStream;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -25,14 +20,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ArrayAdapter;
 
 @SuppressLint("NewApi")
 public class BTClient extends Activity {
@@ -42,7 +34,6 @@ public class BTClient extends Activity {
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
 
-
     private String mDeviceName;
     private String mDeviceAddress;
     private BluetoothLeService mBluetoothLeService; //BLE收发服务
@@ -50,41 +41,16 @@ public class BTClient extends Activity {
 
 	private final static int REQUEST_CONNECT_DEVICE = 1; // 宏定义查询设备句柄
 
-	private final static String MY_UUID = "00001101-0000-1000-8000-00805F9B34FB"; // SPP服务UUID号
-
 	//update IMU data period，跟新IMU数据周期
 	private final static int UPDATE_MUV_STATE_PERIOD=500;
     Handler timeHandler = new Handler();    //定时器周期，用于跟新IMU数据等
-	
-
-	//
-	private InputStream is; // 输入流，用来接收蓝牙数据
-	private String smsg = ""; // 显示用数据缓存
-	private String fmsg = ""; // 保存用数据缓存
 	 
 	private TextView throttleText,yawText,pitchText,rollText;
 	private TextView pitchAngText,rollAngText,yawAngText,altText,distanceText,voltageText;
 	private Button armButton,lauchLandButton,headFreeButton,altHoldButton,accCaliButton;
-	private ArrayAdapter<String> adapter;
 
-
-	public String filename = ""; // 用来保存存储的文件名
-	BluetoothDevice _device = null; // 蓝牙设备
-	BluetoothSocket _socket = null; // 蓝牙通信socket
-	boolean _discoveryFinished = false;
-	boolean bRun = true;
-	boolean bThread = false;
-	//
-	boolean lauchFlag=false;
-	long timeNew, timePre=0;
-	//
-	private BluetoothAdapter _bluetooth = BluetoothAdapter.getDefaultAdapter(); // 获取本地蓝牙适配器，即蓝牙设备
-
+    //摇杆界面实现类，joystick UI
 	private MySurfaceView stickView;
-
-
-
-
 
     // Code to manage Service lifecycle.
     // 管理BLE数据收发服务整个生命周期
@@ -260,15 +226,28 @@ public class BTClient extends Activity {
         mBluetoothLeService = null;
     }
 
-	public void onSendArmButtonClicked(View v)
+
+
+    // 连接按键响应函数
+    public void onConnectButtonClicked(View v) {
+        if (!mConnected) {
+            //进入扫描页面
+            Intent serverIntent = new Intent(this, DeviceScanActivity.class); // 跳转程序设置
+            startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE); // 设置返回宏定义
+
+        } else {
+            //断开连接
+            mBluetoothLeService.disconnect();
+        }
+    }
+
+    public void onSendArmButtonClicked(View v)
 	{
-		Button btnConnect=(Button) findViewById(R.id.Button03);
-        String disconnect = getResources().getString(R.string.Disconnect);
         String arm = getResources().getString(R.string.Arm);
         String unarm = getResources().getString(R.string.Unarm);
         String disconnectToast = getResources().getString(R.string.DisconnectToast);
 
-		if(btnConnect.getText() == disconnect){
+		if(mConnected){
 			if(armButton.getText() != arm)	{
 				btSendBytes(Protocol.getSendData(Protocol.ARM_IT, Protocol.getCommandData(Protocol.ARM_IT)));
 				armButton.setText(arm);
@@ -284,13 +263,11 @@ public class BTClient extends Activity {
 	//Take off , land down
 	public void onlauchLandButtonClicked(View v)
 	{
-        Button btnConnect=(Button) findViewById(R.id.Button03);
-        String disconnect = getResources().getString(R.string.Disconnect);
         String launch  = getResources().getString(R.string.Launch);
         String land = getResources().getString(R.string.Land);
         String disconnectToast = getResources().getString(R.string.DisconnectToast);
 
-        if(btnConnect.getText() == disconnect){
+        if(mConnected){
             if(lauchLandButton.getText() != land){
                 btSendBytes(Protocol.getSendData(Protocol.LAUCH, Protocol.getCommandData(Protocol.LAUCH)));
                 lauchLandButton.setText(land);
@@ -312,11 +289,9 @@ public class BTClient extends Activity {
 	//无头模式键
 	public void onheadFreeButtonClicked(View v)
 	{
-		Button btnConnect=(Button) findViewById(R.id.Button03);
-        String disconnect = getResources().getString(R.string.Disconnect);
         String disconnectToast = getResources().getString(R.string.DisconnectToast);
 
-		if(btnConnect.getText() == disconnect){
+		if(mConnected){
 			if(headFreeButton.getCurrentTextColor()!=Color.GREEN)
 			{	btSendBytes(Protocol.getSendData(Protocol.HEAD_FREE, Protocol.getCommandData(Protocol.HEAD_FREE)));
 				headFreeButton.setTextColor(Color.GREEN);
@@ -333,11 +308,9 @@ public class BTClient extends Activity {
 	//定高键
 	public void onaltHoldButtonClicked(View v)
 	{
-		Button btnConnect=(Button) findViewById(R.id.Button03);
-        String disconnect = getResources().getString(R.string.Disconnect);
         String disconnectToast = getResources().getString(R.string.DisconnectToast);
 
-		if(btnConnect.getText() == disconnect){
+		if(mConnected){
 			if( altHoldButton.getCurrentTextColor()!=Color.GREEN )
 			{	//定高定点都开
 				btSendBytes(Protocol.getSendData(Protocol.HOLD_ALT, Protocol.getCommandData(Protocol.HOLD_ALT))); 
@@ -356,11 +329,9 @@ public class BTClient extends Activity {
 	//校准
 	public void onAccCaliButtonClicked(View v)
 	{
-		Button btnConnect=(Button) findViewById(R.id.Button03);
-        String disconnect = getResources().getString(R.string.Disconnect);
         String disconnectToast = getResources().getString(R.string.DisconnectToast);
 
-		if(btnConnect.getText() == disconnect){
+		if(mConnected){
 			btSendBytes(Protocol.getSendData(Protocol.MSP_ACC_CALIBRATION, Protocol.getCommandData(Protocol.MSP_ACC_CALIBRATION)));
 		}else {
             Toast.makeText(this, disconnectToast, Toast.LENGTH_SHORT).show();
@@ -369,12 +340,8 @@ public class BTClient extends Activity {
 
 	public void btSendBytes(byte[] data)
 	{
-		Button btnConnect=(Button) findViewById(R.id.Button03);
-        String disconnect = getResources().getString(R.string.Disconnect);
-        String disconnectToast = getResources().getString(R.string.DisconnectToast);
-
-		if(btnConnect.getText() == disconnect)//当已经连接上时才发送
-		{
+        //当已经连接上时才发送
+		if(mConnected){
             mBluetoothLeService.writeCharacteristic(data);
 		}
 	}
@@ -421,21 +388,6 @@ public class BTClient extends Activity {
             distanceText.setText("speedZ:"+Protocol.speedZ + "m/s");
         }
     }
-
-
-
-	// 连接按键响应函数
-	public void onConnectButtonClicked(View v) {
-		if (!mConnected) {
-            //进入扫描页面
-			Intent serverIntent = new Intent(this, DeviceScanActivity.class); // 跳转程序设置
-			startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE); // 设置返回宏定义
-
-		} else {
-            //断开连接
-            mBluetoothLeService.disconnect();
-		}
-	}
 
 
     private static IntentFilter makeGattUpdateIntentFilter() {
