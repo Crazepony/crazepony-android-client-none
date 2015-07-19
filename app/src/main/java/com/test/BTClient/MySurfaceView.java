@@ -24,15 +24,14 @@ import com.test.BTClient.Protocol;
 @SuppressLint("NewApi")
 public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 
+    private final static String TAG = MySurfaceView.class.getSimpleName();
+
 	private Thread th;
 	private SurfaceHolder sfh;
 	private Canvas canvas;
 	private Paint paint;
 	private boolean flag;
-	
-	//BTClient btApp;
-	
-	//
+
 	private float SCREEN_WIDTH=940;
 	private float SCREEN_HEIGHT=520;
 	
@@ -84,7 +83,7 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 	
 	public MySurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Log.v("Himi", "MySurfaceView");
+        Log.i(TAG, "MySurfaceView");
         sfh = this.getHolder();
         sfh.addCallback(this);
         paint = new Paint();
@@ -167,219 +166,209 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 		}
 		return rad;
 	}
-	//采用简化的方案来实现双摇杆控制
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-	try{
-		int pointNum=event.getPointerCount();
-		//TextView textView1=new TextView("Pos");
-		
-		float x1,y1,x2,y2;	//Touch Positon
-		float leftX=0,leftY=0,rightX=0,rightY=0;
-		//boolean leftTouch=false,rightTouch=false;
 
-		final float DIVIDE_X=(LEFT_CENTERX+RIGHT_CENTERX)/2;
-		
-		/*Release touch*/
-		switch ( (event.getAction() & MotionEvent.ACTION_MASK)) 
-		{	
-		case MotionEvent.ACTION_UP:	//the last release
-			Log.v("TouchPos","ACTION_UP");
-			Log.v("TouchPos","PointNum:"+Integer.toString(event.getPointerCount()) + ",actionIndex:"+Integer.toString(event.getActionIndex()) );
-			Log.v("TouchPos","X:"+Float.toString(event.getX()) + ";Y:"+Float.toString(event.getY())    );
+    //采用简化的方案来实现双摇杆控制
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        try {
+            int pointNum = event.getPointerCount();
 
-			leftTouching=false;
-            rightTouching=false;
+            float x1, y1, x2, y2;    //Touch Positon
+            float leftX = 0, leftY = 0, rightX = 0, rightY = 0;
 
-			//放手归位
-			SmallRockerCircleX = LEFT_CENTERX;
+            final float DIVIDE_X = (LEFT_CENTERX + RIGHT_CENTERX) / 2;
+
+		    /*Release touch*/
+            switch ((event.getAction() & MotionEvent.ACTION_MASK)) {
+                case MotionEvent.ACTION_UP:    //the last release
+                    Log.v(TAG, "ACTION_UP");
+                    Log.v(TAG, "PointNum:" + Integer.toString(event.getPointerCount()) + ",actionIndex:"
+                            + Integer.toString(event.getActionIndex()));
+                    Log.v(TAG, "X:" + Float.toString(event.getX()) + ";Y:" + Float.toString(event.getY()));
+
+                    leftTouching = false;
+                    rightTouching = false;
+
+                    //放手归位
+                    SmallRockerCircleX = LEFT_CENTERX;
+                    SmallRockerCircleY = LEFT_CENTERY;
+
+                    if (altCtrlMode == 1)    //定高爬升
+                        SmallRockerCircleY = LEFT_CENTERY;
+
+                    SmallRockerCircleX2 = RIGHT_CENTERX;
+                    SmallRockerCircleY2 = RIGHT_CENTERY;
+
+                    leftTouchStartX = LEFT_CENTERX;
+                    if (altCtrlMode == 1) {
+                        leftTouchStartY = LEFT_CENTERY;
+                    }
+
+                    rightTouchStartX = RIGHT_CENTERX;
+                    rightTouchStartY = RIGHT_CENTERY;
+
+                    break;
+                case MotionEvent.ACTION_POINTER_UP://first release if two finger is touching
+                    if (event.getX(event.getActionIndex()) < DIVIDE_X) {
+                        leftTouching = false;
+                        SmallRockerCircleX = LEFT_CENTERX;
+                        if (altCtrlMode == 1)    //定高爬升
+                            SmallRockerCircleY = LEFT_CENTERY;
+
+                        leftTouchStartX = LEFT_CENTERX;
+                        leftTouchStartY = LEFT_CENTERY;
+
+                        rightTouchIndex = 0;
+                    } else {
+                        rightTouching = false;
+                        SmallRockerCircleX2 = RIGHT_CENTERX;
+                        SmallRockerCircleY2 = RIGHT_CENTERY;
+                        rightTouchStartX = RIGHT_CENTERX;
+                        rightTouchStartY = RIGHT_CENTERY;
+                    }
+
+                    Log.v(TAG, "ACTION_POINTER_UP");
+                    Log.v(TAG, "PointNum:" + Integer.toString(event.getPointerCount()) + ",actionIndex:" + Integer.toString(event.getActionIndex()));
+                    break;
+            }
+
+		    /*get touch*/
+            if (event.getAction() == MotionEvent.ACTION_DOWN
+                    || event.getAction() == MotionEvent.ACTION_MOVE
+                    || (event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_POINTER_DOWN) {
+                if (pointNum == 1) {
+                    x1 = event.getX();
+                    y1 = event.getY();
+                    if (x1 < DIVIDE_X) {
+                        leftX = x1;
+                        leftY = y1;
+                        if (leftTouching == false) {
+                            leftTouchStartX = leftX;
+                            leftTouchStartY = leftY;
+                            leftTouching = true;
+                        }
+
+                    } else if (x1 >= DIVIDE_X) {
+                        rightX = x1;
+                        rightY = y1;
+                        if (rightTouching == false) {
+                            rightTouchStartX = rightX;
+                            rightTouchStartY = rightY;
+                            rightTouching = true;
+                        }
+                    }
+                } else if (pointNum > 1) {
+                    x1 = event.getX();
+                    y1 = event.getY();
+                    x2 = event.getX(1);
+                    y2 = event.getY(1);
+                    if (x1 < x2) {
+                        if (x1 < DIVIDE_X) {
+                            leftX = x1;
+                            leftY = y1;
+                            if (leftTouching == false) {
+                                leftTouchStartX = leftX;
+                                leftTouchStartY = leftY;
+                                leftTouching = true;
+                            }
+
+                        }
+                        if (x2 > DIVIDE_X) {
+                            rightX = x2;
+                            rightY = y2;
+                            if (rightTouching == false) {
+                                rightTouchStartX = rightX;
+                                rightTouchStartY = rightY;
+                                rightTouching = true;
+                            }
+                        }
+                    } else {
+                        if (x2 < DIVIDE_X) {
+                            leftX = x2;
+                            leftY = y2;
+                            if (leftTouching == false) {
+                                leftTouchStartX = leftX;
+                                leftTouchStartY = leftY;
+                                leftTouching = true;
+                            }
+                        }
+                        if (x1 > DIVIDE_X) {
+                            rightX = x1;
+                            rightY = y1;
+                            if (rightTouching == false) {
+                                rightTouchStartX = rightX;
+                                rightTouchStartY = rightY;
+                                rightTouching = true;
+                            }
+                        }
+                    }
+                }
+
+                /**Process movement**/
+                if (leftTouching == true)//Left Stick is touched
+                {
+                    Log.v(TAG, "leftX: " + Float.toString(leftX) + "  leftY: " + Float.toString(leftY));
+                    SmallRockerCircleX = leftX;
+                    SmallRockerCircleY = leftY;
+
+                    Log.v(TAG, Float.toString(SmallRockerCircleY) + " " + Float.toString(BackRectButtom));
+
+                }
+                //Right Stick is touched
+                if (rightTouching == true) {
+                    Log.v(TAG, "rightX: " + Float.toString(rightX) + "  rightY: " + Float.toString(rightY));
+
+                    SmallRockerCircleX2 = rightX;
+                    SmallRockerCircleY2 = rightY;
+
+                    Log.v(TAG, Float.toString(SmallRockerCircleY2) + " " + Float.toString(BackRectButtom2));
+                }
+            }
+
+
+            Log.v(TAG, Integer.toString((int) leftTouchStartX) + " " + Integer.toString((int) leftTouchStartY) + " "
+                    + Integer.toString((int) rightTouchStartX) + " " + Integer.toString((int) rightTouchStartY));
+
+            if (YAW_STOP_CONTROL == 1)
+                SmallRockerCircleX = LEFT_CENTERX;    //暂不控制yaw，避免控油门时误点乱转
+
+            //落手为起点,油门除外
+            if (altCtrlMode == 0)
+                Protocol.throttle = (int) (1000 + 1000 * (BackRectButtom - SmallRockerCircleY) / (BackRectButtom - BackRectTop));
+            else
+                Protocol.throttle = (int) (1500 - 1000 * (SmallRockerCircleY - leftTouchStartY) / (BackRectButtom - BackRectTop));
+            Protocol.yaw = (int) (1500 + 1000 * ((SmallRockerCircleX - leftTouchStartX)) / (BackRectRight - BackRectLeft));
+            Protocol.pitch = (int) (1500 + 1000 * (0 - (SmallRockerCircleY2 - rightTouchStartY)) / (BackRectButtom2 - BackRectTop2));
+            Protocol.roll = (int) (1500 + 1000 * ((SmallRockerCircleX2 - rightTouchStartX)) / (BackRectRight2 - BackRectLeft2));
+
+            Protocol.throttle = constrainRange(Protocol.throttle, 1000, 2000);
+            Protocol.yaw = constrainRange(Protocol.yaw, 1000, 2000);
+            Protocol.pitch = constrainRange(Protocol.pitch, 1000, 2000);
+            Protocol.roll = constrainRange(Protocol.roll, 1000, 2000);
+
+            Log.i(TAG, "yaw: " + Integer.toString(Protocol.yaw)
+                    + "trottle: " + Integer.toString(Protocol.throttle)
+                    + "pitch: " + Integer.toString(Protocol.pitch)
+                    + "roll: " + Integer.toString(Protocol.roll));
+
+            touchReadyToSend = true;
+
+
+        } catch (Exception e) {//stick turn out error
+            Log.e("stickError", "stickError");
+            SmallRockerCircleX = LEFT_CENTERX;
             SmallRockerCircleY = LEFT_CENTERY;
+            SmallRockerCircleX2 = RIGHT_CENTERX;
+            SmallRockerCircleY2 = RIGHT_CENTERY;
+            leftTouching = false;
+            rightTouching = false;
+            leftTouchIndex = 0;
+            rightTouchIndex = 0;
+        }
+        return true;
+    }
 
-			if(altCtrlMode==1)	//定高爬升
-				SmallRockerCircleY= LEFT_CENTERY;
-			
-			SmallRockerCircleX2 = RIGHT_CENTERX; 
-			SmallRockerCircleY2 = RIGHT_CENTERY;
-			
-			leftTouchStartX=LEFT_CENTERX;
-			if(altCtrlMode==1)
-				leftTouchStartY=LEFT_CENTERY;
-			
-			rightTouchStartX=RIGHT_CENTERX;
-			rightTouchStartY= RIGHT_CENTERY;
-			
-			break;
-		case MotionEvent.ACTION_POINTER_UP://first release if two finger is touching
-			if(event.getX(event.getActionIndex())<DIVIDE_X)
-			{
-				leftTouching=false;
-				SmallRockerCircleX = LEFT_CENTERX;
-			//	SmallRockerCircleY = LEFT_CENTERY; //油门不回中
-				if(altCtrlMode==1)	//定高爬升
-					SmallRockerCircleY= LEFT_CENTERY;
-				
-				//	if(stickHomeY1>=0)
-				//		SmallRockerCircleY=stickHomeY1; 	//油门回中由模式决定
-				
-				leftTouchStartX=LEFT_CENTERX;
-				leftTouchStartY=LEFT_CENTERY;
-				
-				rightTouchIndex=0;
-			}
-			else
-			{
-				rightTouching=false; 
-				SmallRockerCircleX2 = RIGHT_CENTERX;
-				SmallRockerCircleY2 = RIGHT_CENTERY;
-				rightTouchStartX=RIGHT_CENTERX;
-				rightTouchStartY= RIGHT_CENTERY;
-			}
-
-			Log.v("TouchPos","ACTION_POINTER_UP");
-			Log.v("TouchPos","PointNum:"+Integer.toString(event.getPointerCount()) + ",actionIndex:"+Integer.toString(event.getActionIndex()) );
-			break;
-		} 
-		
-		/*get touch*/
-		if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE  || (event.getAction() & MotionEvent.ACTION_MASK)==MotionEvent.ACTION_POINTER_DOWN) 
-			{
-					if(pointNum==1)
-					{
-						x1=event.getX();y1=event.getY();
-						if(x1<DIVIDE_X)
-						{	
-							leftX=x1;leftY=y1;
-							if(leftTouching==false)
-							{
-								leftTouchStartX=leftX;
-								leftTouchStartY=leftY;
-								leftTouching=true;
-							}
-							
-						}
-						else if(x1>=DIVIDE_X)
-						{
-							rightX=x1;rightY=y1;
-							if(rightTouching==false)
-							{	
-								rightTouchStartX=rightX;
-								rightTouchStartY=rightY;
-								rightTouching=true;
-							}
-							
-						} 
-					}
-					else if(pointNum>1)
-					{
-						x1=event.getX();y1=event.getY(); x2=event.getX(1);y2=event.getY(1);
-						if(x1<x2 )
-						{
-							if(x1<DIVIDE_X)
-							{
-								leftX=x1;leftY=y1;
-								if(leftTouching==false)
-								{
-									leftTouchStartX=leftX;
-									leftTouchStartY=leftY;
-									leftTouching=true;
-								}
-							
-							}
-							if(x2>DIVIDE_X)
-							{
-								rightX=x2;rightY=y2;
-								if(rightTouching==false)
-								{	
-									rightTouchStartX=rightX;
-									rightTouchStartY=rightY;
-									rightTouching=true;
-								}
-							}
-						}
-						else
-						{
-							if(x2<DIVIDE_X)
-							{leftX=x2;leftY=y2;
-								if(leftTouching==false)
-								{
-									leftTouchStartX=leftX;
-									leftTouchStartY=leftY;
-									leftTouching=true;
-								}
-							}
-							if(x1>DIVIDE_X)
-							{rightX=x1;rightY=y1;
-								if(rightTouching==false)
-								{	
-									rightTouchStartX=rightX;
-									rightTouchStartY=rightY;
-									rightTouching=true;
-								}
-							}
-						}
-					} 
-					//Log.v("TouchFinger", "left: "+ Integer.toString(leftTouchIndex)+ "  right: "+Integer.toString(rightTouchIndex));	
-
-					/**Process movement**/
-					if(leftTouching==true )//Left Stick is touched
-					{
- 						Log.v("TouchPos", "leftX: "+Float.toString(leftX)+ "  leftY: "+Float.toString(leftY));
-							SmallRockerCircleX = leftX;
-							SmallRockerCircleY = leftY;
-
-						Log.v("RightStickY",Float.toString(SmallRockerCircleY) + " " + Float.toString(BackRectButtom));
-
-					} 
-					//Right Stick is touched
-					if(rightTouching==true )
-					{
- 						Log.v("TouchPos", "rightX: "+Float.toString(rightX)+ "  rightY: "+Float.toString(rightY));
-
-						SmallRockerCircleX2 = rightX;
-						SmallRockerCircleY2 = rightY;
-
-						Log.v("RightStickY",Float.toString(SmallRockerCircleY2) + " " + Float.toString(BackRectButtom2));
-					}
-					
-					
-			} 
-		Log.i("touch",Integer.toString((int)leftTouchStartX)+" " + Integer.toString((int)leftTouchStartY) +" " 
-				+ Integer.toString((int)rightTouchStartX) + " "+Integer.toString((int)rightTouchStartY));
-		
-		if(YAW_STOP_CONTROL==1)
-			SmallRockerCircleX=LEFT_CENTERX;	//暂不控制yaw，避免控油门时误点乱转
-
-		//落手为起点,油门除外
-		if(altCtrlMode==0)
-			Protocol.throttle=(int)(1000+1000*(BackRectButtom-SmallRockerCircleY)/(BackRectButtom-BackRectTop));
-		else
-			Protocol.throttle=(int)(1500-1000*(SmallRockerCircleY-leftTouchStartY)/(BackRectButtom-BackRectTop));
-		Protocol.yaw=(int)(1500+1000*((SmallRockerCircleX-leftTouchStartX))/(BackRectRight-BackRectLeft));
-		Protocol.pitch=(int)(1500+1000*(0-(SmallRockerCircleY2-rightTouchStartY))/(BackRectButtom2-BackRectTop2));
-		Protocol.roll=(int)(1500+1000*((SmallRockerCircleX2-rightTouchStartX))/(BackRectRight2-BackRectLeft2));
-		
-		Protocol.throttle=constrainRange(Protocol.throttle,1000,2000);
-		Protocol.yaw=constrainRange(Protocol.yaw,1000,2000);
-		Protocol.pitch=constrainRange(Protocol.pitch,1000,2000);
-		Protocol.roll=constrainRange(Protocol.roll,1000,2000);
-		
-		
-		Log.i("Debug",Integer.toString(Protocol.yaw)+Integer.toString(Protocol.throttle)+Integer.toString(Protocol.pitch)+Integer.toString(Protocol.roll));
-		touchReadyToSend=true;
-	}
-	catch(Exception e){//stick turn out error
-		Log.e("stickError","stickError");
-		SmallRockerCircleX=LEFT_CENTERX;SmallRockerCircleY=LEFT_CENTERY;
-		SmallRockerCircleX2=RIGHT_CENTERX;SmallRockerCircleY2=RIGHT_CENTERY;
-		leftTouching=false;
-		rightTouching=false;
-		leftTouchIndex=0;
-		rightTouchIndex=0;
-	}
-		return true;
-	}
-	
-	public int constrainRange(int x,int min,int max)
+    public int constrainRange(int x,int min,int max)
 	{
 		if(x<min) x=min;
 		if(x>max) x=max;

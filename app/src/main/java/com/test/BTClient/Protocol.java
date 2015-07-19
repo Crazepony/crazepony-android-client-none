@@ -12,7 +12,6 @@ import android.util.Log;
 public class Protocol {
 	public static int throttle,yaw,pitch,roll;
 	public static float pitchAng,rollAng,yawAng,voltage,alt,speedZ;
-	public static int GPSFix,staNum,GPSFixHome,distanceToHome;
 	public static byte[] outputData;
 	public static final int 
 	SET_THROTTLE=0x01,

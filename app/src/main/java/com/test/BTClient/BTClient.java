@@ -135,6 +135,9 @@ public class BTClient extends Activity {
                 if(stickView.touchReadyToSend==true){
                     btSendBytes(Protocol.getSendData(Protocol.SET_4CON, Protocol.getCommandData(Protocol.SET_4CON)));
 
+                    Log.i(TAG,"Thro: " +Protocol.throttle +",yaw: " +Protocol.yaw+ ",roll: "+ Protocol.roll
+                            +",pitch: "+ Protocol.pitch);
+
                     stickView.touchReadyToSend=false;
                 }
             } catch (Exception e) {
