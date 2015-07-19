@@ -47,6 +47,9 @@ public class DeviceScanActivity extends ListActivity {
     private BluetoothAdapter mBluetoothAdapter;
     private boolean mScanning;
 
+    private Handler mHandler;
+    // Stops scanning after 10 seconds.每次的扫描时间最多10s
+    private static final long SCAN_PERIOD = 10000;
 
     private static final int REQUEST_ENABLE_BT = 1;
 
@@ -56,15 +59,19 @@ public class DeviceScanActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.device_scan);
         setTitle("");
+        mHandler = new Handler();
 
         // 设定扫描按键响应
         Button scanButton = (Button) findViewById(R.id.button_scan);
         scanButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //start BLE scan
-                //开启BLE扫描
-                scanLeDevice(true);
-                v.setVisibility(View.GONE);
+                if(!mScanning){
+                    //start BLE scan，开启BLE扫描
+                    scanLeDevice(true);
+                }else{
+                    scanLeDevice(false);
+                }
+
             }
         });
 
@@ -158,14 +165,29 @@ public class DeviceScanActivity extends ListActivity {
     }
 
     private void scanLeDevice(final boolean enable) {
+        final Button scanButton = (Button) findViewById(R.id.button_scan);
+
         if (enable) {
-            setTitle(R.string.ScanningBT);
+            // Stops scanning after a pre-defined scan period.
+            // 预定扫描时间之后，关闭扫描。防止进入持续扫描状态
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mScanning = false;
+                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                    scanButton.setText(R.string.Search);
+                }
+            }, SCAN_PERIOD);
+
 
             mScanning = true;
             mBluetoothAdapter.startLeScan(mLeScanCallback);
+            scanButton.setText(R.string.Searching);
+
         } else {
             mScanning = false;
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
+            scanButton.setText(R.string.Search);
         }
     }
 
