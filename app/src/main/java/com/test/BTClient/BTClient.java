@@ -76,9 +76,10 @@ public class BTClient extends Activity {
 	private final static int REQUEST_CONNECT_DEVICE = 1; // 宏定义查询设备句柄
 
 	private final static String MY_UUID = "00001101-0000-1000-8000-00805F9B34FB"; // SPP服务UUID号
-	//
-	private final static int UPDATE_MUV_STATE_PERIOD=200;
-	
+
+	//update IMU data period，跟新IMU数据周期
+	private final static int UPDATE_MUV_STATE_PERIOD=1000;
+    Handler timeHandler = new Handler();    //定时器周期，用于跟新IMU数据等
 	
 	List<WayPoint> wpRoute;	//规划路线
 //	private WayPoint[] wpArr=new WayPoint[3]; 
@@ -110,6 +111,9 @@ public class BTClient extends Activity {
 	private BluetoothAdapter _bluetooth = BluetoothAdapter.getDefaultAdapter(); // 获取本地蓝牙适配器，即蓝牙设备
 
 	private MySurfaceView stickView;
+
+
+
 
 
     // Code to manage Service lifecycle.
@@ -147,6 +151,8 @@ public class BTClient extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
+            int reCmd=-2;
+
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
                 updateConnectionState(R.string.Disconnect);
@@ -162,7 +168,35 @@ public class BTClient extends Activity {
 
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
 
-                Log.i(TAG, intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                final byte[] data = intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA);
+
+                if (data != null && data.length > 0) {
+                    final StringBuilder stringBuilder = new StringBuilder(data.length);
+                    for(byte byteChar : data)
+                        stringBuilder.append(String.format("%02X ", byteChar));
+
+                    Log.i(TAG, "RX Data:"+stringBuilder);
+                }
+
+
+                //解析得到的数据，获得MSP命令编号
+                reCmd=Protocol.processDataIn( data,data.length);
+                updateIMUdata(reCmd);
+            }
+        }
+    };
+
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                timeHandler.postDelayed(this, UPDATE_MUV_STATE_PERIOD);
+
+                //请求IMU跟新
+                btSendBytes(Protocol.getSendData(Protocol.FLY_STATE, Protocol.getCommandData(Protocol.FLY_STATE)));
+
+            } catch (Exception e) {
+
             }
         }
     };
@@ -211,6 +245,9 @@ public class BTClient extends Activity {
         //绑定BLE收发服务mServiceConnection
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+
+        //开启IMU数据跟新定时器
+        timeHandler.postDelayed(runnable, UPDATE_MUV_STATE_PERIOD); //每隔1s执行
 	}
 
     @Override
@@ -365,10 +402,7 @@ public class BTClient extends Activity {
 		if(btnConnect.getText() == disconnect)//当已经连接上时才发送
 		{
             mBluetoothLeService.writeCharacteristic(data);
-
-		}else {
-            Toast.makeText(this,disconnectToast, Toast.LENGTH_SHORT).show();
-        }
+		}
 	}
 	
 	// 接收扫描结果，响应startActivityForResult()
@@ -518,6 +552,26 @@ public class BTClient extends Activity {
 			}
 		}
 	};
+
+    private void updateIMUdata(int msg){
+        if(msg==2)
+        {
+            throttleText.setText("Throttle:"+Integer.toString(Protocol.throttle));
+            yawText.setText("Yaw:"+Integer.toString(Protocol.yaw));
+            pitchText.setText("Pitch:"+Integer.toString(Protocol.pitch));
+            rollText.setText("Roll:"+Integer.toString(Protocol.roll));
+        }
+        else if(msg==Protocol.FLY_STATE)
+        {
+            pitchAngText.setText("Pitch Ang: "+Protocol.pitchAng);
+            rollAngText.setText("Roll Ang: "+Protocol.rollAng);
+            yawAngText.setText("Yaw Ang: "+Protocol.yawAng);
+            altText.setText("Alt:"+Protocol.alt + "m");
+
+            voltageText.setText("Voltage:"+Protocol.voltage + " V");
+            distanceText.setText("speedZ:"+Protocol.speedZ + "m/s");
+        }
+    }
 
 
 
