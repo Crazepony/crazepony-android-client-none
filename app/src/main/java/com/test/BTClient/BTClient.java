@@ -78,7 +78,7 @@ public class BTClient extends Activity {
 	private final static String MY_UUID = "00001101-0000-1000-8000-00805F9B34FB"; // SPP服务UUID号
 
 	//update IMU data period，跟新IMU数据周期
-	private final static int UPDATE_MUV_STATE_PERIOD=1000;
+	private final static int UPDATE_MUV_STATE_PERIOD=500;
     Handler timeHandler = new Handler();    //定时器周期，用于跟新IMU数据等
 	
 	List<WayPoint> wpRoute;	//规划路线
@@ -192,9 +192,15 @@ public class BTClient extends Activity {
             try {
                 timeHandler.postDelayed(this, UPDATE_MUV_STATE_PERIOD);
 
-                //请求IMU跟新
+                //request for IMU data update，请求IMU跟新
                 btSendBytes(Protocol.getSendData(Protocol.FLY_STATE, Protocol.getCommandData(Protocol.FLY_STATE)));
 
+                // process stick movement，处理摇杆数据
+                if(stickView.touchReadyToSend==true){
+                    btSendBytes(Protocol.getSendData(Protocol.SET_4CON, Protocol.getCommandData(Protocol.SET_4CON)));
+
+                    stickView.touchReadyToSend=false;
+                }
             } catch (Exception e) {
 
             }
