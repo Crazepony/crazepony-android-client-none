@@ -32,49 +32,39 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 	private Paint paint;
 	private boolean flag;
 
-	private float SCREEN_WIDTH=940;
-	private float SCREEN_HEIGHT=520;
+	private float LEFT_CENTERX;
+	private float LEFT_CENTERY;
+	private float RIGHT_CENTERX;
+	private float RIGHT_CENTERY;
 	
-	private float LEFT_CENTERX=150;
-	private float LEFT_CENTERY=150;
-	private float RIGHT_CENTERX=SCREEN_WIDTH-LEFT_CENTERX;
-	private float RIGHT_CENTERY=150;
-	
-	private float BACK_RECT_SIZE=140;//
-	//固定摇杆背景圆形的X,Y坐标以及半径
-	private float RockerCircleX = LEFT_CENTERX;
-	private float RockerCircleY= LEFT_CENTERY;
-	private float RockerCircleR;
-	//固定遥
-	private float BackRectLeft=LEFT_CENTERX-BACK_RECT_SIZE;
-	private float BackRectTop=LEFT_CENTERY-BACK_RECT_SIZE;
-	private float BackRectRight=LEFT_CENTERX+BACK_RECT_SIZE;
-	private float BackRectButtom=LEFT_CENTERY+BACK_RECT_SIZE;
+	private float BACK_RECT_SIZE;
+
+	//左右两边摇杆白色背景坐标
+	private float BackRectLeft,BackRectTop,BackRectRight,BackRectButtom;
+    private float BackRectLeft2,BackRectTop2,BackRectRight2,BackRectButtom2;
+
 	//摇杆的X,Y坐标以及摇杆的半径
-	public float SmallRockerCircleX = LEFT_CENTERX;
-	public float SmallRockerCircleY = LEFT_CENTERY;
-	private float SmallRockerCircleR = 20;
+	public float SmallRockerCircleX;
+	public float SmallRockerCircleY;
+	private float SmallRockerCircleR;
 	
 	//固定摇杆背景圆形的X,Y坐标以及半径
-	private float RockerCircleX2 = RIGHT_CENTERX;
-	private float RockerCircleY2 = RIGHT_CENTERY;
+    private float RockerCircleX;
+    private float RockerCircleY;
+    private float RockerCircleR;
+	private float RockerCircleX2;
+	private float RockerCircleY2;
 	private float RockerCircleR2;
-	//固定遥
-	private float BackRectLeft2=RIGHT_CENTERX-BACK_RECT_SIZE;
-	private float BackRectTop2=RIGHT_CENTERY-BACK_RECT_SIZE;
-	private float BackRectRight2=RIGHT_CENTERX+BACK_RECT_SIZE;
-	private float BackRectButtom2=RIGHT_CENTERY+BACK_RECT_SIZE;
+
 	//摇杆的X,Y坐标以及摇杆的半径
-	public float SmallRockerCircleX2 = RIGHT_CENTERX;
-	public float SmallRockerCircleY2 = RIGHT_CENTERY;
-	private float SmallRockerCircleR2 = 20;
-	public float stickHomeY1=-1;
-	public int altCtrlMode=0;
-	//
-	public float leftTouchStartX=LEFT_CENTERX,leftTouchStartY=LEFT_CENTERY,rightTouchStartX=RIGHT_CENTERX,rightTouchStartY=RIGHT_CENTERY;
-	//锁定yaw
+	public float SmallRockerCircleX2;
+	public float SmallRockerCircleY2;
+	private float SmallRockerCircleR2;
+
+	public float leftTouchStartX,leftTouchStartY,rightTouchStartX,rightTouchStartY;
+
 	static final int YAW_STOP_CONTROL=0;
-	
+    public int altCtrlMode=0;
 	
 	public boolean leftTouching=false,rightTouching=false;
 	private int leftTouchIndex=0,rightTouchIndex=0;
@@ -115,36 +105,45 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
         LEFT_CENTERY = screenHeight / 2;
         RIGHT_CENTERX = screenWidth - LEFT_CENTERX;
         RIGHT_CENTERY = screenHeight / 2;
-        BACK_RECT_SIZE = screenHeight / 2 - 20;
+        BACK_RECT_SIZE = screenHeight / 2 - 20; //方形背景边长的一半
 
+        //左边圆形摇杆的自动回中的X,Y坐标以及半径
         RockerCircleX = LEFT_CENTERX;
         RockerCircleY = LEFT_CENTERY;
         RockerCircleR = (float) ((BackRectRight - BackRectLeft) / 2 * 1.41421);
 
-        //固定摇杆背景圆形的X,Y坐标以及半径
+        //右边圆形摇杆的自动回中的X,Y坐标以及半径
         RockerCircleX2 = RIGHT_CENTERX;
         RockerCircleY2 = RIGHT_CENTERX;
         RockerCircleR2 = RockerCircleR;
 
+        //左边方形背景的坐标
         BackRectLeft = LEFT_CENTERX - BACK_RECT_SIZE;
         BackRectTop = LEFT_CENTERY - BACK_RECT_SIZE;
         BackRectRight = LEFT_CENTERX + BACK_RECT_SIZE;
         BackRectButtom = LEFT_CENTERY + BACK_RECT_SIZE;
-        //摇杆的X,Y坐标以及摇杆的半径
+
+        //左边摇杆的X,Y坐标以及摇杆的半径
         SmallRockerCircleX = LEFT_CENTERX;
         SmallRockerCircleY = LEFT_CENTERY;
         SmallRockerCircleR = 100;
 
-        //固定遥
+        //右边方形背景的坐标
         BackRectLeft2 = RIGHT_CENTERX - BACK_RECT_SIZE;
         BackRectTop2 = RIGHT_CENTERY - BACK_RECT_SIZE;
         BackRectRight2 = RIGHT_CENTERX + BACK_RECT_SIZE;
         BackRectButtom2 = RIGHT_CENTERY + BACK_RECT_SIZE;
 
-        //摇杆的X,Y坐标以及摇杆的半径
+        //右边摇杆的X,Y坐标以及摇杆的半径
         SmallRockerCircleX2 = RIGHT_CENTERX;
         SmallRockerCircleY2 = RIGHT_CENTERY;
         SmallRockerCircleR2 = 100;
+
+
+        rightTouchStartX = RIGHT_CENTERX;
+        rightTouchStartY = RIGHT_CENTERY;
+        leftTouchStartX = LEFT_CENTERX;
+        leftTouchStartY = LEFT_CENTERY;
     }
 	/***
 	 * 得到两点之线与x轴的弧度
