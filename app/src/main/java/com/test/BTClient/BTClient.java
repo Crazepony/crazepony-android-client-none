@@ -49,7 +49,7 @@ public class BTClient extends Activity {
 	 
 	private TextView throttleText,yawText,pitchText,rollText;
 	private TextView pitchAngText,rollAngText,yawAngText,altText,distanceText,voltageText;
-	private Button armButton,lauchLandButton,headFreeButton,altHoldButton,accCaliButton;
+	private Button connectButton,armButton,lauchLandButton,headFreeButton,altHoldButton;
 
     //摇杆界面实现类，joystick UI
 	private MySurfaceView stickView;
@@ -93,10 +93,10 @@ public class BTClient extends Activity {
 
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
-                updateConnectionState(R.string.Disconnect);
+                resetButtonValue(R.string.Disconnect);
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
-                updateConnectionState(R.string.Connect);
+                resetButtonValue(R.string.Connect);
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
 
                 // Show all the supported services and characteristics on the user interface.
@@ -156,15 +156,14 @@ public class BTClient extends Activity {
     };
 
 
-    //跟新Connect按钮
-    private void updateConnectionState(final int resourceId) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Button btnConnect = (Button) findViewById(R.id.Button03);
-                btnConnect.setText(resourceId);
-            }
-        });
+    //设置按键显示为默认初始化值
+    //在连接成功或者断开的时候，都需要把button的值复位
+    private void resetButtonValue(final int connectBtnId) {
+        connectButton.setText(connectBtnId);
+        armButton.setText(R.string.Unarm);
+        lauchLandButton.setText(R.string.Launch);
+        headFreeButton.setTextColor(Color.WHITE);
+        altHoldButton.setTextColor(Color.WHITE);
     }
 
 
@@ -189,12 +188,14 @@ public class BTClient extends Activity {
 		 
 		//摇杆
 		stickView=(MySurfaceView)findViewById(R.id.stickView);
+
 		//按钮
+        connectButton=(Button)findViewById(R.id.connectButton);
 		armButton=(Button)findViewById(R.id.armButton);
 		lauchLandButton=(Button)findViewById(R.id.lauchLandButton);
 		headFreeButton=(Button)findViewById(R.id.headFreeButton);
 		altHoldButton=(Button)findViewById(R.id.altHoldButton);
-		accCaliButton=(Button)findViewById(R.id.accCaliButton);
+
 
         //绑定BLE收发服务mServiceConnection
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
