@@ -325,9 +325,12 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
                 }
             }
 
-
-            Log.v(TAG, Integer.toString((int) leftTouchStartX) + " " + Integer.toString((int) leftTouchStartY) + " "
-                    + Integer.toString((int) rightTouchStartX) + " " + Integer.toString((int) rightTouchStartY));
+            //coordinate of the center of left and right joystick (x,y)
+            //左右摇杆中心点坐标(x,y)
+            Log.v(TAG, "left(x):"+Integer.toString((int) leftTouchStartX) + " left(y):"
+                    + Integer.toString((int) leftTouchStartY) + " right(x):"
+                    + Integer.toString((int) rightTouchStartX) + " right(y):"
+                    + Integer.toString((int) rightTouchStartY));
 
             if (YAW_STOP_CONTROL == 1)
                 SmallRockerCircleX = LEFT_CENTERX;    //暂不控制yaw，避免控油门时误点乱转
@@ -347,9 +350,9 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
             Protocol.roll = constrainRange(Protocol.roll, 1000, 2000);
 
             Log.i(TAG, "yaw: " + Integer.toString(Protocol.yaw)
-                    + "trottle: " + Integer.toString(Protocol.throttle)
-                    + "pitch: " + Integer.toString(Protocol.pitch)
-                    + "roll: " + Integer.toString(Protocol.roll));
+                    + " trottle: " + Integer.toString(Protocol.throttle)
+                    + " pitch: " + Integer.toString(Protocol.pitch)
+                    + " roll: " + Integer.toString(Protocol.roll));
 
             touchReadyToSend = true;
 

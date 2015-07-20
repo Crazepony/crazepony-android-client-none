@@ -119,7 +119,7 @@ public class BTClient extends Activity {
 
                 //解析得到的数据，获得MSP命令编号
                 reCmd=Protocol.processDataIn( data,data.length);
-                updateIMUdata(reCmd);
+                updateLogData(1);   //跟新IMU数据，update the IMU data
             }
         }
     };
@@ -149,6 +149,10 @@ public class BTClient extends Activity {
 
                     stickView.touchReadyToSend=false;
                 }
+
+                //跟新显示摇杆数据，update the joystick data
+                updateLogData(0);
+
             } catch (Exception e) {
 
             }
@@ -381,16 +385,19 @@ public class BTClient extends Activity {
 		}
 	}
 
-
-    private void updateIMUdata(int msg){
-        if(msg==2)
+    //跟新Log相关的数据，主要是飞控传过来的IMU数据和摇杆值数据
+    //update log,included the IMU data from FC and joysticks data
+    //msg 0 -> joystick data
+    //msg 1 -> IMU data
+    private void updateLogData(int msg){
+        if(0 == msg)
         {
             throttleText.setText("Throttle:"+Integer.toString(Protocol.throttle));
             yawText.setText("Yaw:"+Integer.toString(Protocol.yaw));
             pitchText.setText("Pitch:"+Integer.toString(Protocol.pitch));
             rollText.setText("Roll:"+Integer.toString(Protocol.roll));
         }
-        else if(msg==Protocol.FLY_STATE)
+        else if(1 == msg)
         {
             pitchAngText.setText("Pitch Ang: "+Protocol.pitchAng);
             rollAngText.setText("Roll Ang: "+Protocol.rollAng);
