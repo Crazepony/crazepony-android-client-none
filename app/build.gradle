@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "com.test.BTClient"
+        applicationId "com.test.Crazepony"
         minSdkVersion 5
         targetSdkVersion 17
     }
