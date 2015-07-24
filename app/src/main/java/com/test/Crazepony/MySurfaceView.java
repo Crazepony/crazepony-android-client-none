@@ -1,4 +1,4 @@
-package com.test.BTClient;
+package com.test.Crazepony;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,12 +12,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder.Callback;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.test.BTClient.Protocol;
 
 //import com.test.BTClient.BTClient;
 //Runnable接口方法创建线程，匿名类

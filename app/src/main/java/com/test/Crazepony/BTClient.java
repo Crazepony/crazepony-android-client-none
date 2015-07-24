@@ -6,7 +6,7 @@
  * 
  * */
 
-package com.test.BTClient;
+package com.test.Crazepony;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

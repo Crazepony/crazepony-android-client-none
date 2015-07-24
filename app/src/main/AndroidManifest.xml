@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.test.BTClient"
+    package="com.test.Crazepony"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -19,7 +19,7 @@
         android:theme="@style/noTitleFullScreen" >
         
         <activity
-            android:name=".BTClient"
+            android:name="com.test.Crazepony.BTClient"
             android:label="@string/app_name"
             android:screenOrientation="landscape" >
             <intent-filter>
@@ -29,11 +29,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DeviceScanActivity"
+            android:name="com.test.Crazepony.DeviceScanActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/BLE_list"
             android:theme="@android:style/Theme.Dialog" />
-        <service android:name=".BluetoothLeService" android:enabled="true"/>
+        <service android:name="com.test.Crazepony.BluetoothLeService" android:enabled="true"/>
     </application>
 
 </manifest>

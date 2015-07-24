@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.test.BTClient;
+package com.test.Crazepony;
 
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
@@ -22,7 +22,6 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
@@ -32,8 +31,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 

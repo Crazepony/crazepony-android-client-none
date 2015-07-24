@@ -143,7 +143,7 @@
 	
     
     
-    <com.test.BTClient.MySurfaceView
+    <com.test.Crazepony.MySurfaceView
         android:id="@+id/stickView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

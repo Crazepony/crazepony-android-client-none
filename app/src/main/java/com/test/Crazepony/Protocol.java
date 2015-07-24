@@ -2,12 +2,10 @@
 //Crazepony APP和飞控之间通信协议使用了MWC飞控协议（MSP，Multiwii Serial Protocol），
 //MSP协议格式详见http://www.multiwii.com/wiki/index.php?title=Multiwii_Serial_Protocol
 
-package com.test.BTClient;
+package com.test.Crazepony;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import android.util.Log;
 
 public class Protocol {
 	public static int throttle,yaw,pitch,roll;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.test.BTClient;
+package com.test.Crazepony;
 
 import android.app.Activity;
 import android.app.ListActivity;
@@ -27,8 +27,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
