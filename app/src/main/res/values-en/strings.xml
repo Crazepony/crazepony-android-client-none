@@ -23,9 +23,18 @@
     <string name="OpenBT">Opening BT...</string>
 
     <string name="SelectBTDevice">Select BT Device</string>
-    <string name="ScanBTDevice">Scan Bluetooth</string>
     <string name="UnpairBT">Unpaired BT</string>
-    <string name="ScanningBT">Scanning BT...</string>
+
+    <string name="ble_not_supported">BLE NOT Support!</string>
+    <string name="unknown_device">unknown device</string>
+
+    <string name="menu_scan">Scan</string>
+    <string name="menu_stop">Stop</string>
+
+    <string name="Search">Search</string>
+    <string name="Searching">Searching……</string>
+
+    <string name="BLE_list">BLE List</string>
        
 </resources>
 

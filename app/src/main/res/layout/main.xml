@@ -10,7 +10,7 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/Button03"
+            android:id="@+id/connectButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -143,7 +143,7 @@
 	
     
     
-    <com.test.BTClient.MySurfaceView
+    <com.test.Crazepony.MySurfaceView
         android:id="@+id/stickView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

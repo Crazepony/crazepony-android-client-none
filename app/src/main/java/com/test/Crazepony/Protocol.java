@@ -2,18 +2,14 @@
 //Crazepony APP和飞控之间通信协议使用了MWC飞控协议（MSP，Multiwii Serial Protocol），
 //MSP协议格式详见http://www.multiwii.com/wiki/index.php?title=Multiwii_Serial_Protocol
 
-package com.test.BTClient;
+package com.test.Crazepony;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import android.util.Log;
-
 public class Protocol {
 	public static int throttle,yaw,pitch,roll;
-	public static WayPoint nextWp;
 	public static float pitchAng,rollAng,yawAng,voltage,alt,speedZ;
-	public static int GPSFix,staNum,GPSFixHome,distanceToHome;
 	public static byte[] outputData;
 	public static final int 
 	SET_THROTTLE=0x01,
@@ -105,22 +101,7 @@ public class Protocol {
 		case FLY_STATE:
 			return null;
 		case MSP_ACC_CALIBRATION:
-			
 			return null;
-		case MSP_SET_1WP:
-			cmdData.add((byte)16);	//differ from 0
-			cmdData.add((byte)((nextWp.latitude )&0xff));
-			cmdData.add((byte)((nextWp.latitude>>8)&0xff)); 
-			cmdData.add((byte)((nextWp.latitude>>16)&0xff));
-			cmdData.add((byte)((nextWp.latitude>>24)&0xff));
-			
-			cmdData.add((byte)((nextWp.longtitude )&0xff));
-			cmdData.add((byte)((nextWp.longtitude>>8)&0xff)); 
-			cmdData.add((byte)((nextWp.longtitude>>16)&0xff));
-			cmdData.add((byte)((nextWp.longtitude>>24)&0xff));
-			//cmdData.add();
-			break;
-		
 		default: break;
 		}
 		
