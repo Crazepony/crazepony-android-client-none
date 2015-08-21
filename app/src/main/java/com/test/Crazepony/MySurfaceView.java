@@ -74,17 +74,7 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
         paint.setAntiAlias(true);
         setFocusable(true);
         setFocusableInTouchMode(true);
-
-        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-        int WMwidth = wm.getDefaultDisplay().getWidth();
-        int WMheight = wm.getDefaultDisplay().getHeight();
-
-        Log.v("viewSize","height:"+ WMheight + "  Width:"+WMwidth);
-
-        stickSizeInit(WMwidth,400);	//Obain the height of this view
-
-		 // TODO Auto-generated constructor stub
-		 }  
+    }
 
 	public void surfaceCreated(SurfaceHolder holder) { 
 		th = new Thread(this);
@@ -93,13 +83,16 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 	}
 
 	//Stick Size init
-	private void stickSizeInit(int screenWidth,int screenHeight)
+    //screenWidth为整个手机屏幕的像素宽度，例如华为Mate 7为1920
+    //Height为摇杆外围正方形框的边长，默认为手机屏幕像素高度的一半，例如华为Mate 7的screenHeight为
+    //1080，则Height值为1080/2=540
+	private void stickSizeInit(int screenWidth,int Height)
 	{
-        LEFT_CENTERX = screenHeight / 2;
-        LEFT_CENTERY = screenHeight / 2;
+        LEFT_CENTERX = Height / 2;
+        LEFT_CENTERY = Height / 2;
         RIGHT_CENTERX = screenWidth - LEFT_CENTERX;
-        RIGHT_CENTERY = screenHeight / 2;
-        BACK_RECT_SIZE = screenHeight / 2 - 20; //方形背景边长的一半
+        RIGHT_CENTERY = Height / 2;
+        BACK_RECT_SIZE = Height / 2 - 20; //方形背景边长的一半
 
         //左边圆形摇杆的自动回中的X,Y坐标以及半径
         RockerCircleX = LEFT_CENTERX;
@@ -120,7 +113,7 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
         //左边摇杆的X,Y坐标以及摇杆的半径
         SmallRockerCircleX = LEFT_CENTERX;
         SmallRockerCircleY = LEFT_CENTERY;
-        SmallRockerCircleR = 100;
+        SmallRockerCircleR = Height / 4;
 
         //右边方形背景的坐标
         BackRectLeft2 = RIGHT_CENTERX - BACK_RECT_SIZE;
@@ -131,7 +124,7 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
         //右边摇杆的X,Y坐标以及摇杆的半径
         SmallRockerCircleX2 = RIGHT_CENTERX;
         SmallRockerCircleY2 = RIGHT_CENTERY;
-        SmallRockerCircleR2 = 100;
+        SmallRockerCircleR2 = Height / 4;
 
 
         rightTouchStartX = RIGHT_CENTERX;
@@ -453,7 +446,7 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 
         Log.v("viewSize","height:"+ WMheight + "  Width:"+WMwidth);
 
-        stickSizeInit(WMwidth,400);	//Obain the height of this view
+        stickSizeInit(WMwidth,WMheight/2);	//Obain the height of this view
 	}
 
 	public void surfaceDestroyed(SurfaceHolder holder) {
