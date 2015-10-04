@@ -2,9 +2,12 @@ package com.test.Crazepony;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.WindowManager;
@@ -49,6 +52,7 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 	private float RockerCircleX2;
 	private float RockerCircleY2;
 	private float RockerCircleR2;
+    private RectF logoLocation;
 
 	//摇杆的X,Y坐标以及摇杆的半径
 	public float SmallRockerCircleX2;
@@ -131,6 +135,9 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
         rightTouchStartY = RIGHT_CENTERY;
         leftTouchStartX = LEFT_CENTERX;
         leftTouchStartY = LEFT_CENTERY;
+
+        logoLocation = new RectF(screenWidth/2 - 150,BackRectButtom - 107,screenWidth/2 + 150,BackRectButtom);
+
     }
 	/***
 	 * 得到两点之线与x轴的弧度
@@ -398,22 +405,24 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 			canvas.drawColor(Color.BLACK);
 			//设置颜色
 			//绘制摇杆背景
-		 	///paint.setColor(Color.YELLOW); 
-		 	///canvas.drawCircle(RockerCircleX, RockerCircleY, RockerCircleR, paint);
-			paint.setColor(Color.WHITE); 
+			paint.setColor(Color.WHITE);
 			canvas.drawRect(BackRectLeft,BackRectTop,BackRectRight,BackRectButtom,paint);///
 			//绘制摇杆
 			paint.setColor(0x4F94CD00); 
 			canvas.drawCircle(SmallRockerCircleX, SmallRockerCircleY, SmallRockerCircleR, paint);
+
 			//Draw another Right one
 			paint.setColor(Color.WHITE); 
 			canvas.drawRect(BackRectLeft2,BackRectTop2,BackRectRight2,BackRectButtom2,paint);///
-			//paint.setColor(0x70ff0000); 
-			paint.setColor(0x4F94CD00); 
+			paint.setColor(0x4F94CD00);
 			canvas.drawCircle(SmallRockerCircleX2, SmallRockerCircleY2, SmallRockerCircleR2, paint);
-		
-		
-		} catch (Exception e) {
+
+            //绘制背景
+            Bitmap back = BitmapFactory.decodeResource(this.getResources(), R.drawable.logo);
+            canvas.drawBitmap(back, null,logoLocation, null);
+
+
+        } catch (Exception e) {
 			// TODO: handle exception
 		} finally {
 			try {
@@ -424,7 +433,8 @@ public class MySurfaceView extends SurfaceView  implements Callback, Runnable {
 			}
 		}
 	}
-//-----复写 线程的run操作，当surface被创建后，线程开启
+
+    //线程的run操作，当surface被创建后，线程开启
 	public void run() {
 		// TODO Auto-generated method stub
 		//
